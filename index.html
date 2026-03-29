@@ -4,30 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="theme-color" content="#0a0e27">
-    <meta name="color-scheme" content="dark light">
     
-    <!-- SEO Meta Tags -->
-    <title>Satwinder Singh | Senior Flutter Developer & Mobile Engineer | FAANG Portfolio</title>
-    <meta name="description" content="Senior Mobile Engineer with 3+ years experience. Built 10+ production apps with real-time tracking, multi-role systems, and scalable architectures. Specialized in clean architecture and Firebase.">
-    <meta name="keywords" content="Flutter Developer, Mobile Engineer, Android Developer, Kotlin, Dart, GetX, Firebase, Real-time Tracking, Clean Architecture, MVVM">
-    <meta name="author" content="Satwinder Singh">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <title>Satwinder Singh | Senior Flutter Engineer & System Architect</title>
+    <meta name="description" content="Senior Mobile Engineer specializing in Flutter, Clean Architecture, and Real-time systems. 10+ production apps delivered.">
     
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://satwinder.dev">
-    <meta property="og:title" content="Satwinder Singh | Senior Flutter Developer">
-    <meta property="og:description" content="Premium portfolio showcasing 10+ production apps, real-time systems, and FAANG-level engineering quality.">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Satwinder Singh | Senior Flutter Developer">
-    <meta property="twitter:description" content="10+ production apps, real-time tracking systems, clean architecture expert">
-    
-    <!-- Fonts -->
+    <!-- Premium Google Fonts: Outfit (Headings) & Plus Jakarta Sans (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest" defer></script>
@@ -36,12 +20,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display:['Outfit', 'sans-serif'],
                     },
                     colors: {
                         bg: {
@@ -57,9 +40,7 @@
                     },
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
-                        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
-                        'slide-up': 'slide-up 0.8s ease-out',
-                        'fade-in': 'fade-in 0.6s ease-out',
+                        'glow-pulse': 'glow-pulse 3s ease-in-out infinite',
                     },
                     keyframes: {
                         float: {
@@ -68,16 +49,8 @@
                         },
                         'glow-pulse': {
                             '0%, 100%': { opacity: '1' },
-                            '50%': { opacity: '0.7' },
-                        },
-                        'slide-up': {
-                            from: { opacity: '0', transform: 'translateY(30px)' },
-                            to: { opacity: '1', transform: 'translateY(0)' },
-                        },
-                        'fade-in': {
-                            from: { opacity: '0' },
-                            to: { opacity: '1' },
-                        },
+                            '50%': { opacity: '0.6' },
+                        }
                     },
                 }
             }
@@ -85,41 +58,32 @@
     </script>
 
     <style>
-        * {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            background: #0a0e27;
-            color: #f5f7fa;
+            background-color: #0a0e27;
+            color: #f8fafc;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Glassmorphism */
-        .glass {
-            background: rgba(15, 18, 41, 0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 217, 255, 0.1);
+        /* Glassmorphism & Cards */
+        .glass-nav {
+            background: rgba(10, 14, 39, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
         }
 
         .glass-card {
-            background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(139, 92, 246, 0.03) 100%);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(0, 217, 255, 0.15);
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.03) 0%, rgba(139, 92, 246, 0.03) 100%);
+            background-color: rgba(15, 18, 41, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass-card:hover {
-            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(139, 92, 246, 0.08) 100%);
-            border-color: rgba(0, 217, 255, 0.4);
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(0, 217, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-color: rgba(0, 217, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(0, 217, 255, 0.15);
         }
 
         /* Gradient Text */
@@ -129,21 +93,11 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
+        
         .gradient-text-alt {
             background: linear-gradient(135deg, #ec4899 0%, #00d9ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Glow Effects */
-        .glow-cyan {
-            box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
-        }
-
-        .glow-purple {
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
         }
 
         /* Scroll Animations */
@@ -152,488 +106,410 @@
             transform: translateY(40px);
             transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
         /* Custom Cursor */
-        #cursor {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: rgba(0, 217, 255, 0.5);
-            box-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: all 0.15s ease-out;
-        }
-
-        #cursor.hovered {
-            width: 40px;
-            height: 40px;
-            background: rgba(139, 92, 246, 0.3);
-            border: 2px solid rgba(0, 217, 255, 0.8);
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #0a0e27;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, rgba(0, 217, 255, 0.6), rgba(139, 92, 246, 0.6));
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, rgba(0, 217, 255, 0.8), rgba(139, 92, 246, 0.8));
-        }
-
-        /* Focus Styles */
-        *:focus-visible {
-            outline: 2px solid #00d9ff;
-            outline-offset: 2px;
-        }
-
-        /* Reduced Motion */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+        @media (pointer: fine) {
+            body { cursor: none; }
+            #cursor {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: rgba(0, 217, 255, 0.5);
+                box-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
+                pointer-events: none;
+                z-index: 9999;
+                transform: translate(-50%, -50%);
+                transition: width 0.2s, height 0.2s, background-color 0.2s;
+            }
+            #cursor.hovered {
+                width: 50px;
+                height: 50px;
+                background: rgba(139, 92, 246, 0.2);
+                border: 2px solid rgba(0, 217, 255, 0.8);
             }
         }
 
-        /* Responsive Images */
-        img {
-            loading: lazy;
-            max-width: 100%;
-            height: auto;
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0e27; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(0, 217, 255, 0.5), rgba(139, 92, 246, 0.5)); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, rgba(0, 217, 255, 0.8), rgba(139, 92, 246, 0.8)); }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.2);
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
         }
-
-        /* Smooth Links */
-        a {
-            position: relative;
-            text-decoration: none;
-        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body>
+<body class="selection:bg-accent-cyan/30 selection:text-white">
+
     <!-- Custom Cursor -->
-    <div id="cursor"></div>
+    <div id="cursor" class="hidden lg:block"></div>
+
+    <!-- Background Glows -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent-purple/10 rounded-full blur-[150px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent-cyan/10 rounded-full blur-[150px] animate-float" style="animation-delay: -3s;"></div>
+    </div>
 
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass border-b border-white/5 transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-display font-bold tracking-tight gradient-text hover:scale-105 transition-transform">
+    <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-display font-extrabold tracking-tight hover:scale-105 transition-transform interactive">
                 Satwinder<span class="gradient-text-alt">.</span>
             </a>
             
-            <!-- Desktop Nav -->
-            <div class="hidden lg:flex gap-1">
-                <a href="#about" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">About</a>
-                <a href="#services" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Services</a>
-                <a href="#projects" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Projects</a>
-                <a href="#experience" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Experience</a>
+            <div class="hidden md:flex gap-8 text-sm font-medium text-gray-300">
+                <a href="#about" class="hover:text-accent-cyan transition-colors interactive">About</a>
+                <a href="#expertise" class="hover:text-accent-cyan transition-colors interactive">Expertise</a>
+                <a href="#experience" class="hover:text-accent-cyan transition-colors interactive">Experience</a>
+                <a href="#projects" class="hover:text-accent-cyan transition-colors interactive">Work</a>
             </div>
 
-            <!-- CTA Button -->
-            <a href="#contact" class="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-semibold text-sm hover:shadow-lg hover:shadow-accent-cyan/50 transition-all transform hover:scale-105">
-                Get In Touch
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            <a href="#contact" class="hidden md:inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-bold text-sm hover:shadow-[0_0_20px_rgba(0,217,255,0.4)] transition-all hover:scale-105 interactive">
+                Hire Me
             </a>
-
-            <!-- Mobile Menu Button -->
-            <button class="lg:hidden text-white hover:text-accent-cyan transition-colors" id="mobile-menu-btn">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-            </button>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden border-t border-white/5 bg-bg-secondary/95 backdrop-blur-md">
-            <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-2">
-                <a href="#about" class="px-4 py-3 rounded-lg hover:bg-white/5 transition-colors">About</a>
-                <a href="#services" class="px-4 py-3 rounded-lg hover:bg-white/5 transition-colors">Services</a>
-                <a href="#projects" class="px-4 py-3 rounded-lg hover:bg-white/5 transition-colors">Projects</a>
-                <a href="#experience" class="px-4 py-3 rounded-lg hover:bg-white/5 transition-colors">Experience</a>
-                <a href="#contact" class="px-4 py-3 rounded-lg bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-semibold text-center hover:shadow-lg transition-all">Contact</a>
-            </div>
         </div>
     </nav>
 
-    <main role="main">
+    <main>
         <!-- Hero Section -->
-        <section id="hero" class="relative min-h-screen pt-20 px-6 lg:px-8 flex items-center justify-center overflow-hidden">
-            <!-- Background Elements -->
-            <div class="absolute inset-0 -z-10">
-                <div class="absolute top-20 left-10 w-72 h-72 bg-accent-purple/20 rounded-full blur-3xl opacity-50"></div>
-                <div class="absolute bottom-20 right-10 w-72 h-72 bg-accent-cyan/20 rounded-full blur-3xl opacity-50"></div>
-            </div>
-
-            <div class="max-w-4xl mx-auto text-center py-20 reveal">
-                <div class="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-full glass">
-                    <span class="w-2 h-2 bg-accent-cyan rounded-full animate-pulse"></span>
-                    <span class="text-sm font-medium">Available for opportunities</span>
+        <section class="relative min-h-screen pt-32 pb-20 px-6 lg:px-12 flex flex-col justify-center items-center">
+            <div class="max-w-5xl mx-auto text-center reveal">
+                <div class="mb-8 inline-flex items-center gap-3 px-5 py-2 rounded-full border border-accent-cyan/20 bg-accent-cyan/10 backdrop-blur-md">
+                    <span class="w-2 h-2 bg-accent-cyan rounded-full animate-pulse shadow-[0_0_10px_#00d9ff]"></span>
+                    <span class="text-xs font-bold uppercase tracking-widest text-accent-cyan">Available for Senior Roles</span>
                 </div>
 
-                <h1 class="text-5xl lg:text-7xl font-display font-bold mb-6 gradient-text leading-tight">
-                    Senior Mobile Engineer
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-extrabold mb-8 leading-[1.1] tracking-tight text-white">
+                    I architect <br class="hidden md:block">
+                    <span class="gradient-text">high-performance</span><br>
+                    mobile applications.
                 </h1>
 
-                <p class="text-lg lg:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-                    I build high-performance mobile applications with Flutter & Android. Specialized in real-time systems, clean architecture, and scalable solutions. 10+ production apps delivered.
+                <p class="text-lg md:text-xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
+                    I am <strong class="text-white font-semibold">Satwinder Singh</strong>. I specialize in bridging cross-platform efficiency with native Android performance, building real-time systems, and deploying enterprise-grade architectures.
                 </p>
 
-                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                    <a href="#projects" class="px-8 py-3 rounded-lg bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-semibold hover:shadow-lg hover:shadow-accent-cyan/50 transition-all transform hover:scale-105">
+                <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                    <a href="#projects" class="px-8 py-4 rounded-full bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-bold text-lg hover:shadow-[0_0_30px_rgba(0,217,255,0.4)] transition-all transform hover:-translate-y-1 interactive">
                         View My Work
                     </a>
-                    <a href="#contact" class="px-8 py-3 rounded-lg glass hover:border-accent-cyan/50 font-semibold transition-all hover:bg-white/10">
-                        Let's Connect
+                    <a href="#contact" class="px-8 py-4 rounded-full border border-white/20 text-white font-bold text-lg hover:bg-white/5 transition-all interactive">
+                        Get In Touch
                     </a>
                 </div>
+            </div>
 
-                <!-- Stats -->
-                <div class="grid grid-cols-3 gap-4 lg:gap-8 mt-16">
-                    <div class="glass rounded-lg p-4 lg:p-6">
-                        <div class="text-3xl lg:text-4xl font-bold gradient-text">10+</div>
-                        <div class="text-sm text-gray-400 mt-2">Apps Delivered</div>
+            <!-- Enhanced Stats Grid (Below Hero) -->
+            <div class="max-w-7xl mx-auto w-full mt-24 reveal">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 text-center">
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="text-3xl font-display font-bold gradient-text mb-2">10+</div>
+                        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Production Apps</div>
                     </div>
-                    <div class="glass rounded-lg p-4 lg:p-6">
-                        <div class="text-3xl lg:text-4xl font-bold gradient-text">3+</div>
-                        <div class="text-sm text-gray-400 mt-2">Years Experience</div>
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="text-3xl font-display font-bold gradient-text mb-2">3+</div>
+                        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Years Exp.</div>
                     </div>
-                    <div class="glass rounded-lg p-4 lg:p-6">
-                        <div class="text-3xl lg:text-4xl font-bold gradient-text">40%</div>
-                        <div class="text-sm text-gray-400 mt-2">Perf. Improvement</div>
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="text-3xl font-display font-bold gradient-text mb-2">99.9%</div>
+                        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Crash-Free</div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="text-3xl font-display font-bold gradient-text mb-2">60+</div>
+                        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">FPS Rendering</div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="text-3xl font-display font-bold gradient-text mb-2">40%</div>
+                        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Perf. Improved</div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="text-3xl font-display font-bold gradient-text mb-2">5+</div>
+                        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Industry Domains</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- About Section -->
-        <section id="about" class="py-20 px-6 lg:px-8">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl lg:text-5xl font-display font-bold mb-12 gradient-text reveal">About Me</h2>
-
-                <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div class="glass-card rounded-2xl p-8 lg:p-10 reveal">
-                        <h3 class="text-2xl font-bold mb-4">Who I Am</h3>
-                        <p class="text-gray-300 leading-relaxed mb-6">
-                            I'm a senior mobile engineer with a passion for building performant, scalable applications. With 3+ years of professional experience, I've led the development of 10+ production apps serving thousands of users.
+        <!-- About & Tech Arsenal (Merged perfectly) -->
+        <section id="about" class="py-24 px-6 lg:px-12 bg-bg-secondary/50 border-y border-white/5">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="reveal">
+                        <h2 class="text-4xl md:text-5xl font-display font-bold mb-8 gradient-text">Engineering Mindset</h2>
+                        <p class="text-gray-300 leading-relaxed text-lg mb-6">
+                            I don't just write code; I design systems. With 3+ years of intense engineering experience, I have led the development of complex platforms serving thousands of active users.
                         </p>
-                        <p class="text-gray-300 leading-relaxed mb-6">
-                            My expertise spans Flutter, Android (Kotlin), and modern app architecture patterns. I specialize in real-time systems, complex state management, and creating seamless user experiences.
-                        </p>
-                        <p class="text-gray-300 leading-relaxed">
-                            Beyond coding, I'm obsessed with performance optimization, clean code practices, and sharing knowledge with the community.
+                        <p class="text-gray-300 leading-relaxed text-lg mb-8">
+                            My core strength lies deep within the Flutter ecosystem and Android native layers. I obsess over clean architecture, managing complex state seamlessly, and utilizing Isolates (Multi-threading) to ensure the UI never drops a frame.
                         </p>
                     </div>
 
-                    <div class="space-y-4 reveal">
-                        <div class="skill-card glass-card rounded-xl p-6">
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="w-5 h-5 text-accent-cyan">⭐</div>
-                                <span class="font-semibold">Flutter & Dart</span>
-                            </div>
-                            <p class="text-sm text-gray-400">Advanced level with 2+ years production experience</p>
-                        </div>
-
-                        <div class="skill-card glass-card rounded-xl p-6">
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="w-5 h-5 text-accent-purple">⭐</div>
-                                <span class="font-semibold">Clean Architecture</span>
-                            </div>
-                            <p class="text-sm text-gray-400">MVVM, GetX, and scalable patterns</p>
-                        </div>
-
-                        <div class="skill-card glass-card rounded-xl p-6">
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="w-5 h-5 text-accent-cyan">⭐</div>
-                                <span class="font-semibold">Real-time Systems</span>
-                            </div>
-                            <p class="text-sm text-gray-400">Live tracking, WebSockets, Firebase</p>
+                    <!-- Tech Arsenal Pills -->
+                    <div class="reveal">
+                        <h3 class="text-xl font-display font-bold mb-6 text-white">Technical Arsenal</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-5 py-2.5 rounded-full border border-accent-cyan/40 bg-accent-cyan/10 text-white font-medium interactive shadow-[0_0_15px_rgba(0,217,255,0.1)]">Flutter (Advanced)</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">Dart</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">Android (Native)</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">Kotlin</span>
+                            
+                            <span class="px-5 py-2.5 rounded-full border border-accent-purple/40 bg-accent-purple/10 text-white font-medium interactive">Clean Architecture</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">BLoC / Riverpod</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">GetX</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">MVVM</span>
+                            
+                            <span class="px-5 py-2.5 rounded-full border border-accent-pink/40 bg-accent-pink/10 text-white font-medium interactive">Method Channels</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">Isolates</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">Custom Painters</span>
+                            
+                            <span class="px-5 py-2.5 rounded-full border border-orange-500/40 bg-orange-500/10 text-white font-medium interactive">Firebase (Full Suite)</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">WebSockets</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">Google Maps API</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">CI/CD (Fastlane)</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Services Section -->
-        <section id="services" class="py-20 px-6 lg:px-8 bg-gradient-to-b from-transparent via-accent-purple/5 to-transparent">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl lg:text-5xl font-display font-bold mb-12 gradient-text reveal text-center">What I Offer</h2>
+        <!-- 12 Services Section (Perfect Spacing) -->
+        <section id="expertise" class="py-24 px-6 lg:px-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 gradient-text">Deep Technical Expertise</h2>
+                    <p class="text-lg text-gray-400 max-w-2xl mx-auto">Going beyond UI development. I deliver enterprise-scale architectures, native integrations, and uncompromising performance.</p>
+                </div>
 
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="glass-card rounded-2xl p-8 reveal hover:glow-cyan">
-                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center mb-4 text-white font-bold">📱</div>
-                        <h3 class="text-xl font-bold mb-3">Custom App Development</h3>
-                        <p class="text-gray-400 text-sm">Fully tailored mobile applications built with modern frameworks and best practices.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    
+                    <div class="glass-card rounded-2xl p-8 reveal">
+                        <i data-lucide="smartphone" class="w-10 h-10 text-accent-cyan mb-6"></i>
+                        <h3 class="text-lg font-bold text-white mb-3">End-to-End Flutter</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Architecting scalable cross-platform apps from scratch using clean code principles and modular design.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal hover:glow-purple">
-                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent-pink to-accent-cyan flex items-center justify-center mb-4 text-white font-bold">⚡</div>
-                        <h3 class="text-xl font-bold mb-3">Performance Optimization</h3>
-                        <p class="text-gray-400 text-sm">Improved app performance by 40% through code profiling and architecture improvements.</p>
+                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 50ms;">
+                        <i data-lucide="zap" class="w-10 h-10 text-accent-purple mb-6"></i>
+                        <h3 class="text-lg font-bold text-white mb-3">120fps Perf. Tuning</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Eliminating UI jank, optimizing raster threads, reducing memory leaks, and utilizing Dart Isolates.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal hover:glow-cyan">
-                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent-purple to-accent-pink flex items-center justify-center mb-4 text-white font-bold">🔄</div>
-                        <h3 class="text-xl font-bold mb-3">Real-time Solutions</h3>
-                        <p class="text-gray-400 text-sm">Live tracking systems, real-time notifications, and complex state management.</p>
+                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 100ms;">
+                        <i data-lucide="layers" class="w-10 h-10 text-accent-pink mb-6"></i>
+                        <h3 class="text-lg font-bold text-white mb-3">Enterprise State Mgt.</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Implementing robust Clean Architecture using BLoC, Riverpod, and GetX for highly maintainable codebases.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal hover:glow-purple">
-                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-pink flex items-center justify-center mb-4 text-white font-bold">🏗️</div>
-                        <h3 class="text-xl font-bold mb-3">Architecture Consulting</h3>
-                        <p class="text-gray-400 text-sm">Design scalable architectures with MVVM, clean code, and maintainability focus.</p>
+                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 150ms;">
+                        <i data-lucide="code-2" class="w-10 h-10 text-accent-cyan mb-6"></i>
+                        <h3 class="text-lg font-bold text-white mb-3">Native Method Channels</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Bridging the gap between Flutter and native Android (Kotlin/Java) SDKs for device-specific hardware access.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal hover:glow-cyan">
-                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent-purple to-accent-cyan flex items-center justify-center mb-4 text-white font-bold">👥</div>
-                        <h3 class="text-xl font-bold mb-3">Team Leadership</h3>
-                        <p class="text-gray-400 text-sm">Lead development teams and mentor junior developers in best practices.</p>
+                    <div class="glass-card rounded-2xl p-8 reveal">
+                        <i data-lucide="database" class="w-10 h-10 text-orange-500 mb-6"></i>
+                        <h3 class="text-lg font-bold text-white mb-3">Firebase & Serverless</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Deep integration with Firestore, Auth, Storage, Cloud Functions, and targeted FCM Push Notifications.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal hover:glow-purple">
-                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent-pink to-accent-purple flex items-center justify-center mb-4 text-white font-bold">📊</div>
-                        <h3 class="text-xl font-bold mb-3">Code Review & Audit</h3>
-                        <p class="text-gray-400 text-sm">Comprehensive code quality audits and architectural recommendations.</p>
+                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 50ms;">
+                        <i data-lucide="activity" class="w-10 h-10 text-green-400 mb-6"></i>
+                        <h3 class="text-lg font-bold text-white mb-3">Real-Time WebSockets</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Building live tracking dashboards, real-time chat apps, and streaming features with Socket.io and WebRTC.</p>
                     </div>
+
+                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 100ms;">
+                        <i data-lucide="map" class="w-10 h-10 text-accent-cyan mb-6"></i>
+                        <h3 class="text-lg font-bold text-white mb-3">Advanced Geolocation</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Complex Google Maps integration including live tracking, custom polyline drawing, and marker clustering.</p>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 150ms;">
+                        <i data-lucide="palette" class="w-10 h-10 text-accent-purple mb-6"></i>
+                        <h3 class="text-lg font-bold text-white mb-3">Custom Painters & UI</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Creating pixel-perfect, highly complex interactive UIs, graphs, and fluid animations from scratch.</p>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 reveal">
+                        <i data-lucide="shield-check" class="w-10 h-10 text-yellow-500 mb-6"></i>
+                        <h3 class="text-lg font-bold text-white mb-3">App Security</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Securing API keys, implementing SSL pinning, local biometrics, and code obfuscation for production builds.</p>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 50ms;">
+                        <i data-lucide="wifi-off" class="w-10 h-10 text-gray-300 mb-6"></i>
+                        <h3 class="text-lg font-bold text-white mb-3">Offline-First Arch.</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Building resilient applications with local caching and data synchronization using Hive, Sqflite, and Isar.</p>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 100ms;">
+                        <i data-lucide="rocket" class="w-10 h-10 text-accent-pink mb-6"></i>
+                        <h3 class="text-lg font-bold text-white mb-3">CI/CD & Fastlane</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Automating build, test, and deployment pipelines directly to Google Play Store & Apple App Store.</p>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 150ms;">
+                        <i data-lucide="git-merge" class="w-10 h-10 text-accent-cyan mb-6"></i>
+                        <h3 class="text-lg font-bold text-white mb-3">Code Audits</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Reviewing legacy codebases, extensive refactoring, and establishing strict team coding standards.</p>
+                    </div>
+
                 </div>
             </div>
         </section>
 
-    <!-- Experience Timeline -->
-    <section id="experience" class="py-24 px-6 lg:px-12 bg-surface/50 border-y border-white/5">
-        <div class="max-w-5xl mx-auto">
-            <h2 class="text-3xl md:text-5xl font-display font-bold mb-16 text-center text-gradient reveal">Career Trajectory</h2>
-            
-            <div class="relative border-l border-white/10 ml-4 md:ml-0 md:pl-0">
+        <!-- Structured Experience Timeline -->
+        <section id="experience" class="py-24 px-6 lg:px-12 bg-bg-secondary/50 border-y border-white/5">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-display font-bold mb-20 text-center gradient-text reveal">Career Trajectory</h2>
                 
-                <!-- Experience 1 -->
-                <div class="mb-12 relative pl-8 md:pl-0 reveal">
-                    <div class="hidden md:block absolute left-1/2 -ml-[0.5px] w-px h-full bg-white/10"></div>
-                    <div class="md:grid md:grid-cols-2 md:gap-16 items-center">
-                        <div class="md:text-right md:pr-12 relative">
-                            <div class="absolute left-[-39px] md:left-auto md:right-[-41px] top-1 w-4 h-4 rounded-full bg-primary shadow-[0_0_15px_rgba(0,229,255,0.6)] z-10 border-2 border-bg"></div>
-                            <h3 class="text-xl font-display font-bold text-white">Senior Software Developer</h3>
-                            <p class="text-primary font-medium mt-1">ToXSL Technologies</p>
-                            <p class="text-sm text-gray-500 mt-2">Jan 2025 - Present</p>
-                        </div>
-                        <div class="mt-4 md:mt-0 glass-card p-6 rounded-xl md:pl-12">
-                            <p class="text-gray-400 text-sm leading-relaxed">Leading development of scalable mobile architectures. Optimizing app performance and mentoring engineering teams to follow industry-standard practices.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Experience 2 -->
-                <div class="mb-12 relative pl-8 md:pl-0 reveal">
-                    <div class="md:grid md:grid-cols-2 md:gap-16 items-center">
-                        <div class="md:text-right md:pr-12 relative">
-                            <div class="absolute left-[-39px] md:left-auto md:right-[-41px] top-1 w-4 h-4 rounded-full bg-white/20 z-10 border-2 border-bg"></div>
-                            <h3 class="text-xl font-display font-bold text-white">Flutter Developer</h3>
-                            <p class="text-white mt-1">Seraphic Infosolutions</p>
-                            <p class="text-sm text-gray-500 mt-2">Jun 2024 - Jun 2025</p>
-                        </div>
-                        <div class="mt-4 md:mt-0 glass-card p-6 rounded-xl md:pl-12">
-                            <p class="text-gray-400 text-sm leading-relaxed">Engineered robust cross-platform applications using Flutter and Dart. Implemented complex UI designs and integrated REST APIs efficiently.</p>
+                <div class="relative border-l border-white/10 ml-4 md:ml-0 md:pl-0">
+                    
+                    <!-- Exp 1 -->
+                    <div class="mb-16 relative pl-10 md:pl-0 reveal">
+                        <div class="hidden md:block absolute left-1/2 -ml-[0.5px] w-px h-full bg-white/10"></div>
+                        <div class="md:grid md:grid-cols-2 md:gap-16 items-center">
+                            <div class="md:text-right md:pr-12 relative">
+                                <div class="absolute left-[-45px] md:left-auto md:right-[-41px] top-1 w-5 h-5 rounded-full bg-accent-cyan shadow-[0_0_15px_rgba(0,217,255,0.8)] z-10 border-4 border-bg-secondary"></div>
+                                <h3 class="text-2xl font-display font-bold text-white">Senior Software Developer</h3>
+                                <p class="text-accent-cyan font-semibold mt-1">ToXSL Technologies</p>
+                                <p class="text-sm text-gray-500 mt-2">Jan 2025 - Present</p>
+                            </div>
+                            <div class="mt-6 md:mt-0 glass-card p-8 rounded-2xl md:pl-12">
+                                <p class="text-gray-300 text-sm leading-relaxed">Leading development of scalable mobile architectures. Optimizing app performance, introducing CI/CD automation, and mentoring engineering teams to follow Clean Architecture principles.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Experience 3 -->
-                <div class="mb-12 relative pl-8 md:pl-0 reveal">
-                    <div class="md:grid md:grid-cols-2 md:gap-16 items-center">
-                        <div class="md:text-right md:pr-12 relative">
-                            <div class="absolute left-[-39px] md:left-auto md:right-[-41px] top-1 w-4 h-4 rounded-full bg-white/20 z-10 border-2 border-bg"></div>
-                            <h3 class="text-xl font-display font-bold text-white">Android Developer</h3>
-                            <p class="text-white mt-1">Blocvibe Technologies</p>
-                            <p class="text-sm text-gray-500 mt-2">Oct 2023 - Jun 2024</p>
-                        </div>
-                        <div class="mt-4 md:mt-0 glass-card p-6 rounded-xl md:pl-12">
-                            <p class="text-gray-400 text-sm leading-relaxed">Focused on native Android development utilizing Kotlin. Built responsive UIs and maintained seamless application lifecycles.</p>
+                    <!-- Exp 2 -->
+                    <div class="mb-16 relative pl-10 md:pl-0 reveal">
+                        <div class="md:grid md:grid-cols-2 md:gap-16 items-center">
+                            <div class="md:text-right md:pr-12 relative">
+                                <div class="absolute left-[-45px] md:left-auto md:right-[-41px] top-1 w-4 h-4 rounded-full bg-white/30 z-10 border-2 border-bg-secondary"></div>
+                                <h3 class="text-2xl font-display font-bold text-white">Flutter Developer</h3>
+                                <p class="text-white mt-1">Seraphic Infosolutions</p>
+                                <p class="text-sm text-gray-500 mt-2">Jun 2024 - Jun 2025</p>
+                            </div>
+                            <div class="mt-6 md:mt-0 glass-card p-8 rounded-2xl md:pl-12">
+                                <p class="text-gray-300 text-sm leading-relaxed">Engineered robust cross-platform applications using Flutter and Dart. Implemented complex UI designs, native bridges (Method Channels), and integrated REST APIs efficiently.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Experience 4 -->
-                <div class="relative pl-8 md:pl-0 reveal">
-                    <div class="md:grid md:grid-cols-2 md:gap-16 items-center">
-                        <div class="md:text-right md:pr-12 relative">
-                            <div class="absolute left-[-39px] md:left-auto md:right-[-41px] top-1 w-4 h-4 rounded-full bg-white/20 z-10 border-2 border-bg"></div>
-                            <h3 class="text-xl font-display font-bold text-white">Android Developer</h3>
-                            <p class="text-white mt-1">Possibility Solutions Pvt Ltd</p>
-                            <p class="text-sm text-gray-500 mt-2">Jan 2022 - Jan 2024</p>
-                        </div>
-                        <div class="mt-4 md:mt-0 glass-card p-6 rounded-xl md:pl-12">
-                            <p class="text-gray-400 text-sm leading-relaxed">Began core professional journey handling native Android projects, focusing on Java/Kotlin logic, UI debugging, and core architecture integration.</p>
+                    <!-- Exp 3 -->
+                    <div class="mb-16 relative pl-10 md:pl-0 reveal">
+                        <div class="md:grid md:grid-cols-2 md:gap-16 items-center">
+                            <div class="md:text-right md:pr-12 relative">
+                                <div class="absolute left-[-45px] md:left-auto md:right-[-41px] top-1 w-4 h-4 rounded-full bg-white/30 z-10 border-2 border-bg-secondary"></div>
+                                <h3 class="text-2xl font-display font-bold text-white">Android Developer</h3>
+                                <p class="text-white mt-1">Blocvibe Technologies</p>
+                                <p class="text-sm text-gray-500 mt-2">Oct 2023 - Jun 2024</p>
+                            </div>
+                            <div class="mt-6 md:mt-0 glass-card p-8 rounded-2xl md:pl-12">
+                                <p class="text-gray-300 text-sm leading-relaxed">Focused on native Android development utilizing Kotlin. Built responsive UIs, maintained seamless application lifecycles, and integrated Jetpack components.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                    <!-- Exp 4 -->
+                    <div class="relative pl-10 md:pl-0 reveal">
+                        <div class="md:grid md:grid-cols-2 md:gap-16 items-center">
+                            <div class="md:text-right md:pr-12 relative">
+                                <div class="absolute left-[-45px] md:left-auto md:right-[-41px] top-1 w-4 h-4 rounded-full bg-white/30 z-10 border-2 border-bg-secondary"></div>
+                                <h3 class="text-2xl font-display font-bold text-white">Android Developer</h3>
+                                <p class="text-white mt-1">Possibility Solutions Pvt Ltd</p>
+                                <p class="text-sm text-gray-500 mt-2">Jan 2022 - Jan 2024</p>
+                            </div>
+                            <div class="mt-6 md:mt-0 glass-card p-8 rounded-2xl md:pl-12">
+                                <p class="text-gray-300 text-sm leading-relaxed">Began core professional journey handling native Android projects, focusing on Java/Kotlin logic, UI debugging, and core architecture integration.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Technical Arsenal (Skills) -->
-    <section id="skills" class="py-24 px-6 lg:px-12 max-w-7xl mx-auto text-center">
-        <h2 class="text-3xl md:text-5xl font-display font-bold mb-4 text-gradient reveal">Technical Arsenal</h2>
-        <p class="text-gray-400 mb-12 max-w-2xl mx-auto reveal">Tools and technologies I use to build robust digital products.</p>
-        
-        <div class="flex flex-wrap justify-center gap-4 reveal">
-            <!-- Skill Pills -->
-            <div class="px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:border-primary/50 hover:bg-primary/10 transition-colors cursor-default hover-trigger font-medium">Flutter</div>
-            <div class="px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:border-primary/50 hover:bg-primary/10 transition-colors cursor-default hover-trigger font-medium">Android (Native)</div>
-            <div class="px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:border-primary/50 hover:bg-primary/10 transition-colors cursor-default hover-trigger font-medium">Jetpack Compose</div>
-            <div class="px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:border-secondary/50 hover:bg-secondary/10 transition-colors cursor-default hover-trigger font-medium">Kotlin</div>
-            <div class="px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:border-secondary/50 hover:bg-secondary/10 transition-colors cursor-default hover-trigger font-medium">Dart</div>
-            <div class="px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:border-white/50 hover:bg-white/10 transition-colors cursor-default hover-trigger font-medium">MVVM & MVC</div>
-            <div class="px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:border-white/50 hover:bg-white/10 transition-colors cursor-default hover-trigger font-medium">GetX</div>
-            <div class="px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:border-orange-500/50 hover:bg-orange-500/10 transition-colors cursor-default hover-trigger font-medium">Firebase</div>
-        </div>
-    </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="py-20 px-6 lg:px-8">
+        <!-- Projects Section (Large Detailed Cards) -->
+        <section id="projects" class="py-24 px-6 lg:px-12">
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl lg:text-5xl font-display font-bold mb-4 gradient-text reveal">Featured Projects</h2>
-                <p class="text-gray-400 mb-12 reveal text-lg">10+ production apps across different domains</p>
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 gradient-text">Featured Implementations</h2>
+                    <p class="text-lg text-gray-400 max-w-2xl mx-auto">A glimpse into high-performance architectures shipped to production.</p>
+                </div>
 
-                <!-- Project 1: Free Delivery -->
-                <div class="glass-card rounded-2xl overflow-hidden mb-8 reveal">
-                    <div class="grid lg:grid-cols-2 gap-8 p-8 lg:p-10">
-                        <div>
-                            <h3 class="text-2xl font-bold mb-3">Free Delivery App</h3>
-                            <p class="text-gray-300 mb-6 leading-relaxed">
-                                A Zomato-like multi-role delivery platform with real-time order tracking, maps integration, and payment processing. Supports user, vendor, and driver roles.
-                            </p>
-                            <div class="mb-6">
-                                <h4 class="font-semibold text-sm text-accent-cyan mb-3">Key Features</h4>
-                                <ul class="space-y-2 text-sm text-gray-300">
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Real-time order tracking</li>
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Multi-role dashboard</li>
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Google Maps integration</li>
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Stripe payment gateway</li>
-                                </ul>
+                <div class="space-y-8">
+                    <!-- Project 1 -->
+                    <div class="glass-card rounded-3xl overflow-hidden reveal interactive">
+                        <div class="grid lg:grid-cols-12 gap-0 items-center">
+                            <div class="lg:col-span-7 p-10 lg:p-12">
+                                <h3 class="text-3xl font-display font-bold mb-4 text-white">Free Delivery App</h3>
+                                <p class="text-gray-300 mb-8 leading-relaxed text-lg">
+                                    A Zomato-like multi-role delivery platform with real-time order tracking, maps integration, and payment processing. Handles dynamic routing for drivers, robust vendor management, and user checkout flow.
+                                </p>
+                                <div class="flex flex-wrap gap-3">
+                                    <span class="px-4 py-1.5 rounded-full bg-accent-cyan/10 text-accent-cyan text-sm font-semibold border border-accent-cyan/20">Flutter</span>
+                                    <span class="px-4 py-1.5 rounded-full bg-accent-purple/10 text-accent-purple text-sm font-semibold border border-accent-purple/20">Firebase</span>
+                                    <span class="px-4 py-1.5 rounded-full bg-white/5 text-gray-300 text-sm font-semibold border border-white/10">Google Maps API</span>
+                                </div>
                             </div>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 rounded-full bg-accent-cyan/20 text-accent-cyan text-xs font-medium">Flutter</span>
-                                <span class="px-3 py-1 rounded-full bg-accent-purple/20 text-accent-purple text-xs font-medium">Firebase</span>
-                                <span class="px-3 py-1 rounded-full bg-accent-pink/20 text-accent-pink text-xs font-medium">Maps API</span>
-                            </div>
-                        </div>
-                        <div class="glass rounded-lg p-6 flex items-center justify-center min-h-48">
-                            <div class="text-center text-gray-400">
-                                <div class="text-5xl mb-4">📦</div>
-                                <p>Production App</p>
+                            <div class="lg:col-span-5 h-full bg-bg-secondary/50 flex items-center justify-center p-12 border-l border-white/5">
+                                <i data-lucide="map-pin" class="w-24 h-24 text-accent-cyan/50"></i>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Project 2: My Salon -->
-                <div class="glass-card rounded-2xl overflow-hidden mb-8 reveal">
-                    <div class="grid lg:grid-cols-2 gap-8 p-8 lg:p-10">
-                        <div class="lg:order-2">
-                            <h3 class="text-2xl font-bold mb-3">My Salon App</h3>
-                            <p class="text-gray-300 mb-6 leading-relaxed">
-                                A comprehensive salon booking platform with appointment scheduling, time slot management, and service-based architecture for seamless salon operations.
-                            </p>
-                            <div class="mb-6">
-                                <h4 class="font-semibold text-sm text-accent-cyan mb-3">Key Features</h4>
-                                <ul class="space-y-2 text-sm text-gray-300">
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Smart appointment booking</li>
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Time slot management</li>
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Service catalog</li>
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Customer & staff roles</li>
-                                </ul>
+                    <!-- Project 2 -->
+                    <div class="glass-card rounded-3xl overflow-hidden reveal interactive">
+                        <div class="grid lg:grid-cols-12 gap-0 items-center">
+                            <div class="lg:col-span-5 h-full bg-bg-secondary/50 flex items-center justify-center p-12 border-r border-white/5 order-last lg:order-first">
+                                <i data-lucide="scissors" class="w-24 h-24 text-accent-purple/50"></i>
                             </div>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 rounded-full bg-accent-cyan/20 text-accent-cyan text-xs font-medium">Flutter</span>
-                                <span class="px-3 py-1 rounded-full bg-accent-purple/20 text-accent-purple text-xs font-medium">GetX</span>
-                                <span class="px-3 py-1 rounded-full bg-accent-pink/20 text-accent-pink text-xs font-medium">Firebase</span>
-                            </div>
-                        </div>
-                        <div class="lg:order-1 glass rounded-lg p-6 flex items-center justify-center min-h-48">
-                            <div class="text-center text-gray-400">
-                                <div class="text-5xl mb-4">💅</div>
-                                <p>Production App</p>
+                            <div class="lg:col-span-7 p-10 lg:p-12 order-first lg:order-last">
+                                <h3 class="text-3xl font-display font-bold mb-4 text-white">My Salon App</h3>
+                                <p class="text-gray-300 mb-8 leading-relaxed text-lg">
+                                    A comprehensive salon booking platform with appointment scheduling, dynamic time slot management, and service-based architecture for seamless salon operations. Built with GetX for instant state updates.
+                                </p>
+                                <div class="flex flex-wrap gap-3">
+                                    <span class="px-4 py-1.5 rounded-full bg-accent-cyan/10 text-accent-cyan text-sm font-semibold border border-accent-cyan/20">Flutter</span>
+                                    <span class="px-4 py-1.5 rounded-full bg-accent-pink/10 text-accent-pink text-sm font-semibold border border-accent-pink/20">GetX</span>
+                                    <span class="px-4 py-1.5 rounded-full bg-white/5 text-gray-300 text-sm font-semibold border border-white/10">REST APIs</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Project 3: Shaml Event -->
-                <div class="glass-card rounded-2xl overflow-hidden mb-8 reveal">
-                    <div class="grid lg:grid-cols-2 gap-8 p-8 lg:p-10">
-                        <div>
-                            <h3 class="text-2xl font-bold mb-3">Shaml Event Platform</h3>
-                            <p class="text-gray-300 mb-6 leading-relaxed">
-                                A multi-role event management platform with QR-based gate access, event booking, dashboard analytics, and comprehensive event lifecycle management.
-                            </p>
-                            <div class="mb-6">
-                                <h4 class="font-semibold text-sm text-accent-cyan mb-3">Key Features</h4>
-                                <ul class="space-y-2 text-sm text-gray-300">
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> QR code gate access</li>
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Event booking system</li>
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Multi-role dashboards</li>
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Analytics & reporting</li>
-                                </ul>
+                    <!-- Project 3 -->
+                    <div class="glass-card rounded-3xl overflow-hidden reveal interactive">
+                        <div class="grid lg:grid-cols-12 gap-0 items-center">
+                            <div class="lg:col-span-7 p-10 lg:p-12">
+                                <h3 class="text-3xl font-display font-bold mb-4 text-white">Real-time Tracking System</h3>
+                                <p class="text-gray-300 mb-8 leading-relaxed text-lg">
+                                    Advanced logistics application featuring live socket connections, smooth marker animations, live polyline path updates, and efficient background location tracking without draining battery.
+                                </p>
+                                <div class="flex flex-wrap gap-3">
+                                    <span class="px-4 py-1.5 rounded-full bg-accent-cyan/10 text-accent-cyan text-sm font-semibold border border-accent-cyan/20">WebSockets</span>
+                                    <span class="px-4 py-1.5 rounded-full bg-orange-500/10 text-orange-400 text-sm font-semibold border border-orange-500/20">Background Services</span>
+                                    <span class="px-4 py-1.5 rounded-full bg-white/5 text-gray-300 text-sm font-semibold border border-white/10">Custom Painters</span>
+                                </div>
                             </div>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 rounded-full bg-accent-cyan/20 text-accent-cyan text-xs font-medium">Flutter</span>
-                                <span class="px-3 py-1 rounded-full bg-accent-purple/20 text-accent-purple text-xs font-medium">MVVM</span>
-                                <span class="px-3 py-1 rounded-full bg-accent-pink/20 text-accent-pink text-xs font-medium">QR Code</span>
-                            </div>
-                        </div>
-                        <div class="glass rounded-lg p-6 flex items-center justify-center min-h-48">
-                            <div class="text-center text-gray-400">
-                                <div class="text-5xl mb-4">🎉</div>
-                                <p>Production App</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 4: Real-time Tracking -->
-                <div class="glass-card rounded-2xl overflow-hidden reveal">
-                    <div class="grid lg:grid-cols-2 gap-8 p-8 lg:p-10">
-                        <div class="lg:order-2">
-                            <h3 class="text-2xl font-bold mb-3">Real-time Tracking System</h3>
-                            <p class="text-gray-300 mb-6 leading-relaxed">
-                                Advanced location tracking system with smooth marker animations, live polyline path updates, and efficient background tracking for fleet management.
-                            </p>
-                            <div class="mb-6">
-                                <h4 class="font-semibold text-sm text-accent-cyan mb-3">Key Features</h4>
-                                <ul class="space-y-2 text-sm text-gray-300">
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Live location tracking</li>
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Smooth marker animation</li>
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Polyline path updates</li>
-                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Background tracking</li>
-                                </ul>
-                            </div>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 rounded-full bg-accent-cyan/20 text-accent-cyan text-xs font-medium">Flutter</span>
-                                <span class="px-3 py-1 rounded-full bg-accent-purple/20 text-accent-purple text-xs font-medium">Google Maps</span>
-                                <span class="px-3 py-1 rounded-full bg-accent-pink/20 text-accent-pink text-xs font-medium">WebSocket</span>
-                            </div>
-                        </div>
-                        <div class="lg:order-1 glass rounded-lg p-6 flex items-center justify-center min-h-48">
-                            <div class="text-center text-gray-400">
-                                <div class="text-5xl mb-4">📍</div>
-                                <p>Production App</p>
+                            <div class="lg:col-span-5 h-full bg-bg-secondary/50 flex items-center justify-center p-12 border-l border-white/5">
+                                <i data-lucide="navigation" class="w-24 h-24 text-orange-500/50"></i>
                             </div>
                         </div>
                     </div>
@@ -641,305 +517,179 @@
             </div>
         </section>
 
-        <!-- Experience Section -->
-        <section id="experience" class="py-20 px-6 lg:px-8 bg-gradient-to-b from-transparent via-accent-cyan/5 to-transparent">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl lg:text-5xl font-display font-bold mb-12 gradient-text reveal text-center">Experience & Skills</h2>
+        <!-- Firebase Contact Section -->
+        <section id="contact" class="py-32 px-6 lg:px-12 relative">
+            <!-- Decorative Background Glow -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-96 bg-accent-cyan/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-                <div class="grid lg:grid-cols-2 gap-12">
-                    <!-- Experience -->
-                    <div class="reveal">
-                        <h3 class="text-2xl font-bold mb-8">Professional Experience</h3>
-                        <div class="space-y-6">
-                            <div class="glass-card rounded-xl p-6 border-l-2 border-accent-cyan">
-                                <div class="flex items-start justify-between mb-3">
-                                    <h4 class="font-bold text-lg">Senior Mobile Engineer</h4>
-                                    <span class="text-xs text-gray-400">Current</span>
-                                </div>
-                                <p class="text-sm text-accent-cyan mb-2">ToXSL Technologies</p>
-                                <p class="text-sm text-gray-400">Leading mobile development team. Delivered 5+ apps. Improved performance by 40%.</p>
-                            </div>
-
-                            <div class="glass-card rounded-xl p-6 border-l-2 border-accent-purple">
-                                <div class="flex items-start justify-between mb-3">
-                                    <h4 class="font-bold text-lg">Flutter Developer</h4>
-                                    <span class="text-xs text-gray-400">2024-2025</span>
-                                </div>
-                                <p class="text-sm text-accent-purple mb-2">Seraphic Infosolutions</p>
-                                <p class="text-sm text-gray-400">Built 5+ production apps from scratch. Specialized in real-time features.</p>
-                            </div>
-
-                            <div class="glass-card rounded-xl p-6 border-l-2 border-accent-pink">
-                                <div class="flex items-start justify-between mb-3">
-                                    <h4 class="font-bold text-lg">Android Developer</h4>
-                                    <span class="text-xs text-gray-400">2023-2024</span>
-                                </div>
-                                <p class="text-sm text-accent-pink mb-2">Blocvibe Technologies</p>
-                                <p class="text-sm text-gray-400">Built native Android apps using Kotlin. Focused on performance.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Technical Skills -->
-                    <div class="reveal">
-                        <h3 class="text-2xl font-bold mb-8">Technical Skills</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="font-semibold">Flutter & Dart</span>
-                                    <span class="text-accent-cyan">95%</span>
-                                </div>
-                                <div class="h-2 rounded-full bg-white/10">
-                                    <div class="h-full rounded-full bg-gradient-to-r from-accent-cyan to-accent-purple" style="width: 95%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="font-semibold">Android & Kotlin</span>
-                                    <span class="text-accent-cyan">85%</span>
-                                </div>
-                                <div class="h-2 rounded-full bg-white/10">
-                                    <div class="h-full rounded-full bg-gradient-to-r from-accent-purple to-accent-pink" style="width: 85%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="font-semibold">Firebase & APIs</span>
-                                    <span class="text-accent-cyan">90%</span>
-                                </div>
-                                <div class="h-2 rounded-full bg-white/10">
-                                    <div class="h-full rounded-full bg-gradient-to-r from-accent-cyan to-accent-pink" style="width: 90%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="font-semibold">GetX & State Management</span>
-                                    <span class="text-accent-cyan">88%</span>
-                                </div>
-                                <div class="h-2 rounded-full bg-white/10">
-                                    <div class="h-full rounded-full bg-gradient-to-r from-accent-purple to-accent-cyan" style="width: 88%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="font-semibold">Google Maps & Location</span>
-                                    <span class="text-accent-cyan">92%</span>
-                                </div>
-                                <div class="h-2 rounded-full bg-white/10">
-                                    <div class="h-full rounded-full bg-gradient-to-r from-accent-pink to-accent-cyan" style="width: 92%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="max-w-4xl mx-auto relative z-10">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-6xl font-display font-extrabold mb-6 text-white">Start a Conversation</h2>
+                    <p class="text-xl text-gray-400">Need a Senior Engineer for your team or a complete app architecture? Let's talk.</p>
                 </div>
-            </div>
-        </section>
 
-        <!-- Testimonials Section -->
-        <section id="testimonials" class="py-20 px-6 lg:px-8">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl lg:text-5xl font-display font-bold mb-12 gradient-text reveal text-center">What Others Say</h2>
-
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="glass-card rounded-xl p-6 reveal">
-                        <div class="flex items-center gap-1 mb-4">
-                            <span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span>
-                        </div>
-                        <p class="text-gray-300 mb-4 text-sm leading-relaxed">"Satwinder delivered an exceptional real-time tracking system. His attention to performance and clean code was impressive."</p>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-accent-cyan to-accent-purple"></div>
+                <div class="glass-card rounded-3xl p-8 md:p-12 reveal shadow-2xl">
+                    <form id="contact-form" class="space-y-8" novalidate>
+                        <div class="grid md:grid-cols-2 gap-8">
                             <div>
-                                <p class="font-semibold text-sm">CEO, Tech Startup</p>
-                                <p class="text-xs text-gray-500">Project Lead</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="glass-card rounded-xl p-6 reveal">
-                        <div class="flex items-center gap-1 mb-4">
-                            <span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span>
-                        </div>
-                        <p class="text-gray-300 mb-4 text-sm leading-relaxed">"One of the best mobile developers I've worked with. Extremely reliable and delivers on time."</p>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-accent-purple to-accent-pink"></div>
-                            <div>
-                                <p class="font-semibold text-sm">Design Agency Lead</p>
-                                <p class="text-xs text-gray-500">Client</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="glass-card rounded-xl p-6 reveal">
-                        <div class="flex items-center gap-1 mb-4">
-                            <span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span>
-                        </div>
-                        <p class="text-gray-300 mb-4 text-sm leading-relaxed">"Great problem solver with deep understanding of mobile architecture. Highly recommended!"</p>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-accent-pink to-accent-purple"></div>
-                            <div>
-                                <p class="font-semibold text-sm">Tech Lead</p>
-                                <p class="text-xs text-gray-500">Enterprise</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="py-20 px-6 lg:px-8 bg-gradient-to-t from-accent-purple/10 to-transparent">
-            <div class="max-w-4xl mx-auto">
-                <h2 class="text-4xl lg:text-5xl font-display font-bold mb-6 gradient-text reveal text-center">Let's Work Together</h2>
-                <p class="text-gray-300 mb-12 reveal text-center text-lg">Have a project in mind? I'd love to help bring it to life.</p>
-
-                <div class="glass-card rounded-2xl p-8 lg:p-12 reveal">
-                    <form id="contact-form" class="space-y-6" novalidate>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="name" class="block text-sm font-semibold mb-2">Full Name</label>
-                                <input type="text" id="name" name="name" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-accent-cyan outline-none transition-colors" placeholder="John Doe">
+                                <label class="block text-sm font-semibold mb-3 text-gray-300">Full Name <span class="text-accent-cyan">*</span></label>
+                                <input type="text" id="name" required class="w-full px-5 py-4 rounded-xl bg-bg-primary/80 border border-white/10 focus:border-accent-cyan outline-none transition-all text-white placeholder-gray-600 interactive" placeholder="John Doe">
                             </div>
                             <div>
-                                <label for="email" class="block text-sm font-semibold mb-2">Email Address</label>
-                                <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-accent-cyan outline-none transition-colors" placeholder="john@example.com">
+                                <label class="block text-sm font-semibold mb-3 text-gray-300">Email Address <span class="text-accent-cyan">*</span></label>
+                                <input type="email" id="email" required class="w-full px-5 py-4 rounded-xl bg-bg-primary/80 border border-white/10 focus:border-accent-cyan outline-none transition-all text-white placeholder-gray-600 interactive" placeholder="john@company.com">
                             </div>
                         </div>
 
                         <div>
-                            <label for="subject" class="block text-sm font-semibold mb-2">Project Type</label>
-                            <select id="subject" name="subject" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-accent-cyan outline-none transition-colors">
-                                <option value="">Select a project type</option>
-                                <option value="app-development">App Development</option>
-                                <option value="consulting">Consulting</option>
-                                <option value="optimization">Optimization</option>
-                                <option value="other">Other</option>
+                            <label class="block text-sm font-semibold mb-3 text-gray-300">Inquiry Type</label>
+                            <select id="subject" required class="w-full px-5 py-4 rounded-xl bg-bg-primary/80 border border-white/10 focus:border-accent-cyan outline-none transition-all text-white appearance-none interactive">
+                                <option value="" class="bg-bg-primary">Select a subject</option>
+                                <option value="Hire for Full-Time Role" class="bg-bg-primary">Hire for Full-Time Role</option>
+                                <option value="App Architecture Consulting" class="bg-bg-primary">App Architecture Consulting</option>
+                                <option value="Performance Optimization" class="bg-bg-primary">Performance Optimization</option>
+                                <option value="Other" class="bg-bg-primary">Other</option>
                             </select>
                         </div>
 
                         <div>
-                            <label for="message" class="block text-sm font-semibold mb-2">Message</label>
-                            <textarea id="message" name="message" required rows="5" class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-accent-cyan outline-none transition-colors resize-none" placeholder="Tell me about your project..."></textarea>
+                            <label class="block text-sm font-semibold mb-3 text-gray-300">Project Details <span class="text-accent-cyan">*</span></label>
+                            <textarea id="message" required rows="5" class="w-full px-5 py-4 rounded-xl bg-bg-primary/80 border border-white/10 focus:border-accent-cyan outline-none transition-all text-white placeholder-gray-600 resize-none interactive" placeholder="Tell me about your technical requirements, team, or project scope..."></textarea>
                         </div>
 
-                        <button type="submit" class="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-semibold hover:shadow-lg hover:shadow-accent-cyan/50 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
-                            Send Message
+                        <div id="form-status" class="hidden rounded-xl p-4 text-sm font-bold text-center"></div>
+
+                        <button type="submit" id="submit-btn" class="w-full flex items-center justify-center gap-3 px-6 py-5 rounded-xl bg-gradient-to-r from-accent-cyan to-accent-purple text-white font-extrabold text-lg hover:shadow-[0_0_30px_rgba(0,217,255,0.4)] transition-all transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed interactive">
+                            <span>Send Secure Message</span>
+                            <i data-lucide="send" class="w-5 h-5"></i>
                         </button>
                     </form>
-
-                    <div class="mt-12 pt-8 border-t border-white/10 grid md:grid-cols-3 gap-6">
-                        <div class="text-center">
-                            <p class="text-sm text-gray-400 mb-2">Email</p>
-                            <a href="mailto:satwindersinghasr2@gmail.com" class="font-semibold hover:text-accent-cyan transition-colors">satwindersinghasr2@gmail.com</a>
-                        </div>
-                        <div class="text-center">
-                            <p class="text-sm text-gray-400 mb-2">GitHub</p>
-                            <a href="https://github.com/Satwinder777" target="_blank" rel="noopener noreferrer" class="font-semibold hover:text-accent-cyan transition-colors">Satwinder777</a>
-                        </div>
-                        <div class="text-center">
-                            <p class="text-sm text-gray-400 mb-2">LinkedIn</p>
-                            <a href="https://www.linkedin.com/in/satwinder-singh-809a6b256" target="_blank" rel="noopener noreferrer" class="font-semibold hover:text-accent-cyan transition-colors">Connect</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
+
+        <footer class="border-t border-white/10 py-12 px-6 lg:px-12 bg-bg-primary text-center">
+            <div class="flex items-center justify-center gap-6 mb-8">
+                <a href="https://github.com/Satwinder777" target="_blank" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/20 transition-all interactive"><i data-lucide="github" class="w-5 h-5 text-white"></i></a>
+                <a href="https://www.linkedin.com/in/satwinder-singh-809a6b256" target="_blank" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent-blue transition-all interactive"><i data-lucide="linkedin" class="w-5 h-5 text-white"></i></a>
+                <a href="mailto:satwindersinghasr2@gmail.com" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent-cyan transition-all interactive"><i data-lucide="mail" class="w-5 h-5 text-white"></i></a>
+            </div>
+            <p class="text-sm font-semibold text-gray-500">&copy; <span id="year"></span> Satwinder Singh. All rights reserved.</p>
+        </footer>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-white/10 py-12 px-6 lg:px-8 bg-bg-secondary/50 backdrop-blur-sm">
-        <div class="max-w-6xl mx-auto">
-            <div class="grid md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <h4 class="font-semibold mb-4">Navigation</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="#about" class="hover:text-accent-cyan transition-colors">About</a></li>
-                        <li><a href="#services" class="hover:text-accent-cyan transition-colors">Services</a></li>
-                        <li><a href="#projects" class="hover:text-accent-cyan transition-colors">Projects</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Services</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="#services" class="hover:text-accent-cyan transition-colors">App Development</a></li>
-                        <li><a href="#services" class="hover:text-accent-cyan transition-colors">Optimization</a></li>
-                        <li><a href="#services" class="hover:text-accent-cyan transition-colors">Consulting</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Connect</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="https://github.com/Satwinder777" target="_blank" rel="noopener noreferrer" class="hover:text-accent-cyan transition-colors">GitHub</a></li>
-                        <li><a href="https://www.linkedin.com/in/satwinder-singh-809a6b256" target="_blank" rel="noopener noreferrer" class="hover:text-accent-cyan transition-colors">LinkedIn</a></li>
-                        <li><a href="mailto:satwindersinghasr2@gmail.com" class="hover:text-accent-cyan transition-colors">Email</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Tech Stack</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed">Flutter, Dart, Android, Kotlin, Firebase, GetX, MVVM</p>
-                </div>
-            </div>
+    <!-- Scripts (Firebase + UI) -->
+    <script type="module">
+        // ----------------------------------------------------
+        // 1. FIREBASE INITIALIZATION
+        // ----------------------------------------------------
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-sm text-gray-500">&copy; 2024 Satwinder Singh. All rights reserved.</p>
-                <p class="text-sm text-gray-500">Crafted with attention to detail and performance</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script>
-        // ============================================
-        // 1. CUSTOM CURSOR
-        // ============================================
-        const cursor = document.getElementById('cursor');
-        let mouseX = 0, mouseY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursor.style.left = mouseX + 'px';
-            cursor.style.top = mouseY + 'px';
-        });
-
-        // Hide cursor on mobile
-        if (window.matchMedia('(max-width: 1024px)').matches) {
-            cursor.style.display = 'none';
-        }
-
-        // Hover effects
-        document.querySelectorAll('a, button, input, select, textarea').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-        });
-
-        // ============================================
-        // 2. MOBILE MENU
-        // ============================================
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-
-        // ============================================
-        // 3. SCROLL ANIMATIONS
-        // ============================================
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
+        // ⚠️ REPLACE THIS WITH YOUR FIREBASE CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
 
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+        } catch (error) {
+            console.warn("Firebase not configured. Setup credentials in code.");
+        }
+
+        // ----------------------------------------------------
+        // 2. CONTACT FORM LOGIC
+        // ----------------------------------------------------
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const statusDiv = document.getElementById('form-status');
+
+        const showStatus = (message, type) => {
+            statusDiv.classList.remove('hidden', 'bg-red-500/10', 'text-red-400', 'bg-green-500/10', 'text-green-400');
+            statusDiv.classList.add('block');
+            
+            if (type === 'error') {
+                statusDiv.classList.add('bg-red-500/10', 'text-red-400', 'border', 'border-red-500/20');
+            } else {
+                statusDiv.classList.add('bg-green-500/10', 'text-green-400', 'border', 'border-green-500/20');
+            }
+            statusDiv.textContent = message;
+        };
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value.trim();
+
+            if (!name || !email || !subject || !message) {
+                showStatus('Please fill out all required fields.', 'error');
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showStatus('Invalid email format.', 'error');
+                return;
+            }
+
+            if (!db) {
+                showStatus('Firebase is not connected yet.', 'error');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            const originalBtnHtml = submitBtn.innerHTML;
+            submitBtn.innerHTML = `<span class="spinner"></span> <span>Transmitting...</span>`;
+            statusDiv.classList.add('hidden');
+
+            try {
+                await addDoc(collection(db, "inquiries"), {
+                    name, email, subject, message,
+                    createdAt: serverTimestamp()
+                });
+                showStatus('Message transmitted successfully! I will reply shortly.', 'success');
+                contactForm.reset();
+            } catch (error) {
+                console.error(error);
+                showStatus('Transmission failed. Try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+            }
+        });
+
+        // ----------------------------------------------------
+        // 3. UI, CURSOR & ANIMATIONS LOGIC
+        // ----------------------------------------------------
+        document.getElementById('year').textContent = new Date().getFullYear();
+        lucide.createIcons();
+
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        if (window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                requestAnimationFrame(() => {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                });
+            });
+
+            document.querySelectorAll('.interactive, a, button, input, textarea, select').forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+        }
+
+        // Scroll Reveals
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -947,143 +697,9 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-        document.querySelectorAll('.reveal').forEach(el => {
-            observer.observe(el);
-        });
-
-        // ============================================
-        // 4. NAVBAR SCROLL EFFECT
-        // ============================================
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 10) {
-                navbar.classList.add('border-accent-cyan/30');
-            } else {
-                navbar.classList.remove('border-accent-cyan/30');
-            }
-        });
-
-        // ============================================
-        // 5. CONTACT FORM
-        // ============================================
-        const contactForm = document.getElementById('contact-form');
-
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                subject: document.getElementById('subject').value,
-                message: document.getElementById('message').value,
-            };
-
-            // Validate form
-            if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-                alert('Please fill all fields');
-                return;
-            }
-
-            // Validate email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(formData.email)) {
-                alert('Please enter a valid email');
-                return;
-            }
-
-            // Log form data (in production, send to backend)
-            console.log('[v0] Form submitted:', formData);
-            alert('Thank you! I will get back to you soon.');
-
-            // Reset form
-            contactForm.reset();
-        });
-
-        // ============================================
-        // 6. ANALYTICS TRACKING
-        // ============================================
-        const trackEvent = (eventName, eventData = {}) => {
-            console.log(`[Analytics] ${eventName}:`, eventData);
-        };
-
-        // Track section views
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    trackEvent('section_view', { section: entry.target.id });
-                }
-            });
-        }, { threshold: 0.5 });
-
-        document.querySelectorAll('section[id]').forEach(section => {
-            sectionObserver.observe(section);
-        });
-
-        // ============================================
-        // 7. ICONS INITIALIZATION
-        // ============================================
-        if (window.lucide) {
-            if ('requestIdleCallback' in window) {
-                requestIdleCallback(() => {
-                    window.lucide.createIcons();
-                });
-            } else {
-                setTimeout(() => {
-                    window.lucide.createIcons();
-                }, 100);
-            }
-        }
-
-        // ============================================
-        // 8. KEYBOARD NAVIGATION
-        // ============================================
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                mobileMenu.classList.add('hidden');
-            }
-        });
-
-        // ============================================
-        // 9. PERFORMANCE MONITORING
-        // ============================================
-        if ('performance' in window) {
-            window.addEventListener('load', () => {
-                const perfData = window.performance.timing;
-                const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
-                console.log(`[Performance] Page load time: ${pageLoadTime}ms`);
-            });
-        }
-    </script>
-
-    <!-- Optional: Google Analytics -->
-    <!-- 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
-    -->
-
-    <!-- Optional: Schema.org Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Satwinder Singh",
-        "url": "https://satwinder.dev",
-        "jobTitle": "Senior Mobile Engineer",
-        "telephone": "+91-XXXXXXXXXX",
-        "email": "satwindersinghasr2@gmail.com",
-        "sameAs": [
-            "https://github.com/Satwinder777",
-            "https://www.linkedin.com/in/satwinder-singh-809a6b256"
-        ],
-        "knowsAbout": ["Flutter", "Android", "Kotlin", "Dart", "MVVM", "Firebase"]
-    }
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
