@@ -2,18 +2,36 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Satwinder Singh | Senior Mobile Engineer</title>
-    <meta name="description" content="Portfolio of Satwinder Singh, Senior Flutter & Android Developer.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0a0e27">
+    <meta name="color-scheme" content="dark light">
     
-    <!-- Fonts: Space Grotesk for Headings, Inter for Body -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- SEO Meta Tags -->
+    <title>Satwinder Singh | Senior Flutter Developer & Mobile Engineer | FAANG Portfolio</title>
+    <meta name="description" content="Senior Mobile Engineer with 3+ years experience. Built 10+ production apps with real-time tracking, multi-role systems, and scalable architectures. Specialized in clean architecture and Firebase.">
+    <meta name="keywords" content="Flutter Developer, Mobile Engineer, Android Developer, Kotlin, Dart, GetX, Firebase, Real-time Tracking, Clean Architecture, MVVM">
+    <meta name="author" content="Satwinder Singh">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://satwinder.dev">
+    <meta property="og:title" content="Satwinder Singh | Senior Flutter Developer">
+    <meta property="og:description" content="Premium portfolio showcasing 10+ production apps, real-time systems, and FAANG-level engineering quality.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Satwinder Singh | Senior Flutter Developer">
+    <meta property="twitter:description" content="10+ production apps, real-time tracking systems, clean architecture expert">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     
     <!-- Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -23,82 +41,118 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                        display:['Space Grotesk', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
                     },
                     colors: {
-                        bg: '#030303',
-                        surface: '#0A0A0A',
-                        surfaceHover: '#141414',
-                        border: '#222222',
-                        primary: '#00E5FF',
-                        secondary: '#7000FF',
-                    },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                        'hero-glow': 'conic-gradient(from 180deg at 50% 50%, #7000FF55 0deg, #00E5FF55 180deg, #7000FF55 360deg)',
+                        bg: {
+                            primary: '#0a0e27',
+                            secondary: '#0f1229',
+                            tertiary: '#151d3b',
+                        },
+                        accent: {
+                            cyan: '#00d9ff',
+                            purple: '#8b5cf6',
+                            pink: '#ec4899',
+                        },
                     },
                     animation: {
-                        'spin-slow': 'spin 8s linear infinite',
                         'float': 'float 6s ease-in-out infinite',
+                        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+                        'slide-up': 'slide-up 0.8s ease-out',
+                        'fade-in': 'fade-in 0.6s ease-out',
                     },
                     keyframes: {
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-20px)' },
-                        }
-                    }
+                        },
+                        'glow-pulse': {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.7' },
+                        },
+                        'slide-up': {
+                            from: { opacity: '0', transform: 'translateY(30px)' },
+                            to: { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        'fade-in': {
+                            from: { opacity: '0' },
+                            to: { opacity: '1' },
+                        },
+                    },
                 }
             }
         }
     </script>
 
     <style>
-        /* Custom Styles & Utilities */
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background-color: #030303;
-            color: #FAFAFA;
+            background: #0a0e27;
+            color: #f5f7fa;
             overflow-x: hidden;
-            cursor: none; /* Hide default cursor for custom cursor */
         }
 
         /* Glassmorphism */
         .glass {
-            background: rgba(10, 10, 10, 0.4);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(15, 18, 41, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 217, 255, 0.1);
         }
-        
+
         .glass-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(139, 92, 246, 0.03) 100%);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 217, 255, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass-card:hover {
-            border-color: rgba(0, 229, 255, 0.3);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 40px -10px rgba(0, 229, 255, 0.1);
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(139, 92, 246, 0.08) 100%);
+            border-color: rgba(0, 217, 255, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 217, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        /* Text Gradients */
-        .text-gradient {
-            background: linear-gradient(to right, #ffffff, #a1a1aa);
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #00d9ff 0%, #8b5cf6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .text-gradient-accent {
-            background: linear-gradient(135deg, #00E5FF 0%, #7000FF 100%);
+
+        .gradient-text-alt {
+            background: linear-gradient(135deg, #ec4899 0%, #00d9ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Glow Effects */
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+        }
+
+        .glow-purple {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
         }
 
         /* Scroll Animations */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
@@ -112,134 +166,254 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background-color: rgba(0, 229, 255, 0.5);
-            mix-blend-mode: screen;
+            background: rgba(0, 217, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            transition: all 0.15s ease-out;
         }
+
         #cursor.hovered {
-            width: 50px;
-            height: 50px;
-            background-color: rgba(112, 0, 255, 0.3);
-            border: 1px solid rgba(0, 229, 255, 0.8);
+            width: 40px;
+            height: 40px;
+            background: rgba(139, 92, 246, 0.3);
+            border: 2px solid rgba(0, 217, 255, 0.8);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
         }
 
         /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
+
         ::-webkit-scrollbar-track {
-            background: #030303;
+            background: #0a0e27;
         }
+
         ::-webkit-scrollbar-thumb {
-            background: #222;
-            border-radius: 4px;
+            background: linear-gradient(180deg, rgba(0, 217, 255, 0.6), rgba(139, 92, 246, 0.6));
+            border-radius: 5px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
-            background: #444;
+            background: linear-gradient(180deg, rgba(0, 217, 255, 0.8), rgba(139, 92, 246, 0.8));
+        }
+
+        /* Focus Styles */
+        *:focus-visible {
+            outline: 2px solid #00d9ff;
+            outline-offset: 2px;
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Responsive Images */
+        img {
+            loading: lazy;
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Smooth Links */
+        a {
+            position: relative;
+            text-decoration: none;
         }
     </style>
 </head>
-<body class="antialiased selection:bg-primary/30 selection:text-white">
-
+<body>
     <!-- Custom Cursor -->
-    <div id="cursor" class="hidden md:block"></div>
+    <div id="cursor"></div>
 
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 glass border-b border-white/5 transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 lg:px-12 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl font-display font-bold tracking-tighter text-white hover-trigger">
-                Satwinder<span class="text-primary">.</span>
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-display font-bold tracking-tight gradient-text hover:scale-105 transition-transform">
+                Satwinder<span class="gradient-text-alt">.</span>
             </a>
-            <div class="hidden md:flex gap-8 text-sm font-medium text-gray-400">
-                <a href="#about" class="hover:text-white transition-colors hover-trigger">About</a>
-                <a href="#experience" class="hover:text-white transition-colors hover-trigger">Experience</a>
-                <a href="#skills" class="hover:text-white transition-colors hover-trigger">Skills</a>
-                <a href="#projects" class="hover:text-white transition-colors hover-trigger">Projects</a>
+            
+            <!-- Desktop Nav -->
+            <div class="hidden lg:flex gap-1">
+                <a href="#about" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">About</a>
+                <a href="#services" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Services</a>
+                <a href="#projects" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Projects</a>
+                <a href="#experience" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Experience</a>
             </div>
-            <a href="#contact" class="hidden md:inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-white bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-primary/50 transition-all hover-trigger">
-                Contact Me
+
+            <!-- CTA Button -->
+            <a href="#contact" class="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-semibold text-sm hover:shadow-lg hover:shadow-accent-cyan/50 transition-all transform hover:scale-105">
+                Get In Touch
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
             </a>
-            <!-- Mobile Menu Toggle -->
-            <button class="md:hidden text-white" id="mobile-menu-btn">
-                <i data-lucide="menu"></i>
+
+            <!-- Mobile Menu Button -->
+            <button class="lg:hidden text-white hover:text-accent-cyan transition-colors" id="mobile-menu-btn">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-white/5 bg-bg-secondary/95 backdrop-blur-md">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-2">
+                <a href="#about" class="px-4 py-3 rounded-lg hover:bg-white/5 transition-colors">About</a>
+                <a href="#services" class="px-4 py-3 rounded-lg hover:bg-white/5 transition-colors">Services</a>
+                <a href="#projects" class="px-4 py-3 rounded-lg hover:bg-white/5 transition-colors">Projects</a>
+                <a href="#experience" class="px-4 py-3 rounded-lg hover:bg-white/5 transition-colors">Experience</a>
+                <a href="#contact" class="px-4 py-3 rounded-lg bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-semibold text-center hover:shadow-lg transition-all">Contact</a>
+            </div>
         </div>
     </nav>
 
-    <!-- Background Orbs -->
-    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] animate-float"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/20 rounded-full blur-[120px] animate-float" style="animation-delay: 2s;"></div>
-    </div>
+    <main role="main">
+        <!-- Hero Section -->
+        <section id="hero" class="relative min-h-screen pt-20 px-6 lg:px-8 flex items-center justify-center overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 -z-10">
+                <div class="absolute top-20 left-10 w-72 h-72 bg-accent-purple/20 rounded-full blur-3xl opacity-50"></div>
+                <div class="absolute bottom-20 right-10 w-72 h-72 bg-accent-cyan/20 rounded-full blur-3xl opacity-50"></div>
+            </div>
 
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center pt-20 px-6 lg:px-12 overflow-hidden">
-        <div class="max-w-4xl mx-auto text-center z-10">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8 reveal">
-                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                <span class="text-xs font-medium text-gray-300 tracking-wider uppercase">Available for new opportunities</span>
-            </div>
-            
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight mb-6 reveal" style="transition-delay: 100ms;">
-                <span class="text-gradient">Engineering Immersive</span><br>
-                <span class="text-gradient-accent">Mobile Experiences.</span>
-            </h1>
-            
-            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light reveal" style="transition-delay: 200ms;">
-                I'm <strong class="text-white font-medium">Satwinder Singh</strong>, a Senior Software Developer architecting high-performance applications using Flutter, Android, and Jetpack Compose.
-            </p>
-            
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 reveal" style="transition-delay: 300ms;">
-                <a href="#projects" class="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-black font-semibold hover:scale-105 transition-transform hover-trigger flex items-center justify-center gap-2">
-                    View My Work <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </a>
-                <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 transition-colors hover-trigger flex items-center justify-center gap-2">
-                    <i data-lucide="mail" class="w-4 h-4"></i> Get In Touch
-                </a>
-            </div>
-        </div>
-    </section>
+            <div class="max-w-4xl mx-auto text-center py-20 reveal">
+                <div class="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-full glass">
+                    <span class="w-2 h-2 bg-accent-cyan rounded-full animate-pulse"></span>
+                    <span class="text-sm font-medium">Available for opportunities</span>
+                </div>
 
-    <!-- About Section -->
-    <section id="about" class="py-24 px-6 lg:px-12 max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div class="reveal">
-                <h2 class="text-3xl md:text-5xl font-display font-bold mb-6 text-gradient">Architecting scale.<br>Pixel-perfect UI.</h2>
-                <p class="text-gray-400 leading-relaxed mb-6 text-lg">
-                    With a robust foundation in Computer Science (BTech, PTU), I specialize in building state-of-the-art mobile applications. I bridge the gap between complex engineering architectures and seamless user experiences.
+                <h1 class="text-5xl lg:text-7xl font-display font-bold mb-6 gradient-text leading-tight">
+                    Senior Mobile Engineer
+                </h1>
+
+                <p class="text-lg lg:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                    I build high-performance mobile applications with Flutter & Android. Specialized in real-time systems, clean architecture, and scalable solutions. 10+ production apps delivered.
                 </p>
-                <p class="text-gray-400 leading-relaxed text-lg">
-                    Whether it's leveraging <span class="text-white font-medium">Flutter & Dart</span> for cross-platform efficiency, or diving deep into native Android development with <span class="text-white font-medium">Kotlin, MVVM, and Jetpack Compose</span>, I build products that are fast, scalable, and maintainable.
-                </p>
-            </div>
-            
-            <!-- Tech Radar / Visual element -->
-            <div class="relative w-full aspect-square max-w-md mx-auto reveal glass-card rounded-2xl p-8 flex items-center justify-center overflow-hidden">
-                <div class="absolute inset-0 bg-hero-glow animate-spin-slow opacity-20 rounded-2xl"></div>
-                <div class="z-10 grid grid-cols-2 gap-4 w-full">
-                    <div class="bg-black/50 border border-white/10 p-4 rounded-xl text-center backdrop-blur-md">
-                        <i data-lucide="smartphone" class="w-8 h-8 mx-auto text-primary mb-2"></i>
-                        <span class="text-sm font-medium">Native & Cross</span>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                    <a href="#projects" class="px-8 py-3 rounded-lg bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-semibold hover:shadow-lg hover:shadow-accent-cyan/50 transition-all transform hover:scale-105">
+                        View My Work
+                    </a>
+                    <a href="#contact" class="px-8 py-3 rounded-lg glass hover:border-accent-cyan/50 font-semibold transition-all hover:bg-white/10">
+                        Let's Connect
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-4 lg:gap-8 mt-16">
+                    <div class="glass rounded-lg p-4 lg:p-6">
+                        <div class="text-3xl lg:text-4xl font-bold gradient-text">10+</div>
+                        <div class="text-sm text-gray-400 mt-2">Apps Delivered</div>
                     </div>
-                    <div class="bg-black/50 border border-white/10 p-4 rounded-xl text-center backdrop-blur-md">
-                        <i data-lucide="layers" class="w-8 h-8 mx-auto text-secondary mb-2"></i>
-                        <span class="text-sm font-medium">MVVM & MVC</span>
+                    <div class="glass rounded-lg p-4 lg:p-6">
+                        <div class="text-3xl lg:text-4xl font-bold gradient-text">3+</div>
+                        <div class="text-sm text-gray-400 mt-2">Years Experience</div>
                     </div>
-                    <div class="bg-black/50 border border-white/10 p-4 rounded-xl text-center backdrop-blur-md">
-                        <i data-lucide="database" class="w-8 h-8 mx-auto text-primary mb-2"></i>
-                        <span class="text-sm font-medium">Firebase Gen</span>
-                    </div>
-                    <div class="bg-black/50 border border-white/10 p-4 rounded-xl text-center backdrop-blur-md">
-                        <i data-lucide="zap" class="w-8 h-8 mx-auto text-secondary mb-2"></i>
-                        <span class="text-sm font-medium">High Perf</span>
+                    <div class="glass rounded-lg p-4 lg:p-6">
+                        <div class="text-3xl lg:text-4xl font-bold gradient-text">40%</div>
+                        <div class="text-sm text-gray-400 mt-2">Perf. Improvement</div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl lg:text-5xl font-display font-bold mb-12 gradient-text reveal">About Me</h2>
+
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="glass-card rounded-2xl p-8 lg:p-10 reveal">
+                        <h3 class="text-2xl font-bold mb-4">Who I Am</h3>
+                        <p class="text-gray-300 leading-relaxed mb-6">
+                            I'm a senior mobile engineer with a passion for building performant, scalable applications. With 3+ years of professional experience, I've led the development of 10+ production apps serving thousands of users.
+                        </p>
+                        <p class="text-gray-300 leading-relaxed mb-6">
+                            My expertise spans Flutter, Android (Kotlin), and modern app architecture patterns. I specialize in real-time systems, complex state management, and creating seamless user experiences.
+                        </p>
+                        <p class="text-gray-300 leading-relaxed">
+                            Beyond coding, I'm obsessed with performance optimization, clean code practices, and sharing knowledge with the community.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 reveal">
+                        <div class="skill-card glass-card rounded-xl p-6">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-5 h-5 text-accent-cyan">⭐</div>
+                                <span class="font-semibold">Flutter & Dart</span>
+                            </div>
+                            <p class="text-sm text-gray-400">Advanced level with 2+ years production experience</p>
+                        </div>
+
+                        <div class="skill-card glass-card rounded-xl p-6">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-5 h-5 text-accent-purple">⭐</div>
+                                <span class="font-semibold">Clean Architecture</span>
+                            </div>
+                            <p class="text-sm text-gray-400">MVVM, GetX, and scalable patterns</p>
+                        </div>
+
+                        <div class="skill-card glass-card rounded-xl p-6">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-5 h-5 text-accent-cyan">⭐</div>
+                                <span class="font-semibold">Real-time Systems</span>
+                            </div>
+                            <p class="text-sm text-gray-400">Live tracking, WebSockets, Firebase</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 px-6 lg:px-8 bg-gradient-to-b from-transparent via-accent-purple/5 to-transparent">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl lg:text-5xl font-display font-bold mb-12 gradient-text reveal text-center">What I Offer</h2>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="glass-card rounded-2xl p-8 reveal hover:glow-cyan">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center mb-4 text-white font-bold">📱</div>
+                        <h3 class="text-xl font-bold mb-3">Custom App Development</h3>
+                        <p class="text-gray-400 text-sm">Fully tailored mobile applications built with modern frameworks and best practices.</p>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 reveal hover:glow-purple">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent-pink to-accent-cyan flex items-center justify-center mb-4 text-white font-bold">⚡</div>
+                        <h3 class="text-xl font-bold mb-3">Performance Optimization</h3>
+                        <p class="text-gray-400 text-sm">Improved app performance by 40% through code profiling and architecture improvements.</p>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 reveal hover:glow-cyan">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent-purple to-accent-pink flex items-center justify-center mb-4 text-white font-bold">🔄</div>
+                        <h3 class="text-xl font-bold mb-3">Real-time Solutions</h3>
+                        <p class="text-gray-400 text-sm">Live tracking systems, real-time notifications, and complex state management.</p>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 reveal hover:glow-purple">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-pink flex items-center justify-center mb-4 text-white font-bold">🏗️</div>
+                        <h3 class="text-xl font-bold mb-3">Architecture Consulting</h3>
+                        <p class="text-gray-400 text-sm">Design scalable architectures with MVVM, clean code, and maintainability focus.</p>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 reveal hover:glow-cyan">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent-purple to-accent-cyan flex items-center justify-center mb-4 text-white font-bold">👥</div>
+                        <h3 class="text-xl font-bold mb-3">Team Leadership</h3>
+                        <p class="text-gray-400 text-sm">Lead development teams and mentor junior developers in best practices.</p>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 reveal hover:glow-purple">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent-pink to-accent-purple flex items-center justify-center mb-4 text-white font-bold">📊</div>
+                        <h3 class="text-xl font-bold mb-3">Code Review & Audit</h3>
+                        <p class="text-gray-400 text-sm">Comprehensive code quality audits and architectural recommendations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     <!-- Experience Timeline -->
     <section id="experience" class="py-24 px-6 lg:px-12 bg-surface/50 border-y border-white/5">
@@ -331,168 +505,585 @@
         </div>
     </section>
 
-    <!-- Projects -->
-    <section id="projects" class="py-24 px-6 lg:px-12 max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal">
-            <div>
-                <h2 class="text-3xl md:text-5xl font-display font-bold mb-4 text-gradient">Featured Work</h2>
-                <p class="text-gray-400">Transforming ideas into polished interfaces.</p>
-            </div>
-            <a href="https://github.com/Satwinder777" target="_blank" class="mt-4 md:mt-0 flex items-center gap-2 text-sm text-primary hover:text-white transition-colors hover-trigger">
-                View GitHub Profile <i data-lucide="external-link" class="w-4 h-4"></i>
-            </a>
-        </div>
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl lg:text-5xl font-display font-bold mb-4 gradient-text reveal">Featured Projects</h2>
+                <p class="text-gray-400 mb-12 reveal text-lg">10+ production apps across different domains</p>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 reveal">
-            <!-- Project Card -->
-            <a href="https://github.com/Satwinder777/News-App-Clone.git" target="_blank" class="block group hover-trigger">
-                <div class="glass-card rounded-2xl overflow-hidden h-full flex flex-col">
-                    <div class="h-64 bg-[#111] relative overflow-hidden flex items-center justify-center border-b border-white/5 group-hover:bg-[#1a1a1a] transition-colors">
-                        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/40 to-transparent scale-150 group-hover:scale-100 transition-transform duration-700"></div>
-                        <i data-lucide="newspaper" class="w-20 h-20 text-white/50 group-hover:text-primary transition-colors duration-500 relative z-10"></i>
-                    </div>
-                    <div class="p-8 flex-1 flex flex-col">
-                        <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-2xl font-display font-bold text-white group-hover:text-primary transition-colors">News App Clone</h3>
-                            <i data-lucide="github" class="text-gray-500 group-hover:text-white transition-colors"></i>
+                <!-- Project 1: Free Delivery -->
+                <div class="glass-card rounded-2xl overflow-hidden mb-8 reveal">
+                    <div class="grid lg:grid-cols-2 gap-8 p-8 lg:p-10">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-3">Free Delivery App</h3>
+                            <p class="text-gray-300 mb-6 leading-relaxed">
+                                A Zomato-like multi-role delivery platform with real-time order tracking, maps integration, and payment processing. Supports user, vendor, and driver roles.
+                            </p>
+                            <div class="mb-6">
+                                <h4 class="font-semibold text-sm text-accent-cyan mb-3">Key Features</h4>
+                                <ul class="space-y-2 text-sm text-gray-300">
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Real-time order tracking</li>
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Multi-role dashboard</li>
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Google Maps integration</li>
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Stripe payment gateway</li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full bg-accent-cyan/20 text-accent-cyan text-xs font-medium">Flutter</span>
+                                <span class="px-3 py-1 rounded-full bg-accent-purple/20 text-accent-purple text-xs font-medium">Firebase</span>
+                                <span class="px-3 py-1 rounded-full bg-accent-pink/20 text-accent-pink text-xs font-medium">Maps API</span>
+                            </div>
                         </div>
-                        <p class="text-gray-400 text-sm mb-6 flex-1">
-                            A high-performance news aggregator application built to demonstrate clean architecture. Features real-time API data fetching, robust state management, and a fluid, pixel-perfect user interface optimized for both iOS and Android.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mt-auto">
-                            <span class="text-xs px-2 py-1 rounded bg-white/5 text-gray-300 border border-white/10">Flutter</span>
-                            <span class="text-xs px-2 py-1 rounded bg-white/5 text-gray-300 border border-white/10">Dart</span>
-                            <span class="text-xs px-2 py-1 rounded bg-white/5 text-gray-300 border border-white/10">GetX</span>
+                        <div class="glass rounded-lg p-6 flex items-center justify-center min-h-48">
+                            <div class="text-center text-gray-400">
+                                <div class="text-5xl mb-4">📦</div>
+                                <p>Production App</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </a>
 
-            <!-- Placeholder for Future Project (To keep the premium grid layout) -->
-            <div class="glass-card rounded-2xl overflow-hidden h-full flex flex-col border-dashed border-white/20 opacity-60">
-                <div class="h-64 bg-transparent flex items-center justify-center border-b border-white/5">
-                    <i data-lucide="lock" class="w-12 h-12 text-white/20"></i>
+                <!-- Project 2: My Salon -->
+                <div class="glass-card rounded-2xl overflow-hidden mb-8 reveal">
+                    <div class="grid lg:grid-cols-2 gap-8 p-8 lg:p-10">
+                        <div class="lg:order-2">
+                            <h3 class="text-2xl font-bold mb-3">My Salon App</h3>
+                            <p class="text-gray-300 mb-6 leading-relaxed">
+                                A comprehensive salon booking platform with appointment scheduling, time slot management, and service-based architecture for seamless salon operations.
+                            </p>
+                            <div class="mb-6">
+                                <h4 class="font-semibold text-sm text-accent-cyan mb-3">Key Features</h4>
+                                <ul class="space-y-2 text-sm text-gray-300">
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Smart appointment booking</li>
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Time slot management</li>
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Service catalog</li>
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Customer & staff roles</li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full bg-accent-cyan/20 text-accent-cyan text-xs font-medium">Flutter</span>
+                                <span class="px-3 py-1 rounded-full bg-accent-purple/20 text-accent-purple text-xs font-medium">GetX</span>
+                                <span class="px-3 py-1 rounded-full bg-accent-pink/20 text-accent-pink text-xs font-medium">Firebase</span>
+                            </div>
+                        </div>
+                        <div class="lg:order-1 glass rounded-lg p-6 flex items-center justify-center min-h-48">
+                            <div class="text-center text-gray-400">
+                                <div class="text-5xl mb-4">💅</div>
+                                <p>Production App</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="p-8 flex-1 flex flex-col items-center justify-center text-center">
-                    <h3 class="text-xl font-display font-medium text-gray-400 mb-2">Next Big Project</h3>
-                    <p class="text-sm text-gray-500">Currently architecting something new.</p>
+
+                <!-- Project 3: Shaml Event -->
+                <div class="glass-card rounded-2xl overflow-hidden mb-8 reveal">
+                    <div class="grid lg:grid-cols-2 gap-8 p-8 lg:p-10">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-3">Shaml Event Platform</h3>
+                            <p class="text-gray-300 mb-6 leading-relaxed">
+                                A multi-role event management platform with QR-based gate access, event booking, dashboard analytics, and comprehensive event lifecycle management.
+                            </p>
+                            <div class="mb-6">
+                                <h4 class="font-semibold text-sm text-accent-cyan mb-3">Key Features</h4>
+                                <ul class="space-y-2 text-sm text-gray-300">
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> QR code gate access</li>
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Event booking system</li>
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Multi-role dashboards</li>
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Analytics & reporting</li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full bg-accent-cyan/20 text-accent-cyan text-xs font-medium">Flutter</span>
+                                <span class="px-3 py-1 rounded-full bg-accent-purple/20 text-accent-purple text-xs font-medium">MVVM</span>
+                                <span class="px-3 py-1 rounded-full bg-accent-pink/20 text-accent-pink text-xs font-medium">QR Code</span>
+                            </div>
+                        </div>
+                        <div class="glass rounded-lg p-6 flex items-center justify-center min-h-48">
+                            <div class="text-center text-gray-400">
+                                <div class="text-5xl mb-4">🎉</div>
+                                <p>Production App</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4: Real-time Tracking -->
+                <div class="glass-card rounded-2xl overflow-hidden reveal">
+                    <div class="grid lg:grid-cols-2 gap-8 p-8 lg:p-10">
+                        <div class="lg:order-2">
+                            <h3 class="text-2xl font-bold mb-3">Real-time Tracking System</h3>
+                            <p class="text-gray-300 mb-6 leading-relaxed">
+                                Advanced location tracking system with smooth marker animations, live polyline path updates, and efficient background tracking for fleet management.
+                            </p>
+                            <div class="mb-6">
+                                <h4 class="font-semibold text-sm text-accent-cyan mb-3">Key Features</h4>
+                                <ul class="space-y-2 text-sm text-gray-300">
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Live location tracking</li>
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Smooth marker animation</li>
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Polyline path updates</li>
+                                    <li class="flex items-center gap-2"><span class="text-accent-cyan">•</span> Background tracking</li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full bg-accent-cyan/20 text-accent-cyan text-xs font-medium">Flutter</span>
+                                <span class="px-3 py-1 rounded-full bg-accent-purple/20 text-accent-purple text-xs font-medium">Google Maps</span>
+                                <span class="px-3 py-1 rounded-full bg-accent-pink/20 text-accent-pink text-xs font-medium">WebSocket</span>
+                            </div>
+                        </div>
+                        <div class="lg:order-1 glass rounded-lg p-6 flex items-center justify-center min-h-48">
+                            <div class="text-center text-gray-400">
+                                <div class="text-5xl mb-4">📍</div>
+                                <p>Production App</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-24 px-6 lg:px-12 bg-surface/30 border-t border-white/5 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[100px] pointer-events-none"></div>
-        
-        <div class="max-w-4xl mx-auto text-center reveal">
-            <h2 class="text-4xl md:text-6xl font-display font-bold mb-6 text-white">Let's build the <span class="text-gradient-accent">future.</span></h2>
-            <p class="text-gray-400 mb-12 text-lg">Actively looking for new roles and exciting projects. Let's talk about how I can bring value to your engineering team.</p>
-            
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <a href="mailto:satwindersinghasr2@gmail.com" class="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-black font-semibold hover:scale-105 transition-transform hover-trigger flex items-center justify-center gap-2">
-                    <i data-lucide="mail" class="w-5 h-5"></i> satwindersinghasr2@gmail.com
-                </a>
-                <a href="https://www.linkedin.com/in/satwinder-singh-809a6b256" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 transition-colors hover-trigger flex items-center justify-center gap-2">
-                    <i data-lucide="linkedin" class="w-5 h-5"></i> LinkedIn Profile
-                </a>
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 px-6 lg:px-8 bg-gradient-to-b from-transparent via-accent-cyan/5 to-transparent">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl lg:text-5xl font-display font-bold mb-12 gradient-text reveal text-center">Experience & Skills</h2>
+
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- Experience -->
+                    <div class="reveal">
+                        <h3 class="text-2xl font-bold mb-8">Professional Experience</h3>
+                        <div class="space-y-6">
+                            <div class="glass-card rounded-xl p-6 border-l-2 border-accent-cyan">
+                                <div class="flex items-start justify-between mb-3">
+                                    <h4 class="font-bold text-lg">Senior Mobile Engineer</h4>
+                                    <span class="text-xs text-gray-400">Current</span>
+                                </div>
+                                <p class="text-sm text-accent-cyan mb-2">ToXSL Technologies</p>
+                                <p class="text-sm text-gray-400">Leading mobile development team. Delivered 5+ apps. Improved performance by 40%.</p>
+                            </div>
+
+                            <div class="glass-card rounded-xl p-6 border-l-2 border-accent-purple">
+                                <div class="flex items-start justify-between mb-3">
+                                    <h4 class="font-bold text-lg">Flutter Developer</h4>
+                                    <span class="text-xs text-gray-400">2024-2025</span>
+                                </div>
+                                <p class="text-sm text-accent-purple mb-2">Seraphic Infosolutions</p>
+                                <p class="text-sm text-gray-400">Built 5+ production apps from scratch. Specialized in real-time features.</p>
+                            </div>
+
+                            <div class="glass-card rounded-xl p-6 border-l-2 border-accent-pink">
+                                <div class="flex items-start justify-between mb-3">
+                                    <h4 class="font-bold text-lg">Android Developer</h4>
+                                    <span class="text-xs text-gray-400">2023-2024</span>
+                                </div>
+                                <p class="text-sm text-accent-pink mb-2">Blocvibe Technologies</p>
+                                <p class="text-sm text-gray-400">Built native Android apps using Kotlin. Focused on performance.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Technical Skills -->
+                    <div class="reveal">
+                        <h3 class="text-2xl font-bold mb-8">Technical Skills</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-semibold">Flutter & Dart</span>
+                                    <span class="text-accent-cyan">95%</span>
+                                </div>
+                                <div class="h-2 rounded-full bg-white/10">
+                                    <div class="h-full rounded-full bg-gradient-to-r from-accent-cyan to-accent-purple" style="width: 95%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-semibold">Android & Kotlin</span>
+                                    <span class="text-accent-cyan">85%</span>
+                                </div>
+                                <div class="h-2 rounded-full bg-white/10">
+                                    <div class="h-full rounded-full bg-gradient-to-r from-accent-purple to-accent-pink" style="width: 85%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-semibold">Firebase & APIs</span>
+                                    <span class="text-accent-cyan">90%</span>
+                                </div>
+                                <div class="h-2 rounded-full bg-white/10">
+                                    <div class="h-full rounded-full bg-gradient-to-r from-accent-cyan to-accent-pink" style="width: 90%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-semibold">GetX & State Management</span>
+                                    <span class="text-accent-cyan">88%</span>
+                                </div>
+                                <div class="h-2 rounded-full bg-white/10">
+                                    <div class="h-full rounded-full bg-gradient-to-r from-accent-purple to-accent-cyan" style="width: 88%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-semibold">Google Maps & Location</span>
+                                    <span class="text-accent-cyan">92%</span>
+                                </div>
+                                <div class="h-2 rounded-full bg-white/10">
+                                    <div class="h-full rounded-full bg-gradient-to-r from-accent-pink to-accent-cyan" style="width: 92%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20 px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl lg:text-5xl font-display font-bold mb-12 gradient-text reveal text-center">What Others Say</h2>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="glass-card rounded-xl p-6 reveal">
+                        <div class="flex items-center gap-1 mb-4">
+                            <span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm leading-relaxed">"Satwinder delivered an exceptional real-time tracking system. His attention to performance and clean code was impressive."</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-accent-cyan to-accent-purple"></div>
+                            <div>
+                                <p class="font-semibold text-sm">CEO, Tech Startup</p>
+                                <p class="text-xs text-gray-500">Project Lead</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl p-6 reveal">
+                        <div class="flex items-center gap-1 mb-4">
+                            <span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm leading-relaxed">"One of the best mobile developers I've worked with. Extremely reliable and delivers on time."</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-accent-purple to-accent-pink"></div>
+                            <div>
+                                <p class="font-semibold text-sm">Design Agency Lead</p>
+                                <p class="text-xs text-gray-500">Client</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl p-6 reveal">
+                        <div class="flex items-center gap-1 mb-4">
+                            <span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span><span class="text-accent-cyan">★</span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm leading-relaxed">"Great problem solver with deep understanding of mobile architecture. Highly recommended!"</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-accent-pink to-accent-purple"></div>
+                            <div>
+                                <p class="font-semibold text-sm">Tech Lead</p>
+                                <p class="text-xs text-gray-500">Enterprise</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 px-6 lg:px-8 bg-gradient-to-t from-accent-purple/10 to-transparent">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl lg:text-5xl font-display font-bold mb-6 gradient-text reveal text-center">Let's Work Together</h2>
+                <p class="text-gray-300 mb-12 reveal text-center text-lg">Have a project in mind? I'd love to help bring it to life.</p>
+
+                <div class="glass-card rounded-2xl p-8 lg:p-12 reveal">
+                    <form id="contact-form" class="space-y-6" novalidate>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-semibold mb-2">Full Name</label>
+                                <input type="text" id="name" name="name" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-accent-cyan outline-none transition-colors" placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-semibold mb-2">Email Address</label>
+                                <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-accent-cyan outline-none transition-colors" placeholder="john@example.com">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="subject" class="block text-sm font-semibold mb-2">Project Type</label>
+                            <select id="subject" name="subject" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-accent-cyan outline-none transition-colors">
+                                <option value="">Select a project type</option>
+                                <option value="app-development">App Development</option>
+                                <option value="consulting">Consulting</option>
+                                <option value="optimization">Optimization</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-sm font-semibold mb-2">Message</label>
+                            <textarea id="message" name="message" required rows="5" class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-accent-cyan outline-none transition-colors resize-none" placeholder="Tell me about your project..."></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-semibold hover:shadow-lg hover:shadow-accent-cyan/50 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Send Message
+                        </button>
+                    </form>
+
+                    <div class="mt-12 pt-8 border-t border-white/10 grid md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-2">Email</p>
+                            <a href="mailto:satwindersinghasr2@gmail.com" class="font-semibold hover:text-accent-cyan transition-colors">satwindersinghasr2@gmail.com</a>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-2">GitHub</p>
+                            <a href="https://github.com/Satwinder777" target="_blank" rel="noopener noreferrer" class="font-semibold hover:text-accent-cyan transition-colors">Satwinder777</a>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-2">LinkedIn</p>
+                            <a href="https://www.linkedin.com/in/satwinder-singh-809a6b256" target="_blank" rel="noopener noreferrer" class="font-semibold hover:text-accent-cyan transition-colors">Connect</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/10 py-8 px-6 text-center text-gray-500 text-sm">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <p>&copy; <span id="year"></span> Satwinder Singh. All rights reserved.</p>
-            <div class="flex gap-6">
-                <a href="https://github.com/Satwinder777" target="_blank" class="hover:text-white transition-colors hover-trigger">GitHub</a>
-                <a href="https://www.linkedin.com/in/satwinder-singh-809a6b256" target="_blank" class="hover:text-white transition-colors hover-trigger">LinkedIn</a>
+    <footer class="border-t border-white/10 py-12 px-6 lg:px-8 bg-bg-secondary/50 backdrop-blur-sm">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="font-semibold mb-4">Navigation</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#about" class="hover:text-accent-cyan transition-colors">About</a></li>
+                        <li><a href="#services" class="hover:text-accent-cyan transition-colors">Services</a></li>
+                        <li><a href="#projects" class="hover:text-accent-cyan transition-colors">Projects</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#services" class="hover:text-accent-cyan transition-colors">App Development</a></li>
+                        <li><a href="#services" class="hover:text-accent-cyan transition-colors">Optimization</a></li>
+                        <li><a href="#services" class="hover:text-accent-cyan transition-colors">Consulting</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Connect</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="https://github.com/Satwinder777" target="_blank" rel="noopener noreferrer" class="hover:text-accent-cyan transition-colors">GitHub</a></li>
+                        <li><a href="https://www.linkedin.com/in/satwinder-singh-809a6b256" target="_blank" rel="noopener noreferrer" class="hover:text-accent-cyan transition-colors">LinkedIn</a></li>
+                        <li><a href="mailto:satwindersinghasr2@gmail.com" class="hover:text-accent-cyan transition-colors">Email</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Tech Stack</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed">Flutter, Dart, Android, Kotlin, Firebase, GetX, MVVM</p>
+                </div>
+            </div>
+
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-500">&copy; 2024 Satwinder Singh. All rights reserved.</p>
+                <p class="text-sm text-gray-500">Crafted with attention to detail and performance</p>
             </div>
         </div>
     </footer>
 
     <!-- Scripts -->
     <script>
-        // 1. Initialize Icons
-        lucide.createIcons();
+        // ============================================
+        // 1. CUSTOM CURSOR
+        // ============================================
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0;
 
-        // 2. Dynamic Year
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // 3. Navbar Scroll Effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('py-2');
-                navbar.classList.remove('py-4');
-                navbar.classList.add('bg-black/80');
-            } else {
-                navbar.classList.add('py-4');
-                navbar.classList.remove('py-2');
-                navbar.classList.remove('bg-black/80');
-            }
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
         });
 
-        // 4. Mobile Menu Toggle (Simplified for single file - toggles visibility of links)
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        menuBtn.addEventListener('click', () => {
-            alert('Navigation items would expand here in a full app. For now, scroll downwards to view sections!');
+        // Hide cursor on mobile
+        if (window.matchMedia('(max-width: 1024px)').matches) {
+            cursor.style.display = 'none';
+        }
+
+        // Hover effects
+        document.querySelectorAll('a, button, input, select, textarea').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
 
-        // 5. Scroll Reveal Animation via Intersection Observer
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealOptions = {
-            threshold: 0.15,
-            rootMargin: "0px 0px -50px 0px"
+        // ============================================
+        // 2. MOBILE MENU
+        // ============================================
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // ============================================
+        // 3. SCROLL ANIMATIONS
+        // ============================================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
         };
 
-        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (!entry.isIntersecting) {
-                    return;
-                } else {
+                if (entry.isIntersecting) {
                     entry.target.classList.add('active');
                     observer.unobserve(entry.target);
                 }
             });
-        }, revealOptions);
+        }, observerOptions);
 
-        revealElements.forEach(el => {
-            revealOnScroll.observe(el);
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
         });
 
-        // 6. Custom Cursor Logic (Only runs on desktop)
-        const cursor = document.getElementById('cursor');
-        const hoverTriggers = document.querySelectorAll('.hover-trigger');
+        // ============================================
+        // 4. NAVBAR SCROLL EFFECT
+        // ============================================
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                navbar.classList.add('border-accent-cyan/30');
+            } else {
+                navbar.classList.remove('border-accent-cyan/30');
+            }
+        });
 
-        // Check if device is touch
-        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        // ============================================
+        // 5. CONTACT FORM
+        // ============================================
+        const contactForm = document.getElementById('contact-form');
 
-        if (!isTouchDevice) {
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value,
+            };
+
+            // Validate form
+            if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(formData.email)) {
+                alert('Please enter a valid email');
+                return;
+            }
+
+            // Log form data (in production, send to backend)
+            console.log('[v0] Form submitted:', formData);
+            alert('Thank you! I will get back to you soon.');
+
+            // Reset form
+            contactForm.reset();
+        });
+
+        // ============================================
+        // 6. ANALYTICS TRACKING
+        // ============================================
+        const trackEvent = (eventName, eventData = {}) => {
+            console.log(`[Analytics] ${eventName}:`, eventData);
+        };
+
+        // Track section views
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    trackEvent('section_view', { section: entry.target.id });
+                }
             });
+        }, { threshold: 0.5 });
 
-            hoverTriggers.forEach(trigger => {
-                trigger.addEventListener('mouseenter', () => {
-                    cursor.classList.add('hovered');
+        document.querySelectorAll('section[id]').forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // ============================================
+        // 7. ICONS INITIALIZATION
+        // ============================================
+        if (window.lucide) {
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => {
+                    window.lucide.createIcons();
                 });
-                trigger.addEventListener('mouseleave', () => {
-                    cursor.classList.remove('hovered');
-                });
-            });
-            
-            // Hide custom cursor when leaving window
-            document.addEventListener('mouseleave', () => {
-                cursor.style.opacity = '0';
-            });
-            document.addEventListener('mouseenter', () => {
-                cursor.style.opacity = '1';
-            });
-        } else {
-            cursor.style.display = 'none'; // Ensure hidden on mobile
+            } else {
+                setTimeout(() => {
+                    window.lucide.createIcons();
+                }, 100);
+            }
         }
+
+        // ============================================
+        // 8. KEYBOARD NAVIGATION
+        // ============================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // ============================================
+        // 9. PERFORMANCE MONITORING
+        // ============================================
+        if ('performance' in window) {
+            window.addEventListener('load', () => {
+                const perfData = window.performance.timing;
+                const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+                console.log(`[Performance] Page load time: ${pageLoadTime}ms`);
+            });
+        }
+    </script>
+
+    <!-- Optional: Google Analytics -->
+    <!-- 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    -->
+
+    <!-- Optional: Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Satwinder Singh",
+        "url": "https://satwinder.dev",
+        "jobTitle": "Senior Mobile Engineer",
+        "telephone": "+91-XXXXXXXXXX",
+        "email": "satwindersinghasr2@gmail.com",
+        "sameAs": [
+            "https://github.com/Satwinder777",
+            "https://www.linkedin.com/in/satwinder-singh-809a6b256"
+        ],
+        "knowsAbout": ["Flutter", "Android", "Kotlin", "Dart", "MVVM", "Firebase"]
+    }
     </script>
 </body>
 </html>
