@@ -11,7 +11,7 @@
     <!-- Premium Google Fonts: Outfit (Headings) & Plus Jakarta Sans (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus Jakarta Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest" defer></script>
@@ -183,13 +183,13 @@
             </a>
             
             <div class="hidden md:flex gap-8 text-sm font-medium text-gray-300">
-                <a href="#about" class="hover:text-accent-cyan transition-colors interactive">About</a>
-                <a href="#expertise" class="hover:text-accent-cyan transition-colors interactive">Expertise</a>
-                <a href="#experience" class="hover:text-accent-cyan transition-colors interactive">Experience</a>
-                <a href="#projects" class="hover:text-accent-cyan transition-colors interactive">Work</a>
+                <a href="#about" class="hover:text-accent-cyan transition-colors interactive nav-link" data-section="about">About</a>
+                <a href="#expertise" class="hover:text-accent-cyan transition-colors interactive nav-link" data-section="expertise">Expertise</a>
+                <a href="#experience" class="hover:text-accent-cyan transition-colors interactive nav-link" data-section="experience">Experience</a>
+                <a href="#projects" class="hover:text-accent-cyan transition-colors interactive nav-link" data-section="projects">Work</a>
             </div>
 
-            <a href="#contact" class="hidden md:inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-bold text-sm hover:shadow-[0_0_20px_rgba(0,217,255,0.4)] transition-all hover:scale-105 interactive">
+            <a href="#contact" id="hire-me-btn" class="hidden md:inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-bold text-sm hover:shadow-[0_0_20px_rgba(0,217,255,0.4)] transition-all hover:scale-105 interactive">
                 Hire Me
             </a>
         </div>
@@ -215,10 +215,10 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                    <a href="#projects" class="px-8 py-4 rounded-full bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-bold text-lg hover:shadow-[0_0_30px_rgba(0,217,255,0.4)] transition-all transform hover:-translate-y-1 interactive">
+                    <a href="#projects" id="view-work-btn" class="px-8 py-4 rounded-full bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-bold text-lg hover:shadow-[0_0_30px_rgba(0,217,255,0.4)] transition-all transform hover:-translate-y-1 interactive">
                         View My Work
                     </a>
-                    <a href="#contact" class="px-8 py-4 rounded-full border border-white/20 text-white font-bold text-lg hover:bg-white/5 transition-all interactive">
+                    <a href="#contact" id="get-in-touch-btn" class="px-8 py-4 rounded-full border border-white/20 text-white font-bold text-lg hover:bg-white/5 transition-all interactive">
                         Get In Touch
                     </a>
                 </div>
@@ -272,24 +272,24 @@
                     <div class="reveal">
                         <h3 class="text-xl font-display font-bold mb-6 text-white">Technical Arsenal</h3>
                         <div class="flex flex-wrap gap-3">
-                            <span class="px-5 py-2.5 rounded-full border border-accent-cyan/40 bg-accent-cyan/10 text-white font-medium interactive shadow-[0_0_15px_rgba(0,217,255,0.1)]">Flutter (Advanced)</span>
-                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">Dart</span>
-                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">Android (Native)</span>
-                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">Kotlin</span>
+                            <span class="px-5 py-2.5 rounded-full border border-accent-cyan/40 bg-accent-cyan/10 text-white font-medium interactive shadow-[0_0_15px_rgba(0,217,255,0.1)] skill-tag" data-skill="Flutter (Advanced)">Flutter (Advanced)</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive skill-tag" data-skill="Dart">Dart</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive skill-tag" data-skill="Android (Native)">Android (Native)</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive skill-tag" data-skill="Kotlin">Kotlin</span>
                             
-                            <span class="px-5 py-2.5 rounded-full border border-accent-purple/40 bg-accent-purple/10 text-white font-medium interactive">Clean Architecture</span>
-                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">BLoC / Riverpod</span>
-                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">GetX</span>
-                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">MVVM</span>
+                            <span class="px-5 py-2.5 rounded-full border border-accent-purple/40 bg-accent-purple/10 text-white font-medium interactive skill-tag" data-skill="Clean Architecture">Clean Architecture</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive skill-tag" data-skill="BLoC / Riverpod">BLoC / Riverpod</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive skill-tag" data-skill="GetX">GetX</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive skill-tag" data-skill="MVVM">MVVM</span>
                             
-                            <span class="px-5 py-2.5 rounded-full border border-accent-pink/40 bg-accent-pink/10 text-white font-medium interactive">Method Channels</span>
-                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">Isolates</span>
-                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">Custom Painters</span>
+                            <span class="px-5 py-2.5 rounded-full border border-accent-pink/40 bg-accent-pink/10 text-white font-medium interactive skill-tag" data-skill="Method Channels">Method Channels</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive skill-tag" data-skill="Isolates">Isolates</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive skill-tag" data-skill="Custom Painters">Custom Painters</span>
                             
-                            <span class="px-5 py-2.5 rounded-full border border-orange-500/40 bg-orange-500/10 text-white font-medium interactive">Firebase (Full Suite)</span>
-                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">WebSockets</span>
-                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">Google Maps API</span>
-                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive">CI/CD (Fastlane)</span>
+                            <span class="px-5 py-2.5 rounded-full border border-orange-500/40 bg-orange-500/10 text-white font-medium interactive skill-tag" data-skill="Firebase (Full Suite)">Firebase (Full Suite)</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive skill-tag" data-skill="WebSockets">WebSockets</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive skill-tag" data-skill="Google Maps API">Google Maps API</span>
+                            <span class="px-5 py-2.5 rounded-full border border-white/10 bg-bg-primary text-gray-300 interactive skill-tag" data-skill="CI/CD (Fastlane)">CI/CD (Fastlane)</span>
                         </div>
                     </div>
                 </div>
@@ -305,73 +305,73 @@
                 </div>
 
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    <div class="glass-card rounded-2xl p-8 reveal">
+                    <div class="glass-card rounded-2xl p-8 reveal service-card" data-service="End-to-End Flutter">
                         <i data-lucide="smartphone" class="w-10 h-10 text-accent-cyan mb-6"></i>
                         <h3 class="text-lg font-bold text-white mb-3">End-to-End Flutter</h3>
                         <p class="text-sm text-gray-400 leading-relaxed">Architecting scalable cross-platform apps from scratch using clean code principles and modular design.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 50ms;">
+                    <div class="glass-card rounded-2xl p-8 reveal service-card" style="transition-delay: 50ms;" data-service="120fps Performance Tuning">
                         <i data-lucide="zap" class="w-10 h-10 text-accent-purple mb-6"></i>
                         <h3 class="text-lg font-bold text-white mb-3">120fps Perf. Tuning</h3>
                         <p class="text-sm text-gray-400 leading-relaxed">Eliminating UI jank, optimizing raster threads, reducing memory leaks, and utilizing Dart Isolates.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 100ms;">
+                    <div class="glass-card rounded-2xl p-8 reveal service-card" style="transition-delay: 100ms;" data-service="Enterprise State Management">
                         <i data-lucide="layers" class="w-10 h-10 text-accent-pink mb-6"></i>
                         <h3 class="text-lg font-bold text-white mb-3">Enterprise State Mgt.</h3>
                         <p class="text-sm text-gray-400 leading-relaxed">Implementing robust Clean Architecture using BLoC, Riverpod, and GetX for highly maintainable codebases.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 150ms;">
+                    <div class="glass-card rounded-2xl p-8 reveal service-card" style="transition-delay: 150ms;" data-service="Native Method Channels">
                         <i data-lucide="code-2" class="w-10 h-10 text-accent-cyan mb-6"></i>
                         <h3 class="text-lg font-bold text-white mb-3">Native Method Channels</h3>
                         <p class="text-sm text-gray-400 leading-relaxed">Bridging the gap between Flutter and native Android (Kotlin/Java) SDKs for device-specific hardware access.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal">
+                    <div class="glass-card rounded-2xl p-8 reveal service-card" data-service="Firebase & Serverless">
                         <i data-lucide="database" class="w-10 h-10 text-orange-500 mb-6"></i>
                         <h3 class="text-lg font-bold text-white mb-3">Firebase & Serverless</h3>
                         <p class="text-sm text-gray-400 leading-relaxed">Deep integration with Firestore, Auth, Storage, Cloud Functions, and targeted FCM Push Notifications.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 50ms;">
+                    <div class="glass-card rounded-2xl p-8 reveal service-card" style="transition-delay: 50ms;" data-service="Real-Time WebSockets">
                         <i data-lucide="activity" class="w-10 h-10 text-green-400 mb-6"></i>
                         <h3 class="text-lg font-bold text-white mb-3">Real-Time WebSockets</h3>
                         <p class="text-sm text-gray-400 leading-relaxed">Building live tracking dashboards, real-time chat apps, and streaming features with Socket.io and WebRTC.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 100ms;">
+                    <div class="glass-card rounded-2xl p-8 reveal service-card" style="transition-delay: 100ms;" data-service="Advanced Geolocation">
                         <i data-lucide="map" class="w-10 h-10 text-accent-cyan mb-6"></i>
                         <h3 class="text-lg font-bold text-white mb-3">Advanced Geolocation</h3>
                         <p class="text-sm text-gray-400 leading-relaxed">Complex Google Maps integration including live tracking, custom polyline drawing, and marker clustering.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 150ms;">
+                    <div class="glass-card rounded-2xl p-8 reveal service-card" style="transition-delay: 150ms;" data-service="Custom Painters & UI">
                         <i data-lucide="palette" class="w-10 h-10 text-accent-purple mb-6"></i>
                         <h3 class="text-lg font-bold text-white mb-3">Custom Painters & UI</h3>
                         <p class="text-sm text-gray-400 leading-relaxed">Creating pixel-perfect, highly complex interactive UIs, graphs, and fluid animations from scratch.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal">
+                    <div class="glass-card rounded-2xl p-8 reveal service-card" data-service="App Security">
                         <i data-lucide="shield-check" class="w-10 h-10 text-yellow-500 mb-6"></i>
                         <h3 class="text-lg font-bold text-white mb-3">App Security</h3>
                         <p class="text-sm text-gray-400 leading-relaxed">Securing API keys, implementing SSL pinning, local biometrics, and code obfuscation for production builds.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 50ms;">
+                    <div class="glass-card rounded-2xl p-8 reveal service-card" style="transition-delay: 50ms;" data-service="Offline-First Architecture">
                         <i data-lucide="wifi-off" class="w-10 h-10 text-gray-300 mb-6"></i>
                         <h3 class="text-lg font-bold text-white mb-3">Offline-First Arch.</h3>
                         <p class="text-sm text-gray-400 leading-relaxed">Building resilient applications with local caching and data synchronization using Hive, Sqflite, and Isar.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 100ms;">
+                    <div class="glass-card rounded-2xl p-8 reveal service-card" style="transition-delay: 100ms;" data-service="CI/CD & Fastlane">
                         <i data-lucide="rocket" class="w-10 h-10 text-accent-pink mb-6"></i>
                         <h3 class="text-lg font-bold text-white mb-3">CI/CD & Fastlane</h3>
                         <p class="text-sm text-gray-400 leading-relaxed">Automating build, test, and deployment pipelines directly to Google Play Store & Apple App Store.</p>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay: 150ms;">
+                    <div class="glass-card rounded-2xl p-8 reveal service-card" style="transition-delay: 150ms;" data-service="Code Audits">
                         <i data-lucide="git-merge" class="w-10 h-10 text-accent-cyan mb-6"></i>
                         <h3 class="text-lg font-bold text-white mb-3">Code Audits</h3>
                         <p class="text-sm text-gray-400 leading-relaxed">Reviewing legacy codebases, extensive refactoring, and establishing strict team coding standards.</p>
@@ -456,7 +456,7 @@
 
                 <div class="space-y-8">
                     <!-- Project 1 -->
-                    <div class="glass-card rounded-3xl overflow-hidden reveal interactive">
+                    <div class="glass-card rounded-3xl overflow-hidden reveal interactive project-card" data-project="Free Delivery App">
                         <div class="grid lg:grid-cols-12 gap-0 items-center">
                             <div class="lg:col-span-7 p-10 lg:p-12">
                                 <h3 class="text-3xl font-display font-bold mb-4 text-white">Free Delivery App</h3>
@@ -476,7 +476,7 @@
                     </div>
 
                     <!-- Project 2 -->
-                    <div class="glass-card rounded-3xl overflow-hidden reveal interactive">
+                    <div class="glass-card rounded-3xl overflow-hidden reveal interactive project-card" data-project="My Salon App">
                         <div class="grid lg:grid-cols-12 gap-0 items-center">
                             <div class="lg:col-span-5 h-full bg-bg-secondary/50 flex items-center justify-center p-12 border-r border-white/5 order-last lg:order-first">
                                 <i data-lucide="scissors" class="w-24 h-24 text-accent-purple/50"></i>
@@ -496,7 +496,7 @@
                     </div>
 
                     <!-- Project 3 -->
-                    <div class="glass-card rounded-3xl overflow-hidden reveal interactive">
+                    <div class="glass-card rounded-3xl overflow-hidden reveal interactive project-card" data-project="Real-time Tracking System">
                         <div class="grid lg:grid-cols-12 gap-0 items-center">
                             <div class="lg:col-span-7 p-10 lg:p-12">
                                 <h3 class="text-3xl font-display font-bold mb-4 text-white">Real-time Tracking System</h3>
@@ -580,23 +580,23 @@
             <!-- Authentic Brand Social Links -->
             <div class="flex items-center justify-center flex-wrap gap-4 mb-8">
                 <!-- GitHub -->
-                <a href="https://github.com/Satwinder777" target="_blank" aria-label="GitHub" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/20 transition-all text-gray-400 hover:text-white interactive">
+                <a href="https://github.com/Satwinder777" target="_blank" aria-label="GitHub" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/20 transition-all text-gray-400 hover:text-white interactive social-link" data-platform="github">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                 </a>
                 <!-- LinkedIn -->
-                <a href="https://www.linkedin.com/in/satwinder-singh-809a6b256" target="_blank" aria-label="LinkedIn" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-blue-600 transition-all text-gray-400 hover:text-white interactive">
+                <a href="https://www.linkedin.com/in/satwinder-singh-809a6b256" target="_blank" aria-label="LinkedIn" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-blue-600 transition-all text-gray-400 hover:text-white interactive social-link" data-platform="linkedin">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                 </a>
                 <!-- WhatsApp -->
-                <a href="https://wa.me/919877995250" target="_blank" aria-label="WhatsApp" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-green-500 transition-all text-gray-400 hover:text-white interactive">
+                <a href="https://wa.me/919877995250" target="_blank" aria-label="WhatsApp" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-green-500 transition-all text-gray-400 hover:text-white interactive social-link" data-platform="whatsapp">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                 </a>
                 <!-- Instagram -->
-                <a href="https://instagram.com/satwinder_singh_shergill" target="_blank" aria-label="Instagram" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-pink-600 transition-all text-gray-400 hover:text-white interactive">
+                <a href="https://instagram.com/satwinder_singh_shergill" target="_blank" aria-label="Instagram" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-pink-600 transition-all text-gray-400 hover:text-white interactive social-link" data-platform="instagram">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                 </a>
                 <!-- Gmail -->
-                <a href="mailto:satwindersinghasr2@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Email" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-red-500 transition-all text-gray-400 hover:text-white interactive">
+                <a href="mailto:satwindersinghasr2@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Email" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-red-500 transition-all text-gray-400 hover:text-white interactive social-link" data-platform="email">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                 </a>
             </div>
@@ -605,13 +605,14 @@
         </footer>
     </main>
 
-    <!-- Scripts (Firebase + EmailJS + UI) -->
+    <!-- Scripts (Firebase + Analytics + EmailJS + UI) -->
     <script type="module">
         // ----------------------------------------------------
-        // 1. FIREBASE INITIALIZATION
+        // 1. FIREBASE INITIALIZATION (App + Firestore + Analytics)
         // ----------------------------------------------------
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getAnalytics, logEvent, setUserProperties } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBZ5YrCArKHjgp-WtzkVy-3byHZiVM4Sx0",
@@ -623,17 +624,262 @@
             measurementId: "G-4MJE1H03ZP"
         };
         
-        let db;
+        let db, analytics;
         try {
             const app = initializeApp(firebaseConfig);
             db = getFirestore(app);
+            analytics = getAnalytics(app);
+            console.log("✅ Firebase + Analytics initialized");
         } catch (error) {
             console.error("Firebase Init Error:", error);
         }
 
-        // ----------------------------------------------------
-        // 2. CONTACT FORM LOGIC (Separated Try-Catch)
-        // ----------------------------------------------------
+        // Safe wrapper — never crashes if analytics fails
+        const track = (eventName, params = {}) => {
+            try {
+                if (analytics) {
+                    logEvent(analytics, eventName, {
+                        ...params,
+                        timestamp: new Date().toISOString(),
+                    });
+                    console.log(`📊 Event: ${eventName}`, params);
+                }
+            } catch (e) {
+                console.warn("Analytics track error:", e);
+            }
+        };
+
+        // ============================================================
+        // 2. ANALYTICS EVENTS
+        // ============================================================
+
+        // --- A. PAGE VIEW (with device & referrer info) ---
+        track('page_view', {
+            page_title: document.title,
+            page_location: window.location.href,
+            referrer: document.referrer || 'direct',
+            screen_width: window.screen.width,
+            screen_height: window.screen.height,
+            device_type: window.innerWidth < 768 ? 'mobile' : window.innerWidth < 1024 ? 'tablet' : 'desktop',
+            user_language: navigator.language || 'unknown',
+        });
+
+        // --- B. SESSION START (first visit tracking) ---
+        track('session_start', {
+            session_time: new Date().toLocaleTimeString(),
+        });
+
+        // --- C. SCROLL DEPTH TRACKING (25%, 50%, 75%, 90%) ---
+        const scrollDepthsTracked = new Set();
+        window.addEventListener('scroll', () => {
+            const scrollPercent = Math.round(
+                (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
+            );
+            [25, 50, 75, 90].forEach(depth => {
+                if (scrollPercent >= depth && !scrollDepthsTracked.has(depth)) {
+                    scrollDepthsTracked.add(depth);
+                    track('scroll_depth', { depth_percentage: depth, page: 'portfolio_home' });
+                }
+            });
+        }, { passive: true });
+
+        // --- D. TIME ON PAGE (30s, 60s, 120s, 300s milestones) ---
+        const timeStart = Date.now();
+        [30, 60, 120, 300].forEach(seconds => {
+            setTimeout(() => {
+                track('time_on_page', {
+                    seconds_spent: seconds,
+                    page: 'portfolio_home',
+                });
+            }, seconds * 1000);
+        });
+
+        // --- E. NAV LINK CLICKS (which section user navigates to) ---
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                track('navigation_click', {
+                    section: link.dataset.section,
+                    label: link.textContent.trim(),
+                });
+            });
+        });
+
+        // --- F. HERO CTA CLICKS ---
+        document.getElementById('view-work-btn')?.addEventListener('click', () => {
+            track('cta_click', { button_name: 'View My Work', location: 'hero_section' });
+        });
+        document.getElementById('get-in-touch-btn')?.addEventListener('click', () => {
+            track('cta_click', { button_name: 'Get In Touch', location: 'hero_section' });
+        });
+        document.getElementById('hire-me-btn')?.addEventListener('click', () => {
+            track('cta_click', { button_name: 'Hire Me', location: 'navbar' });
+        });
+
+        // --- G. SOCIAL LINK CLICKS ---
+        document.querySelectorAll('.social-link').forEach(link => {
+            link.addEventListener('click', () => {
+                track('social_click', {
+                    platform: link.dataset.platform,
+                    location: 'footer',
+                });
+            });
+        });
+
+        // --- H. SKILL TAG CLICKS (which tech interests visitors) ---
+        document.querySelectorAll('.skill-tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                track('skill_tag_click', {
+                    skill_name: tag.dataset.skill,
+                    section: 'about_technical_arsenal',
+                });
+            });
+        });
+
+        // --- I. SERVICE CARD HOVER (which expertise gets most attention) ---
+        document.querySelectorAll('.service-card').forEach(card => {
+            let hoverStart = null;
+            card.addEventListener('mouseenter', () => { hoverStart = Date.now(); });
+            card.addEventListener('mouseleave', () => {
+                if (hoverStart) {
+                    const duration = Math.round((Date.now() - hoverStart) / 1000);
+                    if (duration >= 2) { // Only track if hovered >= 2 seconds (genuine interest)
+                        track('service_card_hover', {
+                            service_name: card.dataset.service,
+                            hover_duration_seconds: duration,
+                        });
+                    }
+                    hoverStart = null;
+                }
+            });
+        });
+
+        // --- J. PROJECT CARD CLICKS & HOVER ---
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', () => {
+                track('project_card_click', { project_name: card.dataset.project });
+            });
+            let pHoverStart = null;
+            card.addEventListener('mouseenter', () => { pHoverStart = Date.now(); });
+            card.addEventListener('mouseleave', () => {
+                if (pHoverStart) {
+                    const duration = Math.round((Date.now() - pHoverStart) / 1000);
+                    if (duration >= 2) {
+                        track('project_card_hover', {
+                            project_name: card.dataset.project,
+                            hover_duration_seconds: duration,
+                        });
+                    }
+                    pHoverStart = null;
+                }
+            });
+        });
+
+        // --- K. SECTION VISIBILITY (IntersectionObserver-based) ---
+        const sectionNames = {
+            'about': 'About Section',
+            'expertise': 'Expertise Section',
+            'experience': 'Experience Section',
+            'projects': 'Projects Section',
+            'contact': 'Contact Section',
+        };
+        const sectionsTracked = new Set();
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !sectionsTracked.has(entry.target.id)) {
+                    sectionsTracked.add(entry.target.id);
+                    track('section_view', {
+                        section_id: entry.target.id,
+                        section_name: sectionNames[entry.target.id] || entry.target.id,
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+        document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
+
+        // --- L. CONTACT FORM FIELD FOCUS (funnel tracking) ---
+        ['name', 'email', 'subject', 'message'].forEach(fieldId => {
+            const el = document.getElementById(fieldId);
+            if (el) {
+                el.addEventListener('focus', () => {
+                    track('form_field_focus', { field_name: fieldId, form: 'contact_form' });
+                }, { once: true }); // once: true — track first focus only
+            }
+        });
+
+        // --- M. CONTACT FORM START (user typed something in name field) ---
+        document.getElementById('name')?.addEventListener('input', () => {
+            track('form_interaction_start', { form: 'contact_form' });
+        }, { once: true });
+
+        // --- N. INQUIRY TYPE SELECTION ---
+        document.getElementById('subject')?.addEventListener('change', (e) => {
+            track('inquiry_type_selected', {
+                inquiry_type: e.target.value,
+                form: 'contact_form',
+            });
+        });
+
+        // --- O. PAGE VISIBILITY (tab switch detection) ---
+        document.addEventListener('visibilitychange', () => {
+            track('page_visibility_change', {
+                state: document.visibilityState,
+                time_on_page_seconds: Math.round((Date.now() - timeStart) / 1000),
+            });
+        });
+
+        // --- P. WINDOW RESIZE (detects orientation changes on mobile) ---
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                track('viewport_resize', {
+                    new_width: window.innerWidth,
+                    new_height: window.innerHeight,
+                    device_type: window.innerWidth < 768 ? 'mobile' : window.innerWidth < 1024 ? 'tablet' : 'desktop',
+                });
+            }, 500);
+        });
+
+        // --- Q. OUTBOUND LINK CLICK (before leaving the page) ---
+        document.querySelectorAll('a[target="_blank"]').forEach(link => {
+            link.addEventListener('click', () => {
+                track('outbound_link_click', {
+                    link_url: link.href,
+                    link_text: link.getAttribute('aria-label') || link.textContent.trim(),
+                });
+            });
+        });
+
+        // --- R. USER ENGAGEMENT (first meaningful interaction) ---
+        let firstInteraction = false;
+        const markFirstInteraction = () => {
+            if (!firstInteraction) {
+                firstInteraction = true;
+                track('first_interaction', {
+                    time_to_interact_seconds: Math.round((Date.now() - timeStart) / 1000),
+                });
+                ['click', 'scroll', 'keydown'].forEach(evt => document.removeEventListener(evt, markFirstInteraction));
+            }
+        };
+        ['click', 'scroll', 'keydown'].forEach(evt => document.addEventListener(evt, markFirstInteraction, { passive: true }));
+
+        // --- S. CONTACT SECTION REACHED (high intent signal) ---
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+            const contactObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        track('contact_section_reached', { method: 'scroll', intent_level: 'high' });
+                        contactObserver.disconnect();
+                    }
+                });
+            }, { threshold: 0.4 });
+            contactObserver.observe(contactSection);
+        }
+
+        // ============================================================
+        // 3. CONTACT FORM LOGIC (Firestore + EmailJS — unchanged)
+        // ============================================================
         const contactForm = document.getElementById('contact-form');
         const submitBtn = document.getElementById('submit-btn');
         const statusDiv = document.getElementById('form-status');
@@ -659,6 +905,8 @@
 
             if (!name || !email || !subject || !message) {
                 showStatus('Please fill out all required fields.', 'error');
+                // T. FORM VALIDATION ERROR EVENT
+                track('form_validation_error', { form: 'contact_form', missing_fields: !name ? 'name' : !email ? 'email' : !subject ? 'subject' : 'message' });
                 return;
             }
 
@@ -666,6 +914,9 @@
             const originalBtnHtml = submitBtn.innerHTML;
             submitBtn.innerHTML = `<span class="spinner"></span> <span>Transmitting...</span>`;
             statusDiv.classList.add('hidden');
+
+            // U. FORM SUBMIT ATTEMPTED
+            track('form_submit_attempt', { form: 'contact_form', inquiry_type: subject });
 
             let dbSuccess = false;
             let emailSuccess = false;
@@ -684,8 +935,7 @@
                 console.error("❌ Firebase Error:", fbError);
             }
 
-            
-            // TASK 2: SEND EMAILJS (Forced Public Key inline)
+            // TASK 2: SEND EMAILJS
             try {
                 const templateParams = {
                     from_name: name,
@@ -708,9 +958,26 @@
                 console.error("❌ EmailJS Error:", emailError);
             }
 
-            // FINAL STATUS CHECK
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalBtnHtml;
+
+            if (dbSuccess || emailSuccess) {
+                // V. FORM SUBMIT SUCCESS
+                track('form_submit_success', {
+                    form: 'contact_form',
+                    inquiry_type: subject,
+                    db_saved: dbSuccess,
+                    email_sent: emailSuccess,
+                });
+                // W. GENERATE_LEAD (Firebase recommended e-commerce style event — high value)
+                track('generate_lead', {
+                    lead_source: 'portfolio_contact_form',
+                    inquiry_type: subject,
+                });
+            } else {
+                // X. FORM SUBMIT FAILURE
+                track('form_submit_failure', { form: 'contact_form', db_success: false, email_success: false });
+            }
 
             if (dbSuccess && emailSuccess) {
                 showStatus('Message transmitted & email sent successfully!', 'success');
@@ -726,10 +993,9 @@
             }
         });
 
-        
-        // ----------------------------------------------------
-        // 3. UI, CURSOR & ANIMATIONS
-        // ----------------------------------------------------
+        // ============================================================
+        // 4. UI, CURSOR & REVEAL ANIMATIONS (unchanged)
+        // ============================================================
         document.getElementById('year').textContent = new Date().getFullYear();
         lucide.createIcons();
 
@@ -760,7 +1026,3 @@
     </script>
 </body>
 </html>
-
-
-
-
