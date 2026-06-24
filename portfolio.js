@@ -12,6 +12,9 @@ import {
   addDoc,
   serverTimestamp,
 } from "./firebase.js";
+import { reportCmsLog, installWebErrorHandlers } from "./cms-log.js";
+
+installWebErrorHandlers();
 
 // ------------------------------------------------------------
 //  Helpers
@@ -283,30 +286,69 @@ function renderArsenal(skills = []) {
     other:        "border-white/10 bg-bg-primary text-gray-300",
   };
 
-  // If admin used real categories, highlight the first chip per
-  // category. Otherwise (everything is "other") fall back to a
-  // position-based highlight rotation so the chip row keeps the
-  // same coloured rhythm as the static design.
-  const usedCategorisation = list.some((s) => s.category && s.category !== "other");
-  const ROTATION = ["frontend", "architecture", "devops", "backend"];
+  const CAT_ORDER = ["frontend", "architecture", "backend", "devops", "other"];
+  const CAT_LABEL = {
+    frontend: "Frontend",
+    architecture: "Architecture",
+    backend: "Backend",
+    devops: "DevOps",
+    other: "Other",
+  };
+  const CAT_ICON = {
+    frontend: "smartphone",
+    architecture: "git-branch",
+    backend: "database",
+    devops: "cloud",
+    other: "wrench",
+  };
+  const CAT_TINT = {
+    frontend: "text-accent-cyan",
+    architecture: "text-accent-purple",
+    devops: "text-accent-pink",
+    backend: "text-orange-400",
+    other: "text-gray-400",
+  };
 
+  const chipHtml = (s, key) => {
+    const cls = ACCENT[key] || ACCENT.other;
+    return `<span class="px-5 py-2.5 rounded-full border ${cls} interactive skill-tag" data-skill="${esc(s.label)}">${esc(s.label)}</span>`;
+  };
+
+  const usedCategorisation = list.some((s) => s.category && s.category !== "other");
+
+  if (usedCategorisation) {
+    el.innerHTML = CAT_ORDER.map((cat) => {
+      const items = list.filter((s) => (s.category || "other") === cat);
+      if (!items.length) return "";
+      const tint = CAT_TINT[cat] || CAT_TINT.other;
+      const chips = items
+        .map((s) => chipHtml(s, cat === "other" ? "other" : cat))
+        .join("");
+      return `
+        <div class="w-full mb-8 last:mb-0 reveal">
+          <div class="flex items-center gap-2 mb-3">
+            <i data-lucide="${CAT_ICON[cat] || "star"}" class="w-4 h-4 ${tint}"></i>
+            <span class="text-xs font-bold uppercase tracking-widest ${tint}">${esc(CAT_LABEL[cat] || cat)}</span>
+            <span class="text-[10px] text-gray-500 font-medium">${items.length}</span>
+          </div>
+          <div class="flex flex-wrap gap-3">${chips}</div>
+        </div>`;
+    }).join("");
+    if (typeof lucide !== "undefined") lucide.createIcons();
+    return;
+  }
+
+  const ROTATION = ["frontend", "architecture", "devops", "backend"];
   const seenCat = new Set();
   let posLeader = 0;
 
   el.innerHTML = list
     .map((s, i) => {
       let key = "other";
-      if (usedCategorisation) {
-        const cat = s.category || "other";
-        if (cat !== "other" && !seenCat.has(cat)) {
-          seenCat.add(cat);
-          key = cat;
-        }
-      } else if (i % 4 === 0 && posLeader < ROTATION.length) {
+      if (i % 4 === 0 && posLeader < ROTATION.length) {
         key = ROTATION[posLeader++];
       }
-      const cls = ACCENT[key] || ACCENT.other;
-      return `<span class="px-5 py-2.5 rounded-full border ${cls} interactive skill-tag" data-skill="${esc(s.label)}">${esc(s.label)}</span>`;
+      return chipHtml(s, key);
     })
     .join("");
 }
@@ -1035,13 +1077,199 @@ function renderContactGate(enabled) {
   if (form) form.classList.toggle("contact-form--disabled", !_contactFormEnabled);
 }
 
+const contribInitials = (name) => {
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "?";
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+};
+
+const SVG_GITHUB = `<svg class="contrib-link__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.38 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12"/></svg>`;
+
+const SVG_LINKEDIN = `<svg class="contrib-link__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>`;
+
+const SVG_GLOBE = `<svg class="contrib-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`;
+
+const buildContributorCardHtml = (person, index) => {
+  const links = [];
+  const gh = buildSocialUrl("github", person.github);
+  const li = buildSocialUrl("linkedin", person.linkedin);
+  const web = String(person.website || "").trim();
+  const webHref = web && !/^https?:\/\//i.test(web) ? `https://${web}` : web;
+  if (gh) {
+    links.push(
+      `<a href="${esc(gh)}" class="contrib-link contrib-link--github interactive" target="_blank" rel="noopener noreferrer">${SVG_GITHUB}<span>GitHub</span></a>`
+    );
+  }
+  if (li) {
+    links.push(
+      `<a href="${esc(li)}" class="contrib-link contrib-link--linkedin interactive" target="_blank" rel="noopener noreferrer">${SVG_LINKEDIN}<span>LinkedIn</span></a>`
+    );
+  }
+  if (webHref) {
+    links.push(
+      `<a href="${esc(webHref)}" class="contrib-link contrib-link--web interactive" target="_blank" rel="noopener noreferrer">${SVG_GLOBE}<span>Website</span></a>`
+    );
+  }
+  return `
+    <article class="contrib-card reveal" style="animation-delay:${(index * 0.06).toFixed(2)}s" data-contrib-card data-accent="${index % 6}">
+      <div class="contrib-card__spotlight" aria-hidden="true"></div>
+      <div class="contrib-card__accent-bar" aria-hidden="true"></div>
+      <div class="contrib-card__inner">
+        <span class="contrib-card__index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
+        <div class="contrib-avatar-wrap">
+          <div class="contrib-avatar-glow" aria-hidden="true"></div>
+          <div class="contrib-avatar" aria-hidden="true">${esc(contribInitials(person.name))}</div>
+        </div>
+        <h3 class="contrib-name">${esc(person.name)}</h3>
+        <span class="contrib-role-badge">${esc(person.role)}</span>
+        ${links.length ? `<div class="contrib-divider" aria-hidden="true"></div><div class="contrib-links">${links.join("")}</div>` : ""}
+      </div>
+    </article>
+  `;
+};
+
+const setupContributorEffects = () => {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  document.querySelectorAll("[data-contrib-card]").forEach((card) => {
+    if (card.dataset.contribFx === "1") return;
+    card.dataset.contribFx = "1";
+
+    card.addEventListener("mousemove", (e) => {
+      const r = card.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * 100;
+      const y = ((e.clientY - r.top) / r.height) * 100;
+      card.style.setProperty("--mx", `${x}%`);
+      card.style.setProperty("--my", `${y}%`);
+    });
+  });
+};
+
+function renderContributorsSection(section = {}) {
+  const wrap = document.getElementById("contributors");
+  const el = document.getElementById("contributors-container");
+  if (!wrap || !el) return;
+
+  const enabled = section.enabled === true;
+  const items = (section.items || [])
+    .filter((p) => p && p.name && p.visible !== false)
+    .slice()
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  if (!enabled || !items.length) {
+    wrap.classList.add("cms-section--hidden");
+    wrap.setAttribute("aria-hidden", "true");
+    el.innerHTML = "";
+    return;
+  }
+
+  const titleEl = document.getElementById("contributors-title");
+  const subEl = document.getElementById("contributors-subtitle");
+  if (titleEl && section.title) titleEl.textContent = section.title;
+  if (subEl && section.subtitle) subEl.textContent = section.subtitle;
+
+  wrap.classList.remove("cms-section--hidden");
+  wrap.setAttribute("aria-hidden", "false");
+  el.innerHTML = items.map((p, i) => buildContributorCardHtml(p, i)).join("");
+  setupContributorEffects();
+  refreshUi();
+}
+
+const buildUpcomingCardHtml = (feature, index) => `
+  <article class="upcoming-card reveal" data-upcoming-card data-accent="${index % 6}" style="animation-delay:${(index * 0.06).toFixed(2)}s">
+    <div class="upcoming-card__spotlight" aria-hidden="true"></div>
+    <div class="upcoming-card__accent" aria-hidden="true"></div>
+    <div class="upcoming-card__inner">
+      <span class="upcoming-card__tag">Soon</span>
+      <div class="upcoming-card__head">
+        <div class="upcoming-card__icon-wrap">
+          <span class="upcoming-card__icon" aria-hidden="true">${esc(feature.icon || "✨")}</span>
+        </div>
+        <div class="upcoming-card__body">
+          <h3 class="upcoming-card__title">${esc(feature.title)}</h3>
+          ${feature.eta ? `<span class="upcoming-card__eta"><span class="upcoming-card__eta-dot" aria-hidden="true"></span>${esc(feature.eta)}</span>` : ""}
+        </div>
+      </div>
+      <p class="upcoming-card__desc">${esc(feature.description)}</p>
+    </div>
+  </article>
+`;
+
+const setupUpcomingEffects = () => {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  document.querySelectorAll("[data-upcoming-card]").forEach((card) => {
+    if (card.dataset.upcomingFx === "1") return;
+    card.dataset.upcomingFx = "1";
+    card.addEventListener("mousemove", (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+      card.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+    });
+  });
+};
+
+function renderUpcomingFeatures(items = []) {
+  const wrap = document.getElementById("upcoming");
+  const el = document.getElementById("upcoming-container");
+  if (!wrap || !el) return;
+
+  const list = (items || [])
+    .filter((f) => f && f.title && f.visible !== false)
+    .slice()
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  if (!list.length) {
+    wrap.classList.add("cms-section--hidden");
+    wrap.setAttribute("aria-hidden", "true");
+    el.innerHTML = "";
+    return;
+  }
+
+  wrap.classList.remove("cms-section--hidden");
+  wrap.setAttribute("aria-hidden", "false");
+  el.innerHTML = list.map((f, i) => buildUpcomingCardHtml(f, i)).join("");
+  setupUpcomingEffects();
+  refreshUi();
+}
+
+function renderSiteBanner(banner = {}) {
+  const el = document.getElementById("site-dev-banner");
+  const devEl = document.getElementById("site-dev-banner-dev");
+  const msgEl = document.getElementById("site-dev-banner-msg");
+  if (!el) return;
+
+  const enabled = banner.enabled === true;
+  const devName = String(banner.developerName || "The developer").trim() || "The developer";
+  const message = String(banner.message || "Shipping new features and improvements.").trim();
+
+  if (devEl) devEl.textContent = devName;
+  if (msgEl) msgEl.textContent = `— ${message}`;
+
+  el.hidden = !enabled;
+  el.classList.toggle("is-visible", enabled);
+  document.body.classList.toggle("has-site-banner", enabled);
+
+  if (enabled) {
+    requestAnimationFrame(() => {
+      const h = el.offsetHeight || 44;
+      document.documentElement.style.setProperty("--site-banner-height", `${h}px`);
+    });
+  } else {
+    document.documentElement.style.removeProperty("--site-banner-height");
+  }
+}
+
 function renderAll(data) {
+  try { renderSiteBanner(data.siteBanner);                                   } catch (e) { console.error("renderSiteBanner",     e); }
   try { renderProfile(data.profile);                              } catch (e) { console.error("renderProfile",   e); }
   try { renderStats(data.stats);                                  } catch (e) { console.error("renderStats",     e); }
   try { renderArsenal(data.technicalArsenal || data.skills);      } catch (e) { console.error("renderArsenal",   e); }
   try { renderExpertise(data.expertise);                          } catch (e) { console.error("renderExpertise", e); }
   try { renderExperience(data.experience);                        } catch (e) { console.error("renderExperience",e); }
   try { renderProjects(data.projects);                            } catch (e) { console.error("renderProjects",  e); }
+  try { renderContributorsSection(data.contributorsSection);       } catch (e) { console.error("renderContributors",e); }
+  try { renderUpcomingFeatures(data.upcomingFeatures);            } catch (e) { console.error("renderUpcoming",  e); }
   try { renderSocialLinks(data.socialLinks || {});                } catch (e) { console.error("renderSocialLinks",e); }
   try { renderResume(data.resumeUrl, data.showResume);            } catch (e) { console.error("renderResume",    e); }
   try { renderSeo(data.seo || {});                                } catch (e) { console.error("renderSeo",       e); }
@@ -1075,6 +1303,13 @@ onSnapshot(
     // Public read rule should make this very unlikely. If it fires
     // we keep the static HTML in place — the user still sees content.
     console.error("[portfolio] snapshot error:", err);
+    reportCmsLog({
+      level: "ERROR",
+      category: "firestore",
+      message: err?.message || String(err),
+      stack: err?.stack || "",
+      context: "portfolio.snapshot",
+    });
   }
 );
 
@@ -1140,6 +1375,13 @@ const sendContactEmail = async (data) => {
     return true;
   } catch (err) {
     console.error("[contact] EmailJS admin failed:", err);
+    reportCmsLog({
+      level: "ERROR",
+      category: "emailjs",
+      message: err?.message || String(err),
+      stack: err?.stack || "",
+      context: "contact.emailjs.admin",
+    });
     return false;
   }
 };
@@ -1154,6 +1396,13 @@ const sendAutoReply = async (data) => {
     return true;
   } catch (err) {
     console.error("[contact] EmailJS auto-reply failed:", err);
+    reportCmsLog({
+      level: "WARN",
+      category: "emailjs",
+      message: err?.message || String(err),
+      stack: err?.stack || "",
+      context: "contact.emailjs.autoreply",
+    });
     return false;
   }
 };
@@ -1287,6 +1536,13 @@ const initContactForm = () => {
       console.log("[contact] Firestore: saved to contact_submissions");
     } catch (err) {
       console.error("[contact] Firestore save failed:", err);
+      reportCmsLog({
+        level: "ERROR",
+        category: "inbox",
+        message: err?.message || String(err),
+        stack: err?.stack || "",
+        context: "contact.firestore",
+      });
     }
 
     emailOk = await sendContactEmail(data);

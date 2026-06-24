@@ -31,7 +31,8 @@ export const db = getFirestore(app);
 // Single-tenant CMS — every read points at this exact document.
 export const portfolioRef = doc(db, "portfolio", "satwinder");
 export const submissionsCol = collection(db, "contact_submissions");
+export const cmsLogsCol = collection(db, "cms_logs");
 
 // Re-export the Firestore helpers so portfolio.js never has to know
 // the full SDK URL.
-export { onSnapshot, addDoc, serverTimestamp };
+export { onSnapshot, addDoc, serverTimestamp, collection };
