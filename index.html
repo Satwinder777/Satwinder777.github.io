@@ -23,7 +23,27 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <!-- Live CMS: portfolio.js imports firebase.js (do not load firebase.js twice). -->
-<script type="module" src="./portfolio.js?v=20260615"></script>
+<script>
+(function () {
+  function revealStaticFallback() {
+    if (document.documentElement.classList.contains("portfolio-ready")) return;
+    document.querySelectorAll(".reveal:not(.active)").forEach(function (el) {
+      el.classList.add("active");
+    });
+    if (window.lucide) window.lucide.createIcons();
+    document.body.setAttribute("data-fallback-ui", "true");
+    console.warn("[portfolio] JS module failed — showing static HTML fallback.");
+  }
+  window.addEventListener("error", function (e) {
+    var src = e.filename || "";
+    if (/portfolio\.js|firebase\.js|cms-log\.js/i.test(src)) {
+      setTimeout(revealStaticFallback, 50);
+    }
+  });
+  setTimeout(revealStaticFallback, 3500);
+})();
+</script>
+<script type="module" src="./portfolio.js?v=20260624"></script>
 <script>
 tailwind.config = {
 theme: {
