@@ -1239,6 +1239,7 @@ function renderContactGate(enabled) {
   const form = document.getElementById("contact-form");
   if (banner) banner.classList.toggle("hidden", _contactFormEnabled);
   if (form) form.classList.toggle("contact-form--disabled", !_contactFormEnabled);
+  refreshContactFormUi();
 }
 
 const contribInitials = (name) => {
@@ -1639,6 +1640,7 @@ function setupSignalTypeTiles() {
       tile.classList.toggle("is-active", tile.dataset.value === value);
     });
     setFeedbackFieldError("fb-type", "");
+    refreshFeedbackFormUi();
   };
 
   grid.querySelectorAll(".signal-type-tile").forEach((tile) => {
@@ -1804,36 +1806,67 @@ const setFeedbackFieldError = (field, msg) => {
   wrap?.classList.toggle("contact-field--invalid", !!msg);
 };
 
-const feedbackFieldError = (field, form) => {
-  const name = String(form["fb-name"]?.value || "").trim();
-  const type = String(form["fb-type"]?.value || "").trim();
-  const suggestion = String(form["fb-suggestion"]?.value || "").trim();
+const readFeedbackFormData = () => ({
+  name: document.getElementById("fb-name")?.value.trim() || "",
+  type: document.getElementById("fb-type")?.value.trim() || "",
+  suggestion: document.getElementById("fb-suggestion")?.value.trim() || "",
+});
+
+const feedbackFieldError = (field, data = readFeedbackFormData()) => {
   switch (field) {
     case "fb-name":
-      return name.length < 2 ? "Please enter your full name." : "";
+      return data.name.length < 2 ? "Please enter your full name." : "";
     case "fb-type":
-      return !type ? "Please choose a signal type." : "";
+      return !data.type ? "Please choose a signal type." : "";
     case "fb-suggestion":
-      return suggestion.length < 10 ? "Please write at least 10 characters." : "";
+      return data.suggestion.length < 10
+        ? "Please write at least 10 characters."
+        : "";
     default:
       return "";
   }
 };
 
-function bindLiveFeedbackValidation(form) {
-  const fields = ["fb-name", "fb-suggestion"];
-  fields.forEach((field) => {
-    const el = form[field];
+const isFeedbackFormValid = (data = readFeedbackFormData()) =>
+  !feedbackFieldError("fb-name", data) &&
+  !feedbackFieldError("fb-type", data) &&
+  !feedbackFieldError("fb-suggestion", data);
+
+const showAllFeedbackErrors = (data = readFeedbackFormData()) => {
+  ["fb-name", "fb-type", "fb-suggestion"].forEach((field) => {
+    setFeedbackFieldError(field, feedbackFieldError(field, data));
+  });
+};
+
+function refreshFeedbackFormUi() {
+  const submitBtn = document.getElementById("feedback-submit-btn");
+  const data = readFeedbackFormData();
+  const submitting = submitBtn?.dataset.submitting === "1";
+
+  ["fb-name", "fb-type", "fb-suggestion"].forEach((field) => {
+    const err = document.getElementById(`error-${field}`);
+    if (!err?.textContent) return;
+    setFeedbackFieldError(field, feedbackFieldError(field, data));
+  });
+
+  if (submitBtn && !submitting) {
+    submitBtn.disabled = !isFeedbackFormValid(data);
+  }
+}
+
+function bindFeedbackFormLiveUi() {
+  const refresh = () => refreshFeedbackFormUi();
+  ["fb-name", "fb-suggestion", "fb-type"].forEach((id) => {
+    const el = document.getElementById(id);
     if (!el) return;
-    const refresh = () => {
-      const err = document.getElementById(`error-${field}`);
-      if (!err?.textContent) return;
-      setFeedbackFieldError(field, feedbackFieldError(field, form));
-    };
     el.addEventListener("input", refresh);
     el.addEventListener("change", refresh);
   });
 }
+
+const clearFeedbackErrors = () => {
+  ["fb-name", "fb-type", "fb-suggestion"].forEach((f) => setFeedbackFieldError(f, ""));
+};
 
 /** Shift+Enter in a textarea submits the form; Enter alone keeps a new line. */
 function bindShiftEnterSubmit(form, textareaIds = []) {
@@ -1859,10 +1892,6 @@ function bindShiftEnterSubmit(form, textareaIds = []) {
   });
 }
 
-const clearFeedbackErrors = () => {
-  ["fb-name", "fb-type", "fb-suggestion"].forEach((f) => setFeedbackFieldError(f, ""));
-};
-
 function initFeedbackForm() {
   const form = document.getElementById("feedback-form");
   if (!form || form.dataset.bound === "1") return;
@@ -1870,7 +1899,7 @@ function initFeedbackForm() {
 
   setupSignalTypeTiles();
   setupSignalFilters();
-  bindLiveFeedbackValidation(form);
+  bindFeedbackFormLiveUi();
   bindShiftEnterSubmit(form, ["fb-suggestion"]);
 
   const statusEl = document.getElementById("feedback-form-status");
@@ -1886,6 +1915,7 @@ function initFeedbackForm() {
   };
   suggestionEl?.addEventListener("input", updateCharCount);
   updateCharCount();
+  refreshFeedbackFormUi();
 
   const showFbStatus = (msg, kind = "") => {
     if (!statusEl) return;
@@ -1896,26 +1926,12 @@ function initFeedbackForm() {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    clearFeedbackErrors();
+    const data = readFeedbackFormData();
 
-    const name = String(form["fb-name"]?.value || "").trim();
-    const type = String(form["fb-type"]?.value || "").trim();
-    const suggestion = String(form["fb-suggestion"]?.value || "").trim();
-
-    let ok = true;
-    if (name.length < 2) {
-      setFeedbackFieldError("fb-name", "Please enter your full name.");
-      ok = false;
+    if (!isFeedbackFormValid(data)) {
+      showAllFeedbackErrors(data);
+      return;
     }
-    if (!type) {
-      setFeedbackFieldError("fb-type", "Please choose a signal type.");
-      ok = false;
-    }
-    if (suggestion.length < 10) {
-      setFeedbackFieldError("fb-suggestion", "Please write at least 10 characters.");
-      ok = false;
-    }
-    if (!ok) return;
 
     const now = Date.now();
     if (now - _lastFeedbackSubmit < FEEDBACK_RATE_MS) {
@@ -1924,15 +1940,18 @@ function initFeedbackForm() {
     }
 
     const original = labelEl?.textContent || "Transmit signal";
-    if (submitBtn) submitBtn.disabled = true;
+    if (submitBtn) {
+      submitBtn.dataset.submitting = "1";
+      submitBtn.disabled = true;
+    }
     if (labelEl) labelEl.textContent = "Transmitting…";
     showFbStatus("");
 
     try {
       await addDoc(feedbackCol, {
-        name,
-        type,
-        suggestion,
+        name: data.name,
+        type: data.type,
+        suggestion: data.suggestion,
         status: "in_review",
         developerReply: "",
         visibleOnWeb: true,
@@ -1944,6 +1963,7 @@ function initFeedbackForm() {
       document.getElementById("signal-type-grid")?.querySelectorAll(".signal-type-tile").forEach((c) => {
         c.classList.remove("is-active");
       });
+      clearFeedbackErrors();
       updateCharCount();
       triggerSignalBurst();
       showFbStatus(
@@ -1961,8 +1981,9 @@ function initFeedbackForm() {
         context: "feedback.submit",
       });
     } finally {
-      if (submitBtn) submitBtn.disabled = false;
+      if (submitBtn) submitBtn.dataset.submitting = "0";
       if (labelEl) labelEl.textContent = original;
+      refreshFeedbackFormUi();
     }
   });
 }
@@ -2158,15 +2179,40 @@ const readContactFormData = () => ({
   message: document.getElementById("message")?.value.trim() || "",
 });
 
-function bindLiveContactValidation(form) {
+const isContactFormValid = (data = readContactFormData()) =>
+  !contactFieldError("name", data) &&
+  !contactFieldError("email", data) &&
+  !contactFieldError("phone", data) &&
+  !contactFieldError("subject", data) &&
+  !contactFieldError("message", data);
+
+const showAllContactErrors = (data = readContactFormData()) => {
   ["name", "email", "phone", "subject", "message"].forEach((field) => {
-    const el = document.getElementById(field);
+    setFieldError(field, contactFieldError(field, data));
+  });
+};
+
+function refreshContactFormUi() {
+  const submitBtn = document.getElementById("submit-btn");
+  const data = readContactFormData();
+  const submitting = submitBtn?.dataset.submitting === "1";
+
+  ["name", "email", "phone", "subject", "message"].forEach((field) => {
+    const err = document.getElementById(`error-${field}`);
+    if (!err?.textContent) return;
+    setFieldError(field, contactFieldError(field, data));
+  });
+
+  if (submitBtn && !submitting) {
+    submitBtn.disabled = !_contactFormEnabled || !isContactFormValid(data);
+  }
+}
+
+function bindContactFormLiveUi() {
+  const refresh = () => refreshContactFormUi();
+  ["name", "email", "phone", "subject", "message"].forEach((id) => {
+    const el = document.getElementById(id);
     if (!el) return;
-    const refresh = () => {
-      const err = document.getElementById(`error-${field}`);
-      if (!err?.textContent) return;
-      setFieldError(field, contactFieldError(field, readContactFormData()));
-    };
     el.addEventListener("input", refresh);
     el.addEventListener("change", refresh);
   });
@@ -2177,17 +2223,8 @@ const clearContactErrors = () => {
 };
 
 const validateContactForm = (data) => {
-  clearContactErrors();
-  let ok = true;
-
-  ["name", "email", "phone", "subject", "message"].forEach((field) => {
-    const msg = contactFieldError(field, data);
-    if (msg) {
-      setFieldError(field, msg);
-      ok = false;
-    }
-  });
-  return ok;
+  showAllContactErrors(data);
+  return isContactFormValid(data);
 };
 
 const initContactForm = () => {
@@ -2195,12 +2232,13 @@ const initContactForm = () => {
   if (!form || form.dataset.bound === "1") return;
   form.dataset.bound = "1";
 
-  bindLiveContactValidation(form);
+  bindContactFormLiveUi();
   bindShiftEnterSubmit(form, ["message"]);
 
   const statusDiv = document.getElementById("form-status");
   const messageEl = document.getElementById("message");
   const countEl = document.getElementById("message-count");
+  const submitBtn = document.getElementById("submit-btn");
 
   const updateCount = () => {
     if (!countEl || !messageEl) return;
@@ -2208,6 +2246,7 @@ const initContactForm = () => {
   };
   messageEl?.addEventListener("input", updateCount);
   updateCount();
+  refreshContactFormUi();
 
   const showStatus = (message, type) => {
     if (!statusDiv) return;
@@ -2241,10 +2280,10 @@ const initContactForm = () => {
       return;
     }
 
-    const submitBtn = document.getElementById("submit-btn");
     const labelEl = submitBtn?.querySelector(".contact-submit__label");
     const originalLabel = labelEl?.textContent || "Send Secure Message";
     if (submitBtn) {
+      submitBtn.dataset.submitting = "1";
       submitBtn.disabled = true;
       if (labelEl) labelEl.textContent = "Sending…";
     }
@@ -2321,8 +2360,9 @@ const initContactForm = () => {
     }
 
     if (submitBtn) {
-      submitBtn.disabled = false;
+      submitBtn.dataset.submitting = "0";
       if (labelEl) labelEl.textContent = originalLabel;
+      refreshContactFormUi();
     }
     refreshUi();
   });
