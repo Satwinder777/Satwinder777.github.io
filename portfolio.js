@@ -94,14 +94,38 @@ const MONTHS = [
 ];
 const fmtMonthYear = (raw) => {
   if (!raw) return "";
-  const d = raw.toDate
-    ? raw.toDate()
-    : raw.seconds
-    ? new Date(raw.seconds * 1000)
-    : new Date(raw);
-  if (isNaN(d.getTime())) return "";
+  const d = parseFirestoreDate(raw);
+  if (!d) return "";
   return `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 };
+
+const parseFirestoreDate = (raw) => {
+  if (!raw) return null;
+  const d = raw.toDate
+    ? raw.toDate()
+    : raw.seconds != null
+    ? new Date(raw.seconds * 1000)
+    : raw instanceof Date
+    ? raw
+    : new Date(raw);
+  return isNaN(d.getTime()) ? null : d;
+};
+
+function formatFeedbackTimeAgo(raw) {
+  const d = parseFirestoreDate(raw);
+  if (!d) return "";
+  const sec = Math.max(0, Math.floor((Date.now() - d.getTime()) / 1000));
+  if (sec < 45) return "just now";
+  if (sec < 60) return `${sec}s ago`;
+  const min = Math.floor(sec / 60);
+  if (min < 60) return `${min}m ago`;
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return `${hr}h ago`;
+  const day = Math.floor(hr / 24);
+  if (day < 7) return `${day}d ago`;
+  if (day < 30) return `${Math.floor(day / 7)}w ago`;
+  return `${MONTHS[d.getMonth()]} ${d.getDate()}`;
+}
 
 const buildSocialUrl = (platform, raw) => {
   const v = String(raw || "").trim();
@@ -1611,6 +1635,9 @@ function buildFeedbackItemHtml(item, i = 0) {
   const accent = feedbackAccent(item.type);
   const initials = feedbackInitials(item.name);
   const hero = i === 0 ? " signal-card--hero" : "";
+  const created = parseFirestoreDate(item.createdAt);
+  const timeAgo = formatFeedbackTimeAgo(item.createdAt);
+  const timeIso = created ? created.toISOString() : "";
   return `
     <article class="signal-card${hero}" data-signal-card style="--sig-accent:${accent};animation-delay:${Math.min(i * 0.06, 0.36)}s">
       <div class="signal-card__inner">
@@ -1620,7 +1647,14 @@ function buildFeedbackItemHtml(item, i = 0) {
           <div class="signal-card__avatar" aria-hidden="true">${esc(initials)}</div>
           <div class="signal-card__meta">
             <div class="signal-card__name">${esc(item.name || "Visitor")}</div>
-            <span class="signal-card__type">${esc(item.type || "Feedback")}</span>
+            <div class="signal-card__subrow">
+              <span class="signal-card__type">${esc(item.type || "Feedback")}</span>
+              ${
+                timeAgo
+                  ? `<span class="signal-card__dot" aria-hidden="true">·</span><time class="signal-card__time" datetime="${esc(timeIso)}" title="${esc(created ? created.toLocaleString() : "")}">${esc(timeAgo)}</time>`
+                  : ""
+              }
+            </div>
           </div>
           <span class="signal-badge ${status.cls}">
             <span class="signal-badge__dot" aria-hidden="true"></span>
