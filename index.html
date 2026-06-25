@@ -422,11 +422,28 @@ border: 2px solid rgba(0, 217, 255, 0.8);
 }
 }
 
-/* Scrollbar */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #0a0e27; }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(0, 217, 255, 0.5), rgba(139, 92, 246, 0.5)); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, rgba(0, 217, 255, 0.8), rgba(139, 92, 246, 0.8)); }
+/* Premium scrollbar — OFF for now.
+   Re-enable later: add class scroll-ui-premium to <html> (e.g. class="scroll-smooth scroll-ui-premium") */
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+html.scroll-ui-premium {
+  scrollbar-width: thin;
+}
+html.scroll-ui-premium::-webkit-scrollbar { width: 8px; }
+html.scroll-ui-premium::-webkit-scrollbar-track { background: #0a0e27; }
+html.scroll-ui-premium::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(0, 217, 255, 0.5), rgba(139, 92, 246, 0.5));
+  border-radius: 4px;
+}
+html.scroll-ui-premium::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(0, 217, 255, 0.8), rgba(139, 92, 246, 0.8));
+}
 
 /* Loading Spinner */
     .spinner {
