@@ -343,16 +343,94 @@ function renderStats(stats = []) {
     .slice()
     .sort((a, b) => (a.order || 0) - (b.order || 0));
   if (!list.length) return; // keep static fallback
-  el.innerHTML = list
-    .map(
-      (s) => `
-        <div class="glass-card p-6 rounded-2xl">
-          ${s.icon ? `<div class="text-2xl mb-2" aria-hidden="true">${esc(s.icon)}</div>` : ""}
-          <div class="text-3xl font-display font-bold gradient-text mb-2">${esc(s.value)}</div>
-          <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">${esc(s.label)}</div>
-        </div>`
-    )
-    .join("");
+  el.innerHTML = list.map((s) => buildStatCardHtml(s)).join("");
+  setupStatCards(el);
+}
+
+function statScrollTarget(stat = {}) {
+  const label = String(stat.label || "").toLowerCase();
+  if (/\bproduction\b|\bapps?\b/.test(label)) return "projects";
+  if (/\byear\b|\bexp\.?\b|\bexperience\b/.test(label)) return "experience";
+  if (/\bcrash\b|\breliab\b|\bfree\b/.test(label)) return "expertise";
+  if (/\bfps\b|\bframe\b|\brender\b/.test(label)) return "expertise";
+  if (/\bperf\b|\bimprov/.test(label)) return "expertise";
+  if (/\bdomain\b|\bindustr/.test(label)) return "about";
+  return null;
+}
+
+const STAT_SECTION_HINTS = {
+  projects: "Featured Implementations",
+  experience: "Career Trajectory",
+  expertise: "Deep Technical Expertise",
+  about: "Technical Arsenal",
+  contact: "Contact",
+};
+
+function buildStatCardHtml(stat) {
+  const target = statScrollTarget(stat);
+  const hint = target ? STAT_SECTION_HINTS[target] : "";
+  const linkCls = target ? " stat-card--link" : "";
+  const attrs = target
+    ? ` data-scroll-section="${target}" tabindex="0" role="link" aria-label="${esc(stat.label)} — scroll to ${esc(hint)}"`
+    : "";
+  return `
+        <div class="glass-card stat-card${linkCls} p-6 rounded-2xl"${attrs}>
+          ${stat.icon ? `<div class="text-2xl mb-2" aria-hidden="true">${esc(stat.icon)}</div>` : ""}
+          <div class="text-3xl font-display font-bold gradient-text mb-2">${esc(stat.value)}</div>
+          <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">${esc(stat.label)}</div>
+          ${target ? `<div class="stat-card__hint" aria-hidden="true">View ${esc(hint)}</div>` : ""}
+        </div>`;
+}
+
+function getScrollOffset() {
+  const nav = document.getElementById("navbar");
+  const navH = nav?.offsetHeight || 72;
+  const bannerH = document.body.classList.contains("has-site-banner")
+    ? parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue(
+          "--site-banner-height"
+        ) || "52",
+        10
+      )
+    : 0;
+  return navH + bannerH + 16;
+}
+
+function scrollToSection(sectionId) {
+  const el = document.getElementById(sectionId);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - getScrollOffset();
+  window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  if (typeof setActiveNav === "function") setActiveNav(sectionId);
+  try {
+    history.replaceState(null, "", `#${sectionId}`);
+  } catch (_) {
+    /* ignore */
+  }
+}
+
+function setupStatCards(container) {
+  if (!container || container.dataset.statBound === "1") return;
+  container.dataset.statBound = "1";
+
+  const activate = (card) => {
+    const id = card?.dataset?.scrollSection;
+    if (id) scrollToSection(id);
+  };
+
+  container.addEventListener("click", (e) => {
+    const card = e.target.closest("[data-scroll-section]");
+    if (!card) return;
+    activate(card);
+  });
+
+  container.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const card = e.target.closest("[data-scroll-section]");
+    if (!card) return;
+    e.preventDefault();
+    activate(card);
+  });
 }
 
 function renderArsenal(skills = []) {
@@ -2166,6 +2244,7 @@ const initContactForm = () => {
 
 const bootPortfolioUi = () => {
   initNavEffects();
+  setupStatCards($("stats-container"));
   initFeedbackForm();
   watchFeedbackBoard();
   initContactForm();
