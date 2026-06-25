@@ -8,10 +8,15 @@
 import {
   portfolioRef,
   submissionsCol,
+  feedbackCol,
   cmsLogsCol,
   onSnapshot,
   addDoc,
   serverTimestamp,
+  query,
+  where,
+  orderBy,
+  limit,
 } from "./firebase.js";
 
 // ------------------------------------------------------------
@@ -1290,18 +1295,40 @@ function renderUpcomingFeatures(items = []) {
   refreshUi();
 }
 
+function bannerEsc(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function buildSiteBannerLine(devName, message) {
+  const msg = message.replace(/^[—–-]\s*/, "").trim();
+  return (
+    `<span class="site-dev-banner__text">` +
+    `<strong class="site-dev-banner__dev">${bannerEsc(devName)}</strong>` +
+    ` is actively updating this portfolio` +
+    `<span class="site-dev-banner__sep" aria-hidden="true">✦</span>` +
+    `<span class="site-dev-banner__msg">${bannerEsc(msg)}</span>` +
+    `</span>`
+  );
+}
+
 function renderSiteBanner(banner = {}) {
   const el = document.getElementById("site-dev-banner");
-  const devEl = document.getElementById("site-dev-banner-dev");
-  const msgEl = document.getElementById("site-dev-banner-msg");
+  const marqueeEl = document.getElementById("site-dev-banner-marquee");
+  const ariaEl = document.getElementById("site-dev-banner-aria");
   if (!el) return;
 
   const enabled = banner.enabled === true;
   const devName = String(banner.developerName || "The developer").trim() || "The developer";
   const message = String(banner.message || "Shipping new features and improvements.").trim();
+  const line = buildSiteBannerLine(devName, message);
+  const ariaText = `${devName} is actively updating this portfolio — ${message.replace(/^[—–-]\s*/, "")}`;
 
-  if (devEl) devEl.textContent = devName;
-  if (msgEl) msgEl.textContent = `— ${message}`;
+  if (marqueeEl) marqueeEl.innerHTML = line + line;
+  if (ariaEl) ariaEl.textContent = ariaText;
 
   el.hidden = !enabled;
   el.classList.toggle("is-visible", enabled);
@@ -1309,12 +1336,466 @@ function renderSiteBanner(banner = {}) {
 
   if (enabled) {
     requestAnimationFrame(() => {
-      const h = el.offsetHeight || 44;
+      const h = el.offsetHeight || 52;
       document.documentElement.style.setProperty("--site-banner-height", `${h}px`);
     });
   } else {
     document.documentElement.style.removeProperty("--site-banner-height");
   }
+}
+
+// ------------------------------------------------------------
+//  Premium nav — scroll state + active section spy
+// ------------------------------------------------------------
+const NAV_SECTIONS = [
+  "about",
+  "expertise",
+  "experience",
+  "projects",
+  "contributors",
+  "upcoming",
+  "feedback",
+  "contact",
+];
+
+function moveNavGlider(dock, link) {
+  const glider = dock?.querySelector(".nav-dock__glider");
+  if (!glider || !link) return;
+  const dockRect = dock.getBoundingClientRect();
+  const linkRect = link.getBoundingClientRect();
+  glider.style.width = `${linkRect.width}px`;
+  glider.style.transform = `translateX(${linkRect.left - dockRect.left}px)`;
+}
+
+function initNavDock(dock) {
+  if (!dock || dock.dataset.bound === "1") return;
+  dock.dataset.bound = "1";
+  const links = dock.querySelectorAll(".nav-link[data-section]");
+
+  links.forEach((link) => {
+    link.addEventListener("mouseenter", () => moveNavGlider(dock, link));
+    link.addEventListener("focus", () => moveNavGlider(dock, link));
+  });
+
+  dock.addEventListener("mouseleave", () => {
+    const active = dock.querySelector(".nav-link.is-active");
+    if (active) moveNavGlider(dock, active);
+  });
+
+  const active = dock.querySelector(".nav-link.is-active");
+  if (active) moveNavGlider(dock, active);
+
+  window.addEventListener("resize", () => {
+    const a = dock.querySelector(".nav-link.is-active");
+    if (a) moveNavGlider(dock, a);
+  });
+}
+
+function setActiveNav(sectionId) {
+  document.querySelectorAll(".nav-link[data-section]").forEach((link) => {
+    const active = link.dataset.section === sectionId;
+    link.classList.toggle("is-active", active);
+    if (active) {
+      link.setAttribute("aria-current", "page");
+      const dock = link.closest(".nav-dock");
+      if (dock) moveNavGlider(dock, link);
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
+}
+
+function initNavEffects() {
+  const navbar = document.getElementById("navbar");
+  const onScroll = () => {
+    navbar?.classList.toggle("is-scrolled", window.scrollY > 24);
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  initNavDock(document.getElementById("nav-dock-main"));
+  initNavDock(document.getElementById("nav-dock-mobile"));
+
+  const sectionEls = NAV_SECTIONS.map((id) => document.getElementById(id)).filter(Boolean);
+  if (!sectionEls.length) return;
+
+  const spy = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((e) => e.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      if (visible[0]?.target?.id) setActiveNav(visible[0].target.id);
+    },
+    { rootMargin: "-28% 0px -58% 0px", threshold: [0.08, 0.2, 0.45] }
+  );
+  sectionEls.forEach((el) => spy.observe(el));
+
+  document.querySelectorAll(".nav-link[data-section]").forEach((link) => {
+    link.addEventListener("click", () => {
+      const id = link.dataset.section;
+      if (id) setActiveNav(id);
+    });
+  });
+
+  // Default active on load
+  if (!document.querySelector(".nav-link.is-active")) {
+    setActiveNav("about");
+  }
+}
+
+// ------------------------------------------------------------
+//  Suggestions & Feedback — Signal Studio
+// ------------------------------------------------------------
+const FEEDBACK_RATE_MS = 45_000;
+let _lastFeedbackSubmit = 0;
+let _feedbackDocs = [];
+let _feedbackFilter = "all";
+
+const FEEDBACK_STATUS_META = {
+  in_review: { label: "In review", cls: "signal-badge--review" },
+  reviewed: { label: "Reviewed", cls: "signal-badge--reviewed" },
+  resolved: { label: "Resolved", cls: "signal-badge--resolved" },
+};
+
+const FEEDBACK_TYPE_ACCENT = {
+  "Design & UX": "#a78bfa",
+  "New Feature Idea": "#00d9ff",
+  "Bug Report": "#f87171",
+  "Content / Copy": "#fbbf24",
+  Performance: "#34d399",
+  Other: "#8b5cf6",
+};
+
+function feedbackInitials(name) {
+  const parts = String(name || "V")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+  return (parts[0]?.[0] || "V").toUpperCase();
+}
+
+function feedbackAccent(type) {
+  return FEEDBACK_TYPE_ACCENT[type] || "#00d9ff";
+}
+
+function filterFeedbackDocs(docs = []) {
+  if (_feedbackFilter === "all") return docs;
+  return docs.filter((d) => d.status === _feedbackFilter);
+}
+
+function updateSignalFilterCounts(docs = []) {
+  const filters = document.getElementById("signal-filters");
+  if (!filters) return;
+  const counts = {
+    all: docs.length,
+    in_review: docs.filter((d) => d.status === "in_review").length,
+    reviewed: docs.filter((d) => d.status === "reviewed").length,
+    resolved: docs.filter((d) => d.status === "resolved").length,
+  };
+  filters.querySelectorAll(".signal-filter").forEach((btn) => {
+    const key = btn.dataset.filter || "all";
+    const base = btn.dataset.label || btn.textContent.trim().split(" (")[0];
+    btn.dataset.label = base;
+    const n = counts[key] ?? 0;
+    btn.textContent = key === "all" ? `${base} (${n})` : `${base} (${n})`;
+  });
+}
+
+function setupSignalCardEffects() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  document.querySelectorAll("[data-signal-card]").forEach((card) => {
+    if (card.dataset.sigFx === "1") return;
+    card.dataset.sigFx = "1";
+    card.addEventListener("mousemove", (e) => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.setProperty("--tilt-x", `${x * 10}deg`);
+      card.style.setProperty("--tilt-y", `${-y * 10}deg`);
+      card.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+      card.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.setProperty("--tilt-x", "0deg");
+      card.style.setProperty("--tilt-y", "0deg");
+    });
+  });
+}
+
+function setupSignalTypeTiles() {
+  const grid = document.getElementById("signal-type-grid");
+  const select = document.getElementById("fb-type");
+  if (!grid || !select || grid.dataset.bound === "1") return;
+  grid.dataset.bound = "1";
+
+  const sync = (value) => {
+    select.value = value;
+    grid.querySelectorAll(".signal-type-tile").forEach((tile) => {
+      tile.classList.toggle("is-active", tile.dataset.value === value);
+    });
+    setFeedbackFieldError("fb-type", "");
+  };
+
+  grid.querySelectorAll(".signal-type-tile").forEach((tile) => {
+    tile.addEventListener("click", () => sync(tile.dataset.value || ""));
+  });
+}
+
+function setupSignalFilters() {
+  const filters = document.getElementById("signal-filters");
+  if (!filters || filters.dataset.bound === "1") return;
+  filters.dataset.bound = "1";
+
+  filters.querySelectorAll(".signal-filter").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      _feedbackFilter = btn.dataset.filter || "all";
+      filters.querySelectorAll(".signal-filter").forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle("is-active", active);
+        b.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      renderFeedbackBoard(_feedbackDocs);
+    });
+  });
+}
+
+function triggerSignalBurst() {
+  const burst = document.getElementById("signal-burst");
+  if (!burst || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  burst.innerHTML = "";
+  const colors = ["#00d9ff", "#8b5cf6", "#ec4899", "#34d399", "#fbbf24"];
+  for (let i = 0; i < 28; i++) {
+    const span = document.createElement("span");
+    const angle = (Math.PI * 2 * i) / 28;
+    const dist = 70 + Math.random() * 130;
+    span.style.left = "50%";
+    span.style.top = "40%";
+    span.style.background = colors[i % colors.length];
+    span.style.setProperty("--tx", `${Math.cos(angle) * dist}px`);
+    span.style.setProperty("--ty", `${Math.sin(angle) * dist}px`);
+    burst.appendChild(span);
+  }
+  setTimeout(() => {
+    burst.innerHTML = "";
+  }, 950);
+}
+
+function renderFeedbackSection(cfg = {}) {
+  const wrap = document.getElementById("feedback");
+  if (!wrap) return;
+
+  const enabled = cfg.enabled !== false;
+  const title = String(cfg.title || "Suggestions & Feedback").trim();
+  const subtitle =
+    String(
+      cfg.subtitle ||
+        "Share ideas for this portfolio — every submission is reviewed personally."
+    ).trim();
+
+  const titleEl = document.getElementById("feedback-title");
+  const subEl = document.getElementById("feedback-subtitle");
+  if (titleEl) titleEl.textContent = title;
+  if (subEl) subEl.textContent = subtitle;
+
+  wrap.classList.toggle("cms-section--hidden", !enabled);
+  wrap.setAttribute("aria-hidden", enabled ? "false" : "true");
+  if (enabled) refreshUi();
+}
+
+function buildFeedbackItemHtml(item, i = 0) {
+  const status = FEEDBACK_STATUS_META[item.status] || FEEDBACK_STATUS_META.in_review;
+  const reply = String(item.developerReply || "").trim();
+  const accent = feedbackAccent(item.type);
+  const initials = feedbackInitials(item.name);
+  const hero = i === 0 ? " signal-card--hero" : "";
+  return `
+    <article class="signal-card${hero}" data-signal-card style="--sig-accent:${accent};animation-delay:${Math.min(i * 0.06, 0.36)}s">
+      <div class="signal-card__inner">
+        <div class="signal-card__spotlight" aria-hidden="true"></div>
+        <div class="signal-card__corner" aria-hidden="true"></div>
+        <div class="signal-card__top">
+          <div class="signal-card__avatar" aria-hidden="true">${esc(initials)}</div>
+          <div class="signal-card__meta">
+            <div class="signal-card__name">${esc(item.name || "Visitor")}</div>
+            <span class="signal-card__type">${esc(item.type || "Feedback")}</span>
+          </div>
+          <span class="signal-badge ${status.cls}">
+            <span class="signal-badge__dot" aria-hidden="true"></span>
+            ${esc(status.label)}
+          </span>
+        </div>
+        <p class="signal-card__text">${esc(item.suggestion || "")}</p>
+        ${
+          reply
+            ? `<div class="signal-card__reply"><strong>Developer reply</strong>${esc(reply)}</div>`
+            : ""
+        }
+      </div>
+    </article>`;
+}
+
+function renderFeedbackBoard(docs = []) {
+  const board = document.getElementById("feedback-board");
+  if (!board) return;
+
+  updateSignalFilterCounts(docs);
+  const visible = filterFeedbackDocs(docs);
+
+  if (!docs.length) {
+    board.innerHTML =
+      '<p class="signal-empty">No public signals yet — transmit the first suggestion from the console.</p>';
+    return;
+  }
+
+  if (!visible.length) {
+    board.innerHTML =
+      '<p class="signal-empty">No signals in this lane yet. Try another filter or send one in.</p>';
+    return;
+  }
+
+  board.innerHTML = visible.map((d, i) => buildFeedbackItemHtml(d, i)).join("");
+  setupSignalCardEffects();
+  refreshUi();
+}
+
+function watchFeedbackBoard() {
+  const q = query(
+    feedbackCol,
+    where("visibleOnWeb", "==", true),
+    orderBy("createdAt", "desc"),
+    limit(40)
+  );
+  onSnapshot(
+    q,
+    (snap) => {
+      _feedbackDocs = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      renderFeedbackBoard(_feedbackDocs);
+    },
+    (err) => {
+      console.error("[feedback] board listener:", err);
+      const board = document.getElementById("feedback-board");
+      if (board) {
+        board.innerHTML =
+          '<p class="signal-empty">Could not load signal feed. Firestore rules or index may need deploying.</p>';
+      }
+    }
+  );
+}
+
+const setFeedbackFieldError = (field, msg) => {
+  const wrap = document.querySelector(`.feedback-field[data-fb-field="${field}"]`);
+  const err = document.getElementById(`error-${field}`);
+  if (err) err.textContent = msg || "";
+  wrap?.classList.toggle("contact-field--invalid", !!msg);
+};
+
+const clearFeedbackErrors = () => {
+  ["fb-name", "fb-type", "fb-suggestion"].forEach((f) => setFeedbackFieldError(f, ""));
+};
+
+function initFeedbackForm() {
+  const form = document.getElementById("feedback-form");
+  if (!form || form.dataset.bound === "1") return;
+  form.dataset.bound = "1";
+
+  setupSignalTypeTiles();
+  setupSignalFilters();
+
+  const statusEl = document.getElementById("feedback-form-status");
+  const submitBtn = document.getElementById("feedback-submit-btn");
+  const labelEl = document.getElementById("feedback-submit-label");
+  const suggestionEl = document.getElementById("fb-suggestion");
+  const charCountEl = document.getElementById("fb-char-count");
+
+  const updateCharCount = () => {
+    if (!charCountEl || !suggestionEl) return;
+    const len = suggestionEl.value.length;
+    charCountEl.textContent = `${len} / 2000`;
+  };
+  suggestionEl?.addEventListener("input", updateCharCount);
+  updateCharCount();
+
+  const showFbStatus = (msg, kind = "") => {
+    if (!statusEl) return;
+    statusEl.textContent = msg;
+    statusEl.classList.remove("is-success", "is-error");
+    if (kind) statusEl.classList.add(`is-${kind}`);
+  };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    clearFeedbackErrors();
+
+    const name = String(form["fb-name"]?.value || "").trim();
+    const type = String(form["fb-type"]?.value || "").trim();
+    const suggestion = String(form["fb-suggestion"]?.value || "").trim();
+
+    let ok = true;
+    if (name.length < 2) {
+      setFeedbackFieldError("fb-name", "Please enter your full name.");
+      ok = false;
+    }
+    if (!type) {
+      setFeedbackFieldError("fb-type", "Please choose a signal type.");
+      ok = false;
+    }
+    if (suggestion.length < 10) {
+      setFeedbackFieldError("fb-suggestion", "Please write at least 10 characters.");
+      ok = false;
+    }
+    if (!ok) return;
+
+    const now = Date.now();
+    if (now - _lastFeedbackSubmit < FEEDBACK_RATE_MS) {
+      showFbStatus("Please wait a moment before transmitting again.", "error");
+      return;
+    }
+
+    const original = labelEl?.textContent || "Transmit signal";
+    if (submitBtn) submitBtn.disabled = true;
+    if (labelEl) labelEl.textContent = "Transmitting…";
+    showFbStatus("");
+
+    try {
+      await addDoc(feedbackCol, {
+        name,
+        type,
+        suggestion,
+        status: "in_review",
+        developerReply: "",
+        visibleOnWeb: true,
+        source: "portfolio_web",
+        createdAt: serverTimestamp(),
+      });
+      _lastFeedbackSubmit = now;
+      form.reset();
+      document.getElementById("signal-type-grid")?.querySelectorAll(".signal-type-tile").forEach((c) => {
+        c.classList.remove("is-active");
+      });
+      updateCharCount();
+      triggerSignalBurst();
+      showFbStatus(
+        "Signal received! Your idea is live on the feed as In review.",
+        "success"
+      );
+    } catch (err) {
+      console.error("[feedback] submit failed:", err);
+      showFbStatus("Could not transmit. Please try again in a moment.", "error");
+      reportCmsLog({
+        level: "ERROR",
+        category: "feedback",
+        message: err?.message || String(err),
+        stack: err?.stack || "",
+        context: "feedback.submit",
+      });
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+      if (labelEl) labelEl.textContent = original;
+    }
+  });
 }
 
 function renderAll(data) {
@@ -1327,6 +1808,7 @@ function renderAll(data) {
   try { renderProjects(data.projects);                            } catch (e) { console.error("renderProjects",  e); }
   try { renderContributorsSection(data.contributorsSection);       } catch (e) { console.error("renderContributors",e); }
   try { renderUpcomingFeatures(data.upcomingFeatures);            } catch (e) { console.error("renderUpcoming",  e); }
+  try { renderFeedbackSection(data.feedbackSection);              } catch (e) { console.error("renderFeedback",   e); }
   try { renderSocialLinks(data.socialLinks || {});                } catch (e) { console.error("renderSocialLinks",e); }
   try { renderResume(data.resumeUrl, data.showResume);            } catch (e) { console.error("renderResume",    e); }
   try { renderSeo(data.seo || {});                                } catch (e) { console.error("renderSeo",       e); }
@@ -1649,6 +2131,9 @@ const initContactForm = () => {
 };
 
 const bootPortfolioUi = () => {
+  initNavEffects();
+  initFeedbackForm();
+  watchFeedbackBoard();
   initContactForm();
   initContactNudge();
   console.info(

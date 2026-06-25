@@ -12,6 +12,10 @@ import {
   collection,
   addDoc,
   serverTimestamp,
+  query,
+  where,
+  orderBy,
+  limit,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // Web app config (same as satwinder777.github.io) — do not use the Android appId here.
@@ -31,8 +35,18 @@ export const db = getFirestore(app);
 // Single-tenant CMS — every read points at this exact document.
 export const portfolioRef = doc(db, "portfolio", "satwinder");
 export const submissionsCol = collection(db, "contact_submissions");
+export const feedbackCol = collection(db, "feedback_submissions");
 export const cmsLogsCol = collection(db, "cms_logs");
 
 // Re-export the Firestore helpers so portfolio.js never has to know
 // the full SDK URL.
-export { onSnapshot, addDoc, serverTimestamp, collection };
+export {
+  onSnapshot,
+  addDoc,
+  serverTimestamp,
+  collection,
+  query,
+  where,
+  orderBy,
+  limit,
+};

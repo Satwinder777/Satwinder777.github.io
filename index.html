@@ -43,7 +43,8 @@
   setTimeout(revealStaticFallback, 3500);
 })();
 </script>
-<script type="module" src="./portfolio.js?v=20260624"></script>
+<link rel="stylesheet" href="./feedback-studio.css?v=20260627">
+<script type="module" src="./portfolio.js?v=20260627"></script>
 <script>
 tailwind.config = {
 theme: {
@@ -91,12 +92,232 @@ overflow-x: hidden;
 -webkit-font-smoothing: antialiased;
 }
 
-/* Glassmorphism & Cards */
-    .glass-nav {
-background: rgba(10, 14, 39, 0.7);
-backdrop-filter: blur(12px);
-border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+/* ── Site navigation — floating dock ── */
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 0.65rem 1rem 0;
+  pointer-events: none;
 }
+.site-nav__shell {
+  pointer-events: auto;
+  max-width: 80rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0.55rem 0.45rem 0.65rem;
+  border-radius: 1.15rem;
+  background: linear-gradient(
+    135deg,
+    rgba(12, 16, 38, 0.72) 0%,
+    rgba(8, 12, 28, 0.65) 100%
+  );
+  backdrop-filter: blur(22px) saturate(1.45);
+  -webkit-backdrop-filter: blur(22px) saturate(1.45);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  transition: background 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease, transform 0.45s ease;
+}
+.site-nav.is-scrolled .site-nav__shell {
+  background: linear-gradient(
+    135deg,
+    rgba(8, 12, 28, 0.94) 0%,
+    rgba(6, 10, 24, 0.92) 100%
+  );
+  border-color: rgba(0, 217, 255, 0.18);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(0, 217, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.site-nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+  transition: transform 0.35s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+.site-nav__brand:hover { transform: scale(1.03); }
+.site-nav__logo {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #00d9ff, #8b5cf6);
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.35);
+  font-family: var(--font-display, system-ui);
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #fff;
+}
+.site-nav__name {
+  font-family: var(--font-display, system-ui);
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.nav-dock {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0.2rem;
+  flex: 1;
+  justify-content: center;
+  min-width: 0;
+}
+.nav-dock__glider {
+  position: absolute;
+  top: 0.2rem;
+  bottom: 0.2rem;
+  left: 0;
+  width: 0;
+  border-radius: 0.7rem;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 217, 255, 0.2) 0%,
+    rgba(139, 92, 246, 0.16) 100%
+  );
+  border: 1px solid rgba(0, 217, 255, 0.28);
+  box-shadow:
+    0 0 24px rgba(0, 217, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.45, 0.64, 1),
+    width 0.5s cubic-bezier(0.34, 1.45, 0.64, 1),
+    opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.nav-dock__sep {
+  width: 1px;
+  height: 1.1rem;
+  margin: 0 0.15rem;
+  flex-shrink: 0;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(255, 255, 255, 0.16),
+    transparent
+  );
+}
+.nav-dock__link {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  padding: 0.48rem 0.62rem;
+  border-radius: 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #94a3b8;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.28s ease, transform 0.32s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+.nav-dock__link svg {
+  width: 13px;
+  height: 13px;
+  opacity: 0.55;
+  transition: opacity 0.28s, transform 0.32s, color 0.28s;
+}
+.nav-dock__link:hover {
+  color: #f8fafc;
+  transform: translateY(-1px);
+}
+.nav-dock__link:hover svg {
+  opacity: 1;
+  transform: scale(1.12);
+  color: #00d9ff;
+}
+.nav-dock__link.is-active {
+  color: #fff;
+}
+.nav-dock__link.is-active svg {
+  opacity: 1;
+  color: #00d9ff;
+  filter: drop-shadow(0 0 6px rgba(0, 217, 255, 0.5));
+}
+.nav-dock__link--accent:hover svg,
+.nav-dock__link--accent.is-active svg {
+  color: #fbbf24;
+  filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.45));
+}
+
+.site-nav__cta {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.52rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #020617;
+  background: linear-gradient(90deg, #00d9ff 0%, #8b5cf6 55%, #ec4899 100%);
+  background-size: 200% 100%;
+  box-shadow: 0 0 24px rgba(0, 217, 255, 0.3);
+  transition: transform 0.38s cubic-bezier(0.34, 1.45, 0.64, 1), box-shadow 0.38s ease, background-position 0.5s ease;
+}
+.site-nav__cta:hover {
+  transform: translateY(-2px) scale(1.04);
+  background-position: 100% 0;
+  box-shadow: 0 0 36px rgba(0, 217, 255, 0.45), 0 0 48px rgba(139, 92, 246, 0.2);
+}
+.site-nav__cta svg { width: 14px; height: 14px; }
+
+.nav-dock--mobile {
+  pointer-events: auto;
+  max-width: 80rem;
+  margin: 0.45rem auto 0;
+  padding: 0.28rem 0.35rem;
+  border-radius: 1rem;
+  background: rgba(10, 14, 32, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.nav-dock--mobile::-webkit-scrollbar { display: none; }
+.nav-dock--mobile .nav-dock__link {
+  font-size: 0.68rem;
+  padding: 0.42rem 0.55rem;
+}
+
+@media (max-width: 1279px) {
+  .nav-dock__link span { display: none; }
+  .nav-dock__link { padding: 0.48rem 0.55rem; }
+  .nav-dock__sep { margin: 0 0.08rem; }
+}
+@media (max-width: 767px) {
+  .site-nav { padding-top: 0.5rem; }
+  .site-nav__shell { padding: 0.4rem 0.5rem; }
+  .site-nav__name { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-dock__glider { transition: none; }
+  .nav-dock__link, .site-nav__cta, .site-nav__brand { transition: none; }
+}
+
+/* Legacy alias for banner offset */
+body.has-site-banner #navbar { top: var(--site-banner-height, 52px); }
+body.has-site-banner main > section:first-child { padding-top: calc(8rem + var(--site-banner-height, 52px)); }
 
     .glass-card {
 background: linear-gradient(135deg, rgba(0, 217, 255, 0.03) 0%, rgba(139, 92, 246, 0.03) 100%);
@@ -1584,22 +1805,28 @@ animation: spin 1s linear infinite;
 
 @media (prefers-reduced-motion: reduce) {
   .proj-card, .proj-visual-inner, .proj-card__shine, .project-modal__panel { transition: none; }
-  .site-dev-banner__track, .contrib-card, .upcoming-card { animation: none !important; }
+  .site-dev-banner__aurora, .site-dev-banner__shimmer, .site-dev-banner__border-glow,
+  .site-dev-banner__marquee, .site-dev-banner__dot, .site-dev-banner__badge,
+  .contrib-card, .upcoming-card, .signal-card { animation: none !important; }
+  .site-dev-banner__marquee { transform: none !important; }
   .contrib-avatar-glow, .upcoming-card__eta-dot { animation: none !important; }
 }
 
-/* ── Site development banner (CMS) ── */
+/* ── Site development banner (CMS) — premium animated strip ── */
 .site-dev-banner {
+  --banner-gold: #fbbf24;
+  --banner-cyan: #22d3ee;
+  --banner-violet: #a78bfa;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 60;
+  z-index: 70;
   overflow: hidden;
-  transform: translateY(-110%);
+  transform: translateY(-120%);
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+  transition: transform 0.65s cubic-bezier(0.34, 1.45, 0.64, 1), opacity 0.4s ease;
 }
 .site-dev-banner.is-visible {
   transform: translateY(0);
@@ -1608,57 +1835,296 @@ animation: spin 1s linear infinite;
 }
 .site-dev-banner__inner {
   position: relative;
-  padding: 0.65rem 1rem;
-  background: linear-gradient(90deg, rgba(251, 191, 36, 0.14) 0%, rgba(0, 217, 255, 0.1) 50%, rgba(139, 92, 246, 0.12) 100%);
-  border-bottom: 1px solid rgba(251, 191, 36, 0.28);
-  backdrop-filter: blur(14px);
+  padding: 0.72rem 0;
+  background:
+    linear-gradient(180deg, rgba(8, 12, 22, 0.55) 0%, transparent 100%),
+    linear-gradient(
+      90deg,
+      rgba(251, 191, 36, 0.28) 0%,
+      rgba(34, 211, 238, 0.2) 28%,
+      rgba(167, 139, 250, 0.24) 58%,
+      rgba(251, 191, 36, 0.28) 100%
+    );
+  background-size: 100% 100%, 220% 100%;
+  animation: banner-bg-flow 7s ease-in-out infinite;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.45);
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+  box-shadow:
+    0 4px 28px rgba(251, 191, 36, 0.22),
+    0 0 48px rgba(34, 211, 238, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: box-shadow 0.45s ease, border-color 0.45s ease, filter 0.45s ease;
 }
-.site-dev-banner__track {
+.site-dev-banner:hover .site-dev-banner__inner,
+.site-dev-banner:focus-within .site-dev-banner__inner {
+  border-bottom-color: rgba(34, 211, 238, 0.65);
+  box-shadow:
+    0 8px 40px rgba(251, 191, 36, 0.38),
+    0 0 72px rgba(34, 211, 238, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  filter: brightness(1.08);
+}
+@keyframes banner-bg-flow {
+  0%, 100% { background-position: 0 0, 0% 50%; }
+  50% { background-position: 0 0, 100% 50%; }
+}
+.site-dev-banner__aurora {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
-  animation: banner-shimmer 3.5s ease-in-out infinite;
+  inset: -40% -10%;
+  background:
+    radial-gradient(ellipse 45% 80% at 15% 50%, rgba(251, 191, 36, 0.35), transparent 70%),
+    radial-gradient(ellipse 40% 90% at 85% 50%, rgba(34, 211, 238, 0.28), transparent 72%),
+    radial-gradient(ellipse 30% 70% at 50% 120%, rgba(167, 139, 250, 0.22), transparent 70%);
+  animation: banner-aurora-drift 9s ease-in-out infinite alternate;
   pointer-events: none;
 }
+@keyframes banner-aurora-drift {
+  0% { transform: translateX(-3%) scale(1); opacity: 0.75; }
+  100% { transform: translateX(3%) scale(1.06); opacity: 1; }
+}
+.site-dev-banner__shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.14) 48%,
+    rgba(255, 255, 255, 0.04) 52%,
+    transparent 75%
+  );
+  animation: banner-shimmer 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+.site-dev-banner:hover .site-dev-banner__shimmer {
+  animation-duration: 1.6s;
+}
 @keyframes banner-shimmer {
-  0% { transform: translateX(-120%); }
-  100% { transform: translateX(120%); }
+  0% { transform: translateX(-130%) skewX(-12deg); }
+  100% { transform: translateX(130%) skewX(-12deg); }
+}
+.site-dev-banner__border-glow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--banner-gold),
+    var(--banner-cyan),
+    var(--banner-violet),
+    var(--banner-gold),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: banner-border-run 3s linear infinite;
+  opacity: 0.9;
+  pointer-events: none;
+}
+@keyframes banner-border-run {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
 }
 .site-dev-banner__content {
   position: relative;
   z-index: 1;
-  max-width: 72rem;
+  max-width: 80rem;
   margin: 0 auto;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.65rem;
-  flex-wrap: wrap;
-  text-align: center;
-  font-size: 0.8rem;
-  line-height: 1.45;
-  color: #fde68a;
+  gap: 0.85rem;
+}
+.site-dev-banner__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.38rem 0.8rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.35), rgba(34, 211, 238, 0.22));
+  border: 1px solid rgba(251, 191, 36, 0.55);
+  box-shadow:
+    0 0 18px rgba(251, 191, 36, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: transform 0.35s cubic-bezier(0.34, 1.45, 0.64, 1), box-shadow 0.35s ease;
+  animation: banner-badge-float 2.6s ease-in-out infinite;
+}
+.site-dev-banner:hover .site-dev-banner__badge,
+.site-dev-banner:focus-within .site-dev-banner__badge {
+  transform: scale(1.06) translateY(-1px);
+  box-shadow:
+    0 0 28px rgba(251, 191, 36, 0.55),
+    0 0 40px rgba(34, 211, 238, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  animation-play-state: paused;
+}
+@keyframes banner-badge-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+.site-dev-banner__icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--banner-gold);
+  filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.8));
+  animation: banner-icon-spin 4s linear infinite;
+}
+.site-dev-banner:hover .site-dev-banner__icon {
+  animation-duration: 2s;
+  color: var(--banner-cyan);
+}
+@keyframes banner-icon-spin {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-8deg) scale(1.1); }
+  50% { transform: rotate(0deg) scale(1); }
+  75% { transform: rotate(8deg) scale(1.1); }
+  100% { transform: rotate(0deg) scale(1); }
 }
 .site-dev-banner__dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 999px;
-  background: #fbbf24;
-  box-shadow: 0 0 12px rgba(251, 191, 36, 0.8);
-  animation: banner-pulse 1.4s ease-in-out infinite;
+  background: var(--banner-gold);
+  box-shadow:
+    0 0 0 0 rgba(251, 191, 36, 0.65),
+    0 0 14px rgba(251, 191, 36, 0.9);
+  animation: banner-pulse 1.2s ease-in-out infinite;
   flex-shrink: 0;
 }
 @keyframes banner-pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.25); opacity: 0.65; }
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.55), 0 0 14px rgba(251, 191, 36, 0.9);
+  }
+  50% {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 6px rgba(251, 191, 36, 0), 0 0 22px rgba(251, 191, 36, 1);
+  }
+}
+.site-dev-banner__marquee-wrap {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+}
+.site-dev-banner__marquee {
+  display: flex;
+  width: max-content;
+  animation: banner-marquee 32s linear infinite;
+  will-change: transform;
+}
+.site-dev-banner:hover .site-dev-banner__marquee,
+.site-dev-banner:focus-within .site-dev-banner__marquee {
+  animation-play-state: paused;
+}
+@keyframes banner-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.site-dev-banner__text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding-right: 3.5rem;
+  white-space: nowrap;
+  font-size: clamp(0.82rem, 1.6vw, 0.95rem);
+  line-height: 1.4;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.site-dev-banner:hover .site-dev-banner__text {
+  color: #fff;
+  text-shadow: 0 0 20px rgba(34, 211, 238, 0.25);
 }
 .site-dev-banner__dev {
   font-weight: 800;
   color: #fff;
+  background: linear-gradient(90deg, #fff 0%, var(--banner-cyan) 50%, #fff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: banner-name-shine 4s linear infinite;
 }
-.site-dev-banner__msg { color: #fcd34d; }
-body.has-site-banner #navbar { top: var(--site-banner-height, 44px); }
-body.has-site-banner main > section:first-child { padding-top: calc(8rem + var(--site-banner-height, 44px)); }
+@keyframes banner-name-shine {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+.site-dev-banner__sep {
+  color: var(--banner-gold);
+  font-size: 0.7rem;
+  opacity: 0.9;
+  animation: banner-sep-blink 1.5s ease-in-out infinite;
+}
+@keyframes banner-sep-blink {
+  0%, 100% { opacity: 0.45; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+.site-dev-banner__msg {
+  color: #fde68a;
+  font-weight: 600;
+}
+.site-dev-banner__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 640px) {
+  .site-dev-banner__inner { padding: 0.62rem 0; }
+  .site-dev-banner__content { gap: 0.55rem; padding: 0 0.65rem; }
+  .site-dev-banner__badge {
+    padding: 0.32rem 0.55rem;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+  }
+  .site-dev-banner__badge-label { display: none; }
+  .site-dev-banner__marquee { animation-duration: 22s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-dev-banner__content {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+  .site-dev-banner__marquee-wrap {
+    -webkit-mask-image: none;
+    mask-image: none;
+    overflow: visible;
+  }
+  .site-dev-banner__marquee {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    transform: none !important;
+  }
+  .site-dev-banner__text {
+    white-space: normal;
+    padding-right: 0;
+    justify-content: center;
+  }
+  .site-dev-banner__text + .site-dev-banner__text { display: none; }
+}
+
+  .upcoming-card:active { transform: scale(0.99); }
+}
 
 /* ── Contributors showcase (CMS) — Aurora stack, no rotation ── */
 #contributors {
@@ -2192,11 +2658,22 @@ body.has-site-banner main > section:first-child { padding-top: calc(8rem + var(-
 <!-- CMS: Under-development banner (hydrated by portfolio.js) -->
 <div id="site-dev-banner" class="site-dev-banner" role="status" aria-live="polite" hidden>
   <div class="site-dev-banner__inner">
-    <div class="site-dev-banner__track" aria-hidden="true"></div>
+    <div class="site-dev-banner__aurora" aria-hidden="true"></div>
+    <div class="site-dev-banner__shimmer" aria-hidden="true"></div>
+    <div class="site-dev-banner__border-glow" aria-hidden="true"></div>
     <div class="site-dev-banner__content">
-      <span class="site-dev-banner__dot" aria-hidden="true"></span>
-      <span><span id="site-dev-banner-dev" class="site-dev-banner__dev">Developer</span> is actively updating this portfolio</span>
-      <span class="site-dev-banner__msg" id="site-dev-banner-msg">— shipping new features soon.</span>
+      <span class="site-dev-banner__badge">
+        <span class="site-dev-banner__dot" aria-hidden="true"></span>
+        <svg class="site-dev-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"/>
+        </svg>
+        <span class="site-dev-banner__badge-label">Live update</span>
+      </span>
+      <div class="site-dev-banner__marquee-wrap">
+        <div class="site-dev-banner__marquee" id="site-dev-banner-marquee" aria-hidden="true"></div>
+      </div>
+      <span id="site-dev-banner-aria" class="site-dev-banner__sr"></span>
     </div>
   </div>
 </div>
@@ -2211,29 +2688,41 @@ body.has-site-banner main > section:first-child { padding-top: calc(8rem + var(-
 </div>
 
 <!-- Navigation -->
-<nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
-<div class="max-w-7xl mx-auto px-6 lg:px-12 py-4 flex justify-between items-center">
-
-<!-- Upgraded Logo -->
-<a href="#" class="flex items-center gap-3 hover:scale-105 transition-transform interactive">
-<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center shadow-[0_0_15px_rgba(0,217,255,0.4)]">
-<span class="text-white font-display font-bold text-xl leading-none">S</span>
-</div>
-<div class="text-2xl font-display font-extrabold tracking-tight hidden sm:block">
-<span id="nav-name">Satwinder</span><span class="gradient-text-alt">.</span>
-</div>
+<nav class="site-nav" id="navbar" aria-label="Main">
+<div class="site-nav__shell">
+<a href="#" class="site-nav__brand interactive">
+<div class="site-nav__logo">S</div>
+<div class="site-nav__name hidden sm:block"><span id="nav-name">Satwinder</span><span class="gradient-text-alt">.</span></div>
 </a>
 
-<div class="hidden md:flex gap-8 text-sm font-medium text-gray-300">
-<a href="#about" class="hover:text-accent-cyan transition-colors interactive nav-link" data-section="about">About</a>
-<a href="#expertise" class="hover:text-accent-cyan transition-colors interactive nav-link" data-section="expertise">Expertise</a>
-<a href="#experience" class="hover:text-accent-cyan transition-colors interactive nav-link" data-section="experience">Experience</a>
-<a href="#projects" class="hover:text-accent-cyan transition-colors interactive nav-link" data-section="projects">Work</a>
+<div class="nav-dock hidden md:flex" id="nav-dock-main" aria-label="Sections">
+<div class="nav-dock__glider" aria-hidden="true"></div>
+<a href="#about" class="nav-dock__link interactive nav-link" data-section="about" title="About"><i data-lucide="user-round"></i><span>About</span></a>
+<a href="#expertise" class="nav-dock__link interactive nav-link" data-section="expertise" title="Expertise"><i data-lucide="layers"></i><span>Expertise</span></a>
+<a href="#experience" class="nav-dock__link interactive nav-link" data-section="experience" title="Experience"><i data-lucide="briefcase"></i><span>Experience</span></a>
+<a href="#projects" class="nav-dock__link interactive nav-link" data-section="projects" title="Work"><i data-lucide="rocket"></i><span>Work</span></a>
+<span class="nav-dock__sep" aria-hidden="true"></span>
+<a href="#contributors" class="nav-dock__link nav-dock__link--accent interactive nav-link" data-section="contributors" title="Contributors"><i data-lucide="users"></i><span>Team</span></a>
+<a href="#upcoming" class="nav-dock__link nav-dock__link--accent interactive nav-link" data-section="upcoming" title="Roadmap"><i data-lucide="sparkles"></i><span>Roadmap</span></a>
+<a href="#feedback" class="nav-dock__link interactive nav-link" data-section="feedback" title="Feedback"><i data-lucide="message-square-plus"></i><span>Feedback</span></a>
 </div>
 
-<a href="#contact" id="hire-me-btn" class="hidden md:inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-bold text-sm hover:shadow-[0_0_20px_rgba(0,217,255,0.4)] transition-all hover:scale-105 interactive">
-Hire Me
+<a href="#contact" id="hire-me-btn" class="site-nav__cta hidden md:inline-flex interactive">
+<i data-lucide="send"></i>
+<span>Hire Me</span>
 </a>
+</div>
+
+<div class="nav-dock nav-dock--mobile md:hidden" id="nav-dock-mobile" aria-label="Mobile sections">
+<div class="nav-dock__glider" aria-hidden="true"></div>
+<a href="#about" class="nav-dock__link interactive nav-link" data-section="about"><i data-lucide="user-round"></i><span>About</span></a>
+<a href="#expertise" class="nav-dock__link interactive nav-link" data-section="expertise"><i data-lucide="layers"></i><span>Skills</span></a>
+<a href="#experience" class="nav-dock__link interactive nav-link" data-section="experience"><i data-lucide="briefcase"></i><span>Jobs</span></a>
+<a href="#projects" class="nav-dock__link interactive nav-link" data-section="projects"><i data-lucide="rocket"></i><span>Work</span></a>
+<a href="#contributors" class="nav-dock__link nav-dock__link--accent interactive nav-link" data-section="contributors"><i data-lucide="users"></i><span>Team</span></a>
+<a href="#upcoming" class="nav-dock__link nav-dock__link--accent interactive nav-link" data-section="upcoming"><i data-lucide="sparkles"></i><span>Roadmap</span></a>
+<a href="#feedback" class="nav-dock__link interactive nav-link" data-section="feedback"><i data-lucide="message-square-plus"></i><span>Feedback</span></a>
+<a href="#contact" class="nav-dock__link interactive nav-link" data-section="contact"><i data-lucide="send"></i><span>Hire</span></a>
 </div>
 </nav>
 
@@ -2535,6 +3024,109 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 <p class="text-base md:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">Features currently in development — arriving on this portfolio shortly.</p>
 </div>
 <div id="upcoming-container" class="upcoming-grid" aria-live="polite"></div>
+</div>
+</section>
+
+</section>
+
+<!-- Suggestions & Feedback -->
+<section id="feedback" class="py-24 px-6 lg:px-12 cms-section--hidden" aria-hidden="true" data-feedback-section>
+<div class="signal-studio__mesh" aria-hidden="true"></div>
+<div class="signal-studio__orb signal-studio__orb--1" aria-hidden="true"></div>
+<div class="signal-studio__orb signal-studio__orb--2" aria-hidden="true"></div>
+<div class="max-w-7xl mx-auto relative z-10">
+<div class="text-center mb-12 lg:mb-14 reveal">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent-cyan/30 bg-accent-cyan/10 text-accent-cyan text-xs font-bold uppercase tracking-widest mb-6">
+<i data-lucide="radio" class="w-3.5 h-3.5"></i> Signal Studio
+</div>
+<h2 id="feedback-title" class="text-4xl md:text-5xl font-display font-bold mb-5 gradient-text">Suggestions &amp; Feedback</h2>
+<p id="feedback-subtitle" class="text-base md:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">Share ideas for this portfolio — every submission is reviewed personally.</p>
+</div>
+
+<div class="signal-console reveal" data-feedback-form-card>
+<div class="signal-console__ring" aria-hidden="true"></div>
+<div class="signal-console__noise" aria-hidden="true"></div>
+<div class="signal-burst" id="signal-burst" aria-hidden="true"></div>
+<div class="signal-console__grid">
+<div class="signal-transmit">
+<div class="signal-transmit__head">
+<div class="signal-transmit__icon"><i data-lucide="satellite-dish"></i></div>
+<div>
+<h3 class="signal-transmit__title">Transmit your signal</h3>
+<p class="signal-transmit__sub">Goes live on the board as <em>In review</em> — I reply from the studio app.</p>
+</div>
+</div>
+<form id="feedback-form" class="feedback-form" novalidate>
+<div class="feedback-field" data-fb-field="fb-name">
+<label class="feedback-label" for="fb-name">Full name <span class="text-accent-cyan">*</span></label>
+<div class="signal-input-wrap">
+<input class="feedback-input interactive" id="fb-name" name="fb-name" maxlength="80" autocomplete="name" placeholder="Who's sharing this idea?">
+</div>
+<p class="contact-error" id="error-fb-name" role="alert"></p>
+</div>
+<div class="feedback-field" data-fb-field="fb-type">
+<label class="feedback-label" for="fb-type">Signal type <span class="text-accent-cyan">*</span></label>
+<div class="signal-type-grid" id="signal-type-grid" role="group" aria-label="Feedback type">
+<button type="button" class="signal-type-tile interactive" data-value="Design &amp; UX"><i data-lucide="palette"></i><span>Design</span></button>
+<button type="button" class="signal-type-tile interactive" data-value="New Feature Idea"><i data-lucide="sparkles"></i><span>Feature</span></button>
+<button type="button" class="signal-type-tile interactive" data-value="Bug Report"><i data-lucide="bug"></i><span>Bug</span></button>
+<button type="button" class="signal-type-tile interactive" data-value="Content / Copy"><i data-lucide="file-text"></i><span>Content</span></button>
+<button type="button" class="signal-type-tile interactive" data-value="Performance"><i data-lucide="gauge"></i><span>Perf</span></button>
+<button type="button" class="signal-type-tile interactive" data-value="Other"><i data-lucide="more-horizontal"></i><span>Other</span></button>
+</div>
+<select class="feedback-select-sr" id="fb-type" name="fb-type" tabindex="-1" aria-hidden="true">
+<option value="">Select a category</option>
+<option value="Design &amp; UX">Design &amp; UX</option>
+<option value="New Feature Idea">New Feature Idea</option>
+<option value="Bug Report">Bug Report</option>
+<option value="Content / Copy">Content / Copy</option>
+<option value="Performance">Performance</option>
+<option value="Other">Other</option>
+</select>
+<p class="contact-error" id="error-fb-type" role="alert"></p>
+</div>
+<div class="feedback-field" data-fb-field="fb-suggestion">
+<label class="feedback-label" for="fb-suggestion">
+<span>Your suggestion <span class="text-accent-cyan">*</span></span>
+<span class="feedback-label__hint" id="fb-char-count">0 / 2000</span>
+</label>
+<div class="signal-input-wrap">
+<textarea class="feedback-textarea interactive" id="fb-suggestion" name="fb-suggestion" maxlength="2000" placeholder="What would make this portfolio unforgettable?"></textarea>
+</div>
+<p class="contact-error" id="error-fb-suggestion" role="alert"></p>
+</div>
+<button type="submit" class="signal-launch interactive" id="feedback-submit-btn">
+<i data-lucide="radio-tower" class="w-4 h-4"></i>
+<span id="feedback-submit-label">Transmit signal</span>
+</button>
+<p id="feedback-form-status" class="feedback-status" role="status" aria-live="polite"></p>
+</form>
+</div>
+
+<div class="signal-console__divider" aria-hidden="true">
+<div class="signal-console__beam"></div>
+</div>
+
+<div class="signal-feed">
+<div class="signal-feed__toolbar">
+<div class="signal-feed__title-row">
+<h3 class="signal-feed__title">Live signal feed</h3>
+<span class="signal-live"><span class="signal-live__dot" aria-hidden="true"></span> Live</span>
+</div>
+<div class="signal-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+<div class="signal-filters" id="signal-filters" role="tablist" aria-label="Filter feedback">
+<button type="button" class="signal-filter is-active interactive" data-filter="all" role="tab" aria-selected="true">All</button>
+<button type="button" class="signal-filter interactive" data-filter="in_review" role="tab" aria-selected="false">In review</button>
+<button type="button" class="signal-filter interactive" data-filter="reviewed" role="tab" aria-selected="false">Reviewed</button>
+<button type="button" class="signal-filter interactive" data-filter="resolved" role="tab" aria-selected="false">Resolved</button>
+</div>
+</div>
+<div id="feedback-board" class="signal-feed__list" aria-live="polite">
+<p class="signal-empty">Loading community feedback…</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 </section>
 
