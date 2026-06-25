@@ -1804,6 +1804,37 @@ const setFeedbackFieldError = (field, msg) => {
   wrap?.classList.toggle("contact-field--invalid", !!msg);
 };
 
+const feedbackFieldError = (field, form) => {
+  const name = String(form["fb-name"]?.value || "").trim();
+  const type = String(form["fb-type"]?.value || "").trim();
+  const suggestion = String(form["fb-suggestion"]?.value || "").trim();
+  switch (field) {
+    case "fb-name":
+      return name.length < 2 ? "Please enter your full name." : "";
+    case "fb-type":
+      return !type ? "Please choose a signal type." : "";
+    case "fb-suggestion":
+      return suggestion.length < 10 ? "Please write at least 10 characters." : "";
+    default:
+      return "";
+  }
+};
+
+function bindLiveFeedbackValidation(form) {
+  const fields = ["fb-name", "fb-suggestion"];
+  fields.forEach((field) => {
+    const el = form[field];
+    if (!el) return;
+    const refresh = () => {
+      const err = document.getElementById(`error-${field}`);
+      if (!err?.textContent) return;
+      setFeedbackFieldError(field, feedbackFieldError(field, form));
+    };
+    el.addEventListener("input", refresh);
+    el.addEventListener("change", refresh);
+  });
+}
+
 const clearFeedbackErrors = () => {
   ["fb-name", "fb-type", "fb-suggestion"].forEach((f) => setFeedbackFieldError(f, ""));
 };
@@ -1815,6 +1846,7 @@ function initFeedbackForm() {
 
   setupSignalTypeTiles();
   setupSignalFilters();
+  bindLiveFeedbackValidation(form);
 
   const statusEl = document.getElementById("feedback-form-status");
   const submitBtn = document.getElementById("feedback-submit-btn");
@@ -2065,6 +2097,56 @@ const setFieldError = (field, msg) => {
   wrap?.classList.toggle("contact-field--invalid", !!msg);
 };
 
+const contactFieldError = (field, data) => {
+  switch (field) {
+    case "name":
+      return data.name.length < 2
+        ? "Please enter your full name (at least 2 characters)."
+        : "";
+    case "email":
+      return !EMAIL_RE.test(data.email) ? "Enter a valid email address." : "";
+    case "phone":
+      return data.phone && data.phone.replace(/\D/g, "").length < 8
+        ? "Enter a valid phone number or leave blank."
+        : "";
+    case "subject":
+      return !data.subject ? "Please select an inquiry type." : "";
+    case "message":
+      if (data.message.length < 10) {
+        return "Tell me a bit more (at least 10 characters).";
+      }
+      if (data.message.length > 5000) {
+        return "Message is too long (max 5000 characters).";
+      }
+      return "";
+    default:
+      return "";
+  }
+};
+
+const readContactFormData = () => ({
+  name: document.getElementById("name")?.value.trim() || "",
+  email: document.getElementById("email")?.value.trim() || "",
+  phone: document.getElementById("phone")?.value.trim() || "",
+  company: document.getElementById("company")?.value.trim() || "",
+  subject: document.getElementById("subject")?.value || "",
+  message: document.getElementById("message")?.value.trim() || "",
+});
+
+function bindLiveContactValidation(form) {
+  ["name", "email", "phone", "subject", "message"].forEach((field) => {
+    const el = document.getElementById(field);
+    if (!el) return;
+    const refresh = () => {
+      const err = document.getElementById(`error-${field}`);
+      if (!err?.textContent) return;
+      setFieldError(field, contactFieldError(field, readContactFormData()));
+    };
+    el.addEventListener("input", refresh);
+    el.addEventListener("change", refresh);
+  });
+}
+
 const clearContactErrors = () => {
   ["name", "email", "phone", "subject", "message"].forEach((f) => setFieldError(f, ""));
 };
@@ -2073,30 +2155,13 @@ const validateContactForm = (data) => {
   clearContactErrors();
   let ok = true;
 
-  if (data.name.length < 2) {
-    setFieldError("name", "Please enter your full name (at least 2 characters).");
-    ok = false;
-  }
-  if (!EMAIL_RE.test(data.email)) {
-    setFieldError("email", "Enter a valid email address.");
-    ok = false;
-  }
-  if (data.phone && data.phone.replace(/\D/g, "").length < 8) {
-    setFieldError("phone", "Enter a valid phone number or leave blank.");
-    ok = false;
-  }
-  if (!data.subject) {
-    setFieldError("subject", "Please select an inquiry type.");
-    ok = false;
-  }
-  if (data.message.length < 10) {
-    setFieldError("message", "Tell me a bit more (at least 10 characters).");
-    ok = false;
-  }
-  if (data.message.length > 5000) {
-    setFieldError("message", "Message is too long (max 5000 characters).");
-    ok = false;
-  }
+  ["name", "email", "phone", "subject", "message"].forEach((field) => {
+    const msg = contactFieldError(field, data);
+    if (msg) {
+      setFieldError(field, msg);
+      ok = false;
+    }
+  });
   return ok;
 };
 
@@ -2104,6 +2169,8 @@ const initContactForm = () => {
   const form = document.getElementById("contact-form");
   if (!form || form.dataset.bound === "1") return;
   form.dataset.bound = "1";
+
+  bindLiveContactValidation(form);
 
   const statusDiv = document.getElementById("form-status");
   const messageEl = document.getElementById("message");
@@ -2141,14 +2208,7 @@ const initContactForm = () => {
       return;
     }
 
-    const data = {
-      name: document.getElementById("name")?.value.trim() || "",
-      email: document.getElementById("email")?.value.trim() || "",
-      phone: document.getElementById("phone")?.value.trim() || "",
-      company: document.getElementById("company")?.value.trim() || "",
-      subject: document.getElementById("subject")?.value || "",
-      message: document.getElementById("message")?.value.trim() || "",
-    };
+    const data = readContactFormData();
 
     if (!validateContactForm(data)) {
       showStatus("Please fix the highlighted fields.", "error");

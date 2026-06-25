@@ -44,7 +44,7 @@
 })();
 </script>
 <link rel="stylesheet" href="./feedback-studio.css?v=20260628">
-<script type="module" src="./portfolio.js?v=20260629"></script>
+<script type="module" src="./portfolio.js?v=20260701"></script>
 <script>
 tailwind.config = {
 theme: {
@@ -1773,7 +1773,11 @@ animation: spin 1s linear infinite;
   border-color: rgba(0, 217, 255, 0.55);
   box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.12);
 }
-.contact-field--invalid .contact-input {
+.contact-field--invalid .contact-input,
+.contact-field--invalid .feedback-input,
+.contact-field--invalid .feedback-textarea,
+.feedback-field.contact-field--invalid .feedback-input,
+.feedback-field.contact-field--invalid .feedback-textarea {
   border-color: rgba(248, 113, 113, 0.65);
   box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.15);
 }
