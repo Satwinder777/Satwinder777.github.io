@@ -1835,6 +1835,30 @@ function bindLiveFeedbackValidation(form) {
   });
 }
 
+/** Shift+Enter in a textarea submits the form; Enter alone keeps a new line. */
+function bindShiftEnterSubmit(form, textareaIds = []) {
+  if (!form) return;
+  const trigger = () => {
+    if (typeof form.requestSubmit === "function") {
+      form.requestSubmit();
+      return;
+    }
+    form.querySelector('[type="submit"]')?.click();
+  };
+
+  textareaIds.forEach((id) => {
+    const ta = document.getElementById(id);
+    if (!ta) return;
+    ta.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" || !e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) {
+        return;
+      }
+      e.preventDefault();
+      trigger();
+    });
+  });
+}
+
 const clearFeedbackErrors = () => {
   ["fb-name", "fb-type", "fb-suggestion"].forEach((f) => setFeedbackFieldError(f, ""));
 };
@@ -1847,6 +1871,7 @@ function initFeedbackForm() {
   setupSignalTypeTiles();
   setupSignalFilters();
   bindLiveFeedbackValidation(form);
+  bindShiftEnterSubmit(form, ["fb-suggestion"]);
 
   const statusEl = document.getElementById("feedback-form-status");
   const submitBtn = document.getElementById("feedback-submit-btn");
@@ -2171,6 +2196,7 @@ const initContactForm = () => {
   form.dataset.bound = "1";
 
   bindLiveContactValidation(form);
+  bindShiftEnterSubmit(form, ["message"]);
 
   const statusDiv = document.getElementById("form-status");
   const messageEl = document.getElementById("message");
