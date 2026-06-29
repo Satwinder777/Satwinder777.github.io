@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
-2:I[47257,["/Vibe/_next/static/chunks/44iqxwnfnnjhh.js","/Vibe/_next/static/chunks/14mrh2-p_w84d.js","/Vibe/_next/static/chunks/00n8sz60cva7n.js","/Vibe/_next/static/chunks/1n4xgizc37e9x.js"],"ClientPageRoot"]
-3:I[16325,["/Vibe/_next/static/chunks/44iqxwnfnnjhh.js","/Vibe/_next/static/chunks/14mrh2-p_w84d.js","/Vibe/_next/static/chunks/00n8sz60cva7n.js","/Vibe/_next/static/chunks/1n4xgizc37e9x.js","/Vibe/_next/static/chunks/3cp277htlyhif.js"],"default"]
-6:I[97367,["/Vibe/_next/static/chunks/44iqxwnfnnjhh.js","/Vibe/_next/static/chunks/14mrh2-p_w84d.js","/Vibe/_next/static/chunks/00n8sz60cva7n.js","/Vibe/_next/static/chunks/1n4xgizc37e9x.js"],"OutletBoundary"]
+2:I[47257,["/Vibe/_next/static/chunks/1y3o-lt6_jh4z.js","/Vibe/_next/static/chunks/14mrh2-p_w84d.js","/Vibe/_next/static/chunks/00n8sz60cva7n.js","/Vibe/_next/static/chunks/35or01gxd7q9s.js"],"ClientPageRoot"]
+3:I[16325,["/Vibe/_next/static/chunks/1y3o-lt6_jh4z.js","/Vibe/_next/static/chunks/14mrh2-p_w84d.js","/Vibe/_next/static/chunks/00n8sz60cva7n.js","/Vibe/_next/static/chunks/35or01gxd7q9s.js","/Vibe/_next/static/chunks/3cp277htlyhif.js"],"default"]
+6:I[97367,["/Vibe/_next/static/chunks/1y3o-lt6_jh4z.js","/Vibe/_next/static/chunks/14mrh2-p_w84d.js","/Vibe/_next/static/chunks/00n8sz60cva7n.js","/Vibe/_next/static/chunks/35or01gxd7q9s.js"],"OutletBoundary"]
 7:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/Vibe/_next/static/chunks/3cp277htlyhif.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"9FXaXf-AFpvDJo83A9Wte"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/Vibe/_next/static/chunks/3cp277htlyhif.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"L3RlEqkILzR5JqGMeNawI"}
 4:{}
 5:"$0:rsc:props:children:0:props:serverProvidedParams:params"
 8:null
