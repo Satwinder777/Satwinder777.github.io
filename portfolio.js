@@ -238,14 +238,31 @@ refreshUi();
 //  Render functions
 // ------------------------------------------------------------
 
+function applyBrandLogo(el, logoUrl, name, { eager = false } = {}) {
+  if (!el) return;
+  const initial = (name.split(" ")[0] || name || "S").charAt(0).toUpperCase();
+  const url = (logoUrl && logoUrl.trim()) || "";
+  if (url) {
+    el.classList.add("site-brand-logo--image");
+    el.innerHTML = `<img class="site-brand-logo__img" src="${esc(url)}" alt="${esc(name)} logo" loading="${eager ? "eager" : "lazy"}" decoding="async" />`;
+  } else {
+    el.classList.remove("site-brand-logo--image");
+    el.textContent = initial;
+  }
+}
+
 function renderProfile(profile = {}) {
   const name = (profile.name && profile.name.trim()) || "Satwinder Singh";
   const jobTitle = (profile.title && profile.title.trim()) || "";
   const tagline =
     (profile.tagline && profile.tagline.trim()) || jobTitle || "";
+  const logoUrl = (profile.logoUrl && profile.logoUrl.trim()) || "";
 
   const navName = $("nav-name");
   if (navName) navName.textContent = name.split(" ")[0] || name;
+
+  applyBrandLogo($("nav-logo"), logoUrl, name, { eager: true });
+  applyBrandLogo($("footer-logo"), logoUrl, name);
 
   const heroName = $("hero-name");
   if (heroName) heroName.textContent = name;
