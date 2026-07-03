@@ -238,17 +238,34 @@ refreshUi();
 //  Render functions
 // ------------------------------------------------------------
 
+const BRAND_LOGO_FALLBACK = "./assets/brand-logo.png";
+
 function applyBrandLogo(el, logoUrl, name, { eager = false } = {}) {
   if (!el) return;
   const initial = (name.split(" ")[0] || name || "S").charAt(0).toUpperCase();
-  const url = (logoUrl && logoUrl.trim()) || "";
-  if (url) {
-    el.classList.add("site-brand-logo--image");
-    el.innerHTML = `<img class="site-brand-logo__img" src="${esc(url)}" alt="${esc(name)} logo" loading="${eager ? "eager" : "lazy"}" decoding="async" />`;
-  } else {
+  const remote = (logoUrl && logoUrl.trim()) || "";
+  const src = remote || BRAND_LOGO_FALLBACK;
+
+  el.classList.add("site-brand-logo--image");
+  const img = document.createElement("img");
+  img.className = "site-brand-logo__img";
+  img.alt = `${name} logo`;
+  img.loading = eager ? "eager" : "lazy";
+  img.decoding = "async";
+  img.src = src;
+  img.onerror = () => {
+    if (remote && img.src !== BRAND_LOGO_FALLBACK) {
+      img.onerror = () => {
+        el.classList.remove("site-brand-logo--image");
+        el.textContent = initial;
+      };
+      img.src = BRAND_LOGO_FALLBACK;
+      return;
+    }
     el.classList.remove("site-brand-logo--image");
     el.textContent = initial;
-  }
+  };
+  el.replaceChildren(img);
 }
 
 function renderProfile(profile = {}) {
