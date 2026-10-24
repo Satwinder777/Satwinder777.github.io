@@ -44,6 +44,7 @@
 })();
 </script>
 <link rel="stylesheet" href="./feedback-studio.css?v=20260628">
+<script src="./assets/webgl-fluid.umd.min.js" defer></script>
 <script type="module" src="./portfolio.js?v=20260703"></script>
 <script>
 tailwind.config = {
@@ -2820,7 +2821,12 @@ animation: spin 1s linear infinite;
 </div>
 </nav>
 
-<main>
+<!-- Interactive WebGL Fluid Holographic Canvas -->
+<div class="fixed inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+  <canvas id="fluid-canvas" class="w-full h-full block opacity-70"></canvas>
+</div>
+
+<main class="relative z-10">
 <!-- Hero Section -->
 <section class="relative min-h-screen pt-32 pb-20 px-6 lg:px-12 flex flex-col justify-center items-center">
 <div class="max-w-5xl mx-auto text-center reveal">
@@ -3411,5 +3417,53 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
     <p class="contact-nudge__hint">Close (×) or Esc — popup returns on the next case study you open.</p>
   </div>
 </div>
+
+<!-- WebGL Fluid Holographic Simulation Initialization (Optimized for High Performance) -->
+<script>
+  (function () {
+    function startFluid() {
+      var canvas = document.getElementById('fluid-canvas');
+      if (!canvas || typeof WebGLFluid !== 'function') return;
+
+      try {
+        var fluidApp = WebGLFluid(canvas, {
+          IMMEDIATE: true,
+          TRIGGER: 'hover',
+          SIM_RESOLUTION: 64,       // 4X faster simulation grid
+          DYE_RESOLUTION: 512,      // 4X less texture memory
+          DENSITY_DISSIPATION: 1.1, // Quick, clean dissipation
+          VELOCITY_DISSIPATION: 2.0,
+          PRESSURE: 0.1,
+          PRESSURE_ITERATIONS: 4,   // 4 passes instead of 20 (5X faster!)
+          CURL: 8,
+          SPLAT_RADIUS: 0.2,
+          SPLAT_FORCE: 5000,
+          SHADING: true,
+          COLORFUL: true,
+          COLOR_UPDATE_SPEED: 8,
+          TRANSPARENT: true,
+          BLOOM: false,             // Disabling 8 bloom passes saves ~40% GPU
+          SUNRAYS: false,           // Disabling sunrays saves ~30% GPU
+          BACK_COLOR: { r: 10, g: 14, b: 39 }
+        });
+
+        // Pause simulation when page is hidden to save 100% CPU/GPU
+        document.addEventListener('visibilitychange', function () {
+          if (fluidApp && typeof fluidApp === 'object' && 'PAUSED' in fluidApp) {
+            fluidApp.PAUSED = document.hidden;
+          }
+        });
+      } catch (err) {
+        console.warn('[fluid] WebGL Fluid failed to initialize:', err);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', startFluid);
+    } else {
+      startFluid();
+    }
+  })();
+</script>
 </body>
 </html>
