@@ -1168,7 +1168,7 @@ a:hover {
   letter-spacing: -0.1px;
 }
 
-.form-input, .form-textarea, .form-select {
+.form-input, .form-textarea {
   width: 100%;
   background: var(--bg-input);
   border: 1px solid var(--border-card);
@@ -1181,9 +1181,64 @@ a:hover {
   transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
 
-.form-input:focus, .form-textarea:focus, .form-select:focus {
+.form-input:focus, .form-textarea:focus {
   border-color: var(--border-focus);
   box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.2);
+}
+
+/* Universal Select Styling across all Admin Modules & Forms */
+select,
+.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  background-color: var(--bg-input);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 14px 14px;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 11px 42px 11px 14px; /* 42px right padding guarantees comfortable breathing room before arrow */
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+select:hover,
+.form-select:hover {
+  border-color: rgba(0, 217, 255, 0.4);
+}
+
+select:focus,
+.form-select:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.2);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2300d9ff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+select option,
+.form-select option {
+  background-color: #0b1120;
+  color: #f1f5f9;
+  padding: 10px 14px;
+}
+
+[data-theme="light"] select,
+[data-theme="light"] .form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230284c7' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+[data-theme="light"] select option,
+[data-theme="light"] .form-select option {
+  background-color: #ffffff;
+  color: #0f172a;
 }
 
 .form-textarea {
@@ -1601,8 +1656,13 @@ input:checked + .slider:before {
   white-space: nowrap;
 }
 .form-select-sm {
-  padding: 6px 12px;
+  padding: 7px 36px 7px 12px;
+  background-position: right 12px center;
+  background-size: 13px 13px;
   font-size: 13px;
+  border-radius: var(--radius-sm);
+  height: 36px;
+  box-sizing: border-box;
 }
 .ai-synth-progress {
   display: flex;
@@ -5106,11 +5166,49 @@ input:checked + .slider:before {
 .feedback-top-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .feedback-top-controls .status-select-wrap {
-  min-width: 130px;
+  min-width: 152px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.status-select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: rgba(15, 23, 42, 0.7);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 13px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-sm);
+  padding: 7px 38px 7px 14px;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  height: 36px;
+  min-height: 36px;
+  outline: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+}
+
+.status-select:hover {
+  border-color: rgba(0, 217, 255, 0.45);
+  background-color: rgba(15, 23, 42, 0.9);
+}
+
+.status-select:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.2);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2300d9ff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
 
 .feedback-bubble-link {
