@@ -770,9 +770,35 @@ html[data-theme="light"] .upcoming-card__tag {
 
 /* Signal / Feedback Console in Light Mode */
 html[data-theme="light"] .signal-console {
-  background: rgba(255, 255, 255, 0.96) !important;
-  border-color: rgba(15, 23, 42, 0.08) !important;
-  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.08) !important;
+  background: #ffffff !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(2, 132, 199, 0.1) !important;
+}
+
+html[data-theme="light"] .signal-console__ring {
+  opacity: 0.25 !important;
+}
+
+html[data-theme="light"] .signal-console__beam {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(2, 132, 199, 0.25) 20%,
+    rgba(124, 58, 237, 0.2) 50%,
+    rgba(217, 119, 6, 0.18) 80%,
+    transparent
+  ) !important;
+}
+
+html[data-theme="light"] .signal-transmit {
+  background: #ffffff !important;
+}
+
+html[data-theme="light"] .signal-transmit__icon {
+  background: linear-gradient(145deg, rgba(2, 132, 199, 0.12), rgba(124, 58, 237, 0.1)) !important;
+  border-color: rgba(2, 132, 199, 0.3) !important;
+  color: #0284c7 !important;
+  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.12) !important;
 }
 
 html[data-theme="light"] .signal-transmit__title {
@@ -783,43 +809,192 @@ html[data-theme="light"] .signal-transmit__sub {
   color: #475569 !important;
 }
 
+html[data-theme="light"] .signal-transmit__sub em {
+  color: #b45309 !important;
+  font-weight: 700 !important;
+}
+
 html[data-theme="light"] .feedback-label {
   color: #334155 !important;
 }
 
-html[data-theme="light"] .feedback-input {
-  background: #ffffff !important;
-  border-color: #cbd5e1 !important;
+html[data-theme="light"] .feedback-label__hint {
+  color: #64748b !important;
+}
+
+html[data-theme="light"] .feedback-input,
+html[data-theme="light"] .feedback-textarea {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
   color: #0f172a !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
-html[data-theme="light"] .feedback-input::placeholder {
+html[data-theme="light"] .feedback-input::placeholder,
+html[data-theme="light"] .feedback-textarea::placeholder {
   color: #94a3b8 !important;
 }
 
-html[data-theme="light"] .feedback-input:focus {
+html[data-theme="light"] .feedback-input:focus,
+html[data-theme="light"] .feedback-textarea:focus {
+  background: #ffffff !important;
   border-color: #0284c7 !important;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15) !important;
 }
 
 html[data-theme="light"] .signal-type-tile {
   background: rgba(15, 23, 42, 0.04) !important;
-  border-color: rgba(15, 23, 42, 0.1) !important;
-  color: #334155 !important;
+  border-color: rgba(15, 23, 42, 0.09) !important;
+  color: #475569 !important;
 }
 
-html[data-theme="light"] .signal-type-tile:hover,
-html[data-theme="light"] .signal-type-tile.is-active {
+html[data-theme="light"] .signal-type-tile svg {
+  color: #0284c7 !important;
+  opacity: 0.85 !important;
+}
+
+html[data-theme="light"] .signal-type-tile:hover {
   background: rgba(2, 132, 199, 0.08) !important;
   border-color: #0284c7 !important;
   color: #0284c7 !important;
 }
 
-html[data-theme="light"] .signal-card {
-  background: rgba(255, 255, 255, 0.95) !important;
-  border-color: rgba(15, 23, 42, 0.08) !important;
+html[data-theme="light"] .signal-type-tile:hover svg {
+  color: #0284c7 !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="light"] .signal-type-tile.is-active {
+  color: #0284c7 !important;
+  background: rgba(2, 132, 199, 0.12) !important;
+  border-color: #0284c7 !important;
+  box-shadow: 0 0 16px rgba(2, 132, 199, 0.2) !important;
+}
+
+html[data-theme="light"] .signal-type-tile.is-active svg {
+  color: #0284c7 !important;
+}
+
+html[data-theme="light"] .signal-feed {
+  background: #f8fafc !important;
+  border-left: 1px solid rgba(15, 23, 42, 0.06) !important;
+}
+
+html[data-theme="light"] .signal-feed__title {
   color: #0f172a !important;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04) !important;
+}
+
+html[data-theme="light"] .signal-live {
+  color: #15803d !important;
+  background: rgba(22, 163, 74, 0.1) !important;
+  border-color: rgba(22, 163, 74, 0.25) !important;
+}
+
+html[data-theme="light"] .signal-live__dot {
+  background: #16a34a !important;
+  box-shadow: 0 0 8px #16a34a !important;
+}
+
+html[data-theme="light"] .signal-filter {
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  background: rgba(15, 23, 42, 0.04) !important;
+  color: #475569 !important;
+}
+
+html[data-theme="light"] .signal-filter:hover {
+  color: #0f172a !important;
+  background: rgba(15, 23, 42, 0.08) !important;
+  border-color: #0284c7 !important;
+}
+
+html[data-theme="light"] .signal-filter.is-active {
+  color: #ffffff !important;
+  background: linear-gradient(90deg, #0284c7, #7c3aed) !important;
+  border-color: transparent !important;
+  box-shadow: 0 2px 10px rgba(2, 132, 199, 0.3) !important;
+}
+
+html[data-theme="light"] .signal-card {
+  background: transparent !important;
+}
+
+html[data-theme="light"] .signal-card__inner {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04) !important;
+}
+
+html[data-theme="light"] .signal-card--hero .signal-card__inner {
+  background: linear-gradient(145deg, #ffffff 0%, rgba(240, 249, 255, 0.95) 100%) !important;
+  border-color: rgba(2, 132, 199, 0.28) !important;
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.08) !important;
+}
+
+html[data-theme="light"] .signal-card:hover .signal-card__inner {
+  border-color: rgba(2, 132, 199, 0.4) !important;
+  box-shadow: 0 12px 30px rgba(2, 132, 199, 0.12) !important;
+}
+
+html[data-theme="light"] .signal-card__name {
+  color: #0f172a !important;
+}
+
+html[data-theme="light"] .signal-card__type {
+  color: #0284c7 !important;
+}
+
+html[data-theme="light"] .signal-card__time {
+  color: #64748b !important;
+}
+
+html[data-theme="light"] .signal-card__dot {
+  color: #94a3b8 !important;
+}
+
+html[data-theme="light"] .signal-card__text {
+  color: #334155 !important;
+  font-weight: 500 !important;
+}
+
+html[data-theme="light"] .signal-card__reply {
+  background: linear-gradient(90deg, rgba(22, 163, 74, 0.08), rgba(2, 132, 199, 0.04)) !important;
+  border-left-color: #16a34a !important;
+  color: #1e293b !important;
+}
+
+html[data-theme="light"] .signal-card__reply strong {
+  color: #15803d !important;
+}
+
+html[data-theme="light"] .signal-badge--review {
+  color: #92400e !important;
+  background: rgba(245, 158, 11, 0.12) !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+html[data-theme="light"] .signal-badge--review .signal-badge__dot {
+  background: #d97706 !important;
+  box-shadow: 0 0 6px #d97706 !important;
+}
+
+html[data-theme="light"] .signal-badge--reviewed {
+  color: #0369a1 !important;
+  background: rgba(2, 132, 199, 0.12) !important;
+  border-color: rgba(2, 132, 199, 0.3) !important;
+}
+
+html[data-theme="light"] .signal-badge--reviewed .signal-badge__dot {
+  background: #0284c7 !important;
+}
+
+html[data-theme="light"] .signal-badge--resolved {
+  color: #15803d !important;
+  background: rgba(22, 163, 74, 0.12) !important;
+  border-color: rgba(22, 163, 74, 0.3) !important;
+}
+
+html[data-theme="light"] .signal-badge--resolved .signal-badge__dot {
+  background: #16a34a !important;
 }
 
 /* Case Study Modal in Light Mode */
@@ -1161,13 +1336,40 @@ html[data-theme="dark"] .upcoming-card__inner {
 }
 
 html[data-theme="dark"] .signal-console {
-  background: rgba(10, 10, 10, 0.95) !important;
+  background: #08080a !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8) !important;
+}
+
+html[data-theme="dark"] .signal-transmit {
+  background: #0b0b0e !important;
+}
+
+html[data-theme="dark"] .signal-feed {
+  background: #08080a !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+html[data-theme="dark"] .feedback-input,
+html[data-theme="dark"] .feedback-textarea {
+  background: #040406 !important;
+  border-color: #27272a !important;
+  color: #f8fafc !important;
+}
+
+html[data-theme="dark"] .feedback-input:focus,
+html[data-theme="dark"] .feedback-textarea:focus {
+  border-color: #00d9ff !important;
+}
+
+html[data-theme="dark"] .signal-card__inner {
+  background: rgba(18, 18, 22, 0.85) !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-html[data-theme="dark"] .feedback-input {
-  background: #09090b !important;
-  border-color: #27272a !important;
+html[data-theme="dark"] .signal-card--hero .signal-card__inner {
+  background: linear-gradient(145deg, rgba(22, 22, 28, 0.95), rgba(10, 10, 14, 0.95)) !important;
+  border-color: rgba(0, 217, 255, 0.35) !important;
 }
 
 /* Case Study Modal in Dark Mode */
