@@ -2037,6 +2037,7 @@ function renderAll(data) {
   try { renderResume(data.resumeUrl, data.showResume);            } catch (e) { console.error("renderResume",    e); }
   try { renderSeo(data.seo || {});                                } catch (e) { console.error("renderSeo",       e); }
   try { renderContactGate(data.contactEnabled);                   } catch (e) { console.error("renderContactGate",e); }
+  try { if (typeof window.updateAiPortfolioKnowledge === "function") window.updateAiPortfolioKnowledge(data); } catch (e) { console.warn("updateAiPortfolioKnowledge", e); }
   refreshUi();
 }
 
