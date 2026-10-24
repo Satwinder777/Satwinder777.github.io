@@ -84,9 +84,11 @@ export function renderProfile(container, state, appRouter) {
         <div class="card-box">
           <div class="card-box-header">
             <div class="card-box-title-wrap">
-              <span class="card-header-icon">👤</span>
+              <div class="card-header-icon-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
               <div>
-                <h3>Hero Identity</h3>
+                <h3 class="card-box-title">Hero Identity</h3>
                 <p class="card-desc">Your primary name, title, and introduction displayed across the portfolio hero section.</p>
               </div>
             </div>
@@ -118,9 +120,11 @@ export function renderProfile(container, state, appRouter) {
         <div class="card-box">
           <div class="card-box-header">
             <div class="card-box-title-wrap">
-              <span class="card-header-icon">🧠</span>
+              <div class="card-header-icon-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              </div>
               <div>
-                <h3>Engineering Mindset / About Section</h3>
+                <h3 class="card-box-title">Engineering Mindset</h3>
                 <p class="card-desc">Detailed architecture philosophies and engineering standards shown in the About section.</p>
               </div>
             </div>
@@ -142,13 +146,15 @@ export function renderProfile(container, state, appRouter) {
         <div class="card-box">
           <div class="card-box-header">
             <div class="card-box-title-wrap">
-              <span class="card-header-icon">⚡</span>
+              <div class="card-header-icon-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
               <div>
-                <h3>Highlight Badges & Metric Counters</h3>
-                <p class="card-desc">Metric pills displayed on hero. Toggle any badge Active or Inactive to show/hide on your portfolio.</p>
+                <h3 class="card-box-title">Highlight Badges & Metrics</h3>
+                <p class="card-desc">Hero metric counters. Toggle active/inactive or click + Add Badge to create new.</p>
               </div>
             </div>
-            <button class="btn btn-sm btn-secondary" id="add-stat-btn">
+            <button class="btn btn-sm btn-primary" id="add-stat-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               <span>Add Badge</span>
             </button>
@@ -166,9 +172,11 @@ export function renderProfile(container, state, appRouter) {
         <div class="card-box">
           <div class="card-box-header">
             <div class="card-box-title-wrap">
-              <span class="card-header-icon">🖼️</span>
+              <div class="card-header-icon-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
               <div>
-                <h3>Visual Media & Assets</h3>
+                <h3 class="card-box-title">Visual Media & Assets</h3>
                 <p class="card-desc">Upload your avatar and brand logo with direct storage sync.</p>
               </div>
             </div>
@@ -240,9 +248,11 @@ export function renderProfile(container, state, appRouter) {
         <div class="card-box">
           <div class="card-box-header">
             <div class="card-box-title-wrap">
-              <span class="card-header-icon">🟢</span>
+              <div class="card-header-icon-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </div>
               <div>
-                <h3>Availability Status</h3>
+                <h3 class="card-box-title">Availability Status</h3>
                 <p class="card-desc">Toggle your hire availability badge on the public portfolio header.</p>
               </div>
             </div>
@@ -269,9 +279,11 @@ export function renderProfile(container, state, appRouter) {
         <div class="card-box">
           <div class="card-box-header">
             <div class="card-box-title-wrap">
-              <span class="card-header-icon">🌐</span>
+              <div class="card-header-icon-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </div>
               <div>
-                <h3>Social Profiles & Channels</h3>
+                <h3 class="card-box-title">Social Profiles & Channels</h3>
                 <p class="card-desc">Individual channel controls. Use the switch to make any profile Active or Inactive on the live site.</p>
               </div>
             </div>
@@ -285,6 +297,219 @@ export function renderProfile(container, state, appRouter) {
   `;
 
   // ============================================================
+  //  Modal for Adding or Editing a Highlight Badge
+  // ============================================================
+  const openStatModal = (statIndex = -1) => {
+    const isEdit = statIndex >= 0;
+    const initial = isEdit
+      ? { ...stats[statIndex] }
+      : { icon: "📱", value: "", label: "", visible: true };
+
+    const PRESETS = [
+      { icon: "📱", value: "10+", label: "Production Apps" },
+      { icon: "⏳", value: "3+", label: "Years Experience" },
+      { icon: "🔥", value: "99.9%", label: "Crash-Free Rate" },
+      { icon: "⚡", value: "60+", label: "FPS Rendering" },
+      { icon: "🚀", value: "40%", label: "Perf Improved" },
+      { icon: "👥", value: "100k+", label: "Active Users" },
+      { icon: "🌐", value: "5+", label: "Industry Domains" },
+      { icon: "🏆", value: "15+", label: "Awards & Certs" }
+    ];
+
+    const EMOJIS = ["📱", "⏳", "🔥", "⚡", "🚀", "👥", "🌐", "🏆", "💡", "🎯", "💎", "💻", "⭐", "🛠️"];
+
+    const modalBodyHtml = `
+      <div class="stat-modal-form">
+        <!-- 1. Live Interactive Simulated Badge Pod -->
+        <div class="stat-modal-preview-card">
+          <div class="modal-preview-badge-header">
+            <span class="preview-badge-tag">Simulated Hero Preview</span>
+            <span class="stat-status-badge ${initial.visible ? "status-live" : "status-hidden"}" id="modal-preview-status">
+              ${initial.visible ? "● Active on Site" : "○ Inactive (Hidden)"}
+            </span>
+          </div>
+          <div class="modal-stat-pod ${initial.visible ? "" : "pod-dimmed"}" id="modal-preview-pod">
+            <div class="modal-pod-icon" id="modal-preview-icon">${escapeHtml(initial.icon || "📱")}</div>
+            <div class="modal-pod-content">
+              <div class="modal-pod-val" id="modal-preview-val">${escapeHtml(initial.value || "10+")}</div>
+              <div class="modal-pod-lbl" id="modal-preview-lbl">${escapeHtml(initial.label || "Production Apps")}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. 1-Click Quick Presets -->
+        <div class="modal-section-box">
+          <label class="modal-sub-label">1-Click Quick Presets</label>
+          <div class="modal-preset-chips" id="modal-preset-chips">
+            ${PRESETS.map(p => `
+              <button type="button" class="preset-chip-btn" data-icon="${p.icon}" data-val="${p.value}" data-lbl="${p.label}">
+                <span>${p.icon}</span> <strong>${p.value}</strong> <span class="chip-lbl">${p.label}</span>
+              </button>
+            `).join("")}
+          </div>
+        </div>
+
+        <!-- 3. Form Inputs -->
+        <div class="modal-inputs-grid">
+          <div class="form-group">
+            <label for="modal-input-val">Counter Value <span style="color:var(--accent-cyan);">*</span></label>
+            <input type="text" id="modal-input-val" class="form-input form-input-lg" placeholder="e.g. 10+, 99.9%, 3+" value="${escapeHtml(initial.value || "")}">
+          </div>
+
+          <div class="form-group">
+            <label for="modal-input-lbl">Metric Label <span style="color:var(--accent-cyan);">*</span></label>
+            <input type="text" id="modal-input-lbl" class="form-input form-input-lg" placeholder="e.g. Production Apps, Years Exp." value="${escapeHtml(initial.label || "")}">
+          </div>
+
+          <div class="form-group full-width">
+            <label>Badge Icon / Emoji</label>
+            <div class="emoji-picker-row">
+              <input type="text" id="modal-input-icon" class="form-input emoji-text-input" value="${escapeHtml(initial.icon || "📱")}" maxlength="4">
+              <div class="emoji-quick-pills" id="modal-emoji-pills">
+                ${EMOJIS.map(em => `
+                  <button type="button" class="emoji-pill-btn" data-emoji="${em}">${em}</button>
+                `).join("")}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <div class="switch-row-custom">
+              <div class="switch-row-text">
+                <span class="switch-main-label">Visibility on Public Portfolio</span>
+                <span class="switch-sub-label" id="modal-switch-subtext">
+                  ${initial.visible ? "Active (Displayed on Hero)" : "Inactive (Hidden from Visitors)"}
+                </span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="modal-input-visible" ${initial.visible ? "checked" : ""}>
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const footerHtml = `
+      <button type="button" class="btn btn-secondary" id="modal-stat-cancel">Cancel</button>
+      <button type="button" class="btn btn-primary" id="modal-stat-save">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>${isEdit ? "Update Badge" : "Add Highlight Badge"}</span>
+      </button>
+    `;
+
+    const modalEl = modal.open({
+      title: isEdit ? "Edit Highlight Badge" : "Add Highlight Badge",
+      bodyHtml: modalBodyHtml,
+      footerHtml,
+      size: "md"
+    });
+
+    // Elements
+    const inputVal = modalEl.querySelector("#modal-input-val");
+    const inputLbl = modalEl.querySelector("#modal-input-lbl");
+    const inputIcon = modalEl.querySelector("#modal-input-icon");
+    const inputVisible = modalEl.querySelector("#modal-input-visible");
+
+    const previewPod = modalEl.querySelector("#modal-preview-pod");
+    const previewVal = modalEl.querySelector("#modal-preview-val");
+    const previewLbl = modalEl.querySelector("#modal-preview-lbl");
+    const previewIcon = modalEl.querySelector("#modal-preview-icon");
+    const previewStatus = modalEl.querySelector("#modal-preview-status");
+    const switchSubtext = modalEl.querySelector("#modal-switch-subtext");
+
+    const updatePreview = () => {
+      const v = inputVal.value.trim();
+      const l = inputLbl.value.trim();
+      const ic = inputIcon.value.trim();
+      const vis = inputVisible.checked;
+
+      previewVal.textContent = v || "10+";
+      previewLbl.textContent = l || "Metric Label";
+      previewIcon.textContent = ic || "📱";
+
+      if (vis) {
+        previewPod.classList.remove("pod-dimmed");
+        previewStatus.className = "stat-status-badge status-live";
+        previewStatus.textContent = "● Active on Site";
+        switchSubtext.textContent = "Active (Displayed on Hero)";
+      } else {
+        previewPod.classList.add("pod-dimmed");
+        previewStatus.className = "stat-status-badge status-hidden";
+        previewStatus.textContent = "○ Inactive (Hidden)";
+        switchSubtext.textContent = "Inactive (Hidden from Visitors)";
+      }
+    };
+
+    inputVal.addEventListener("input", updatePreview);
+    inputLbl.addEventListener("input", updatePreview);
+    inputIcon.addEventListener("input", updatePreview);
+    inputVisible.addEventListener("change", updatePreview);
+
+    // Preset chips click
+    modalEl.querySelectorAll(".preset-chip-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        inputIcon.value = btn.dataset.icon;
+        inputVal.value = btn.dataset.val;
+        inputLbl.value = btn.dataset.lbl;
+        updatePreview();
+      });
+    });
+
+    // Emoji pill click
+    modalEl.querySelectorAll(".emoji-pill-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        inputIcon.value = btn.dataset.emoji;
+        updatePreview();
+      });
+    });
+
+    modalEl.querySelector("#modal-stat-cancel").addEventListener("click", () => modal.close());
+
+    modalEl.querySelector("#modal-stat-save").addEventListener("click", () => {
+      const val = inputVal.value.trim();
+      const lbl = inputLbl.value.trim();
+      const ic = inputIcon.value.trim() || "📱";
+      const vis = inputVisible.checked;
+
+      if (!val) {
+        toast.error("Please enter a counter value (e.g. 10+, 99.9%).");
+        inputVal.focus();
+        return;
+      }
+      if (!lbl) {
+        toast.error("Please enter a metric label (e.g. Production Apps).");
+        inputLbl.focus();
+        return;
+      }
+
+      if (isEdit) {
+        stats[statIndex] = {
+          ...stats[statIndex],
+          icon: ic,
+          value: val,
+          label: lbl,
+          visible: vis
+        };
+        toast.success(`Badge "${val} ${lbl}" updated.`);
+      } else {
+        stats.push({
+          icon: ic,
+          value: val,
+          label: lbl,
+          visible: vis,
+          order: stats.length
+        });
+        toast.success(`Badge "${val} ${lbl}" added.`);
+      }
+
+      modal.close();
+      renderStatsList();
+    });
+  };
+
+  // ============================================================
   //  Render Highlight Badges (Stats) List
   // ============================================================
   const renderStatsList = () => {
@@ -294,57 +519,48 @@ export function renderProfile(container, state, appRouter) {
     if (stats.length === 0) {
       listEl.innerHTML = `
         <div class="stats-empty-state">
-          <span>No highlight badges configured.</span>
-          <button class="btn btn-sm btn-primary" id="empty-add-stat-btn">+ Add First Badge</button>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <p style="font-weight:600; color:var(--text-primary); margin:0;">No highlight badges added yet</p>
+          <span style="font-size:12.5px; color:var(--text-secondary);">Add metric counters to display on your portfolio hero.</span>
+          <button class="btn btn-sm btn-primary" id="empty-add-stat-btn" style="margin-top:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Add First Badge</span>
+          </button>
         </div>
       `;
-      listEl.querySelector("#empty-add-stat-btn")?.addEventListener("click", () => {
-        stats.push({ icon: "🚀", value: "10+", label: "New Metric", visible: true, order: stats.length });
-        renderStatsList();
-      });
+      listEl.querySelector("#empty-add-stat-btn")?.addEventListener("click", () => openStatModal(-1));
       return;
     }
 
     listEl.innerHTML = stats.map((st, idx) => `
       <div class="stat-badge-card ${st.visible ? "active-badge" : "inactive-badge"}" data-index="${idx}">
-        <!-- Top row: Status Switch, Icon, & Ordering -->
-        <div class="stat-badge-header">
-          <div class="stat-badge-left">
-            <div class="stat-icon-badge" title="Click to change icon">${escapeHtml(st.icon || "📱")}</div>
-            <div class="stat-status-badge ${st.visible ? "status-live" : "status-hidden"}">
-              ${st.visible ? "● Active on Site" : "○ Inactive (Hidden)"}
+        <div class="stat-badge-main-row">
+          <!-- Live Simulated Metric Pod -->
+          <div class="stat-badge-pod ${st.visible ? "" : "pod-dimmed"}">
+            <div class="stat-pod-icon-wrap" title="Badge Icon">${escapeHtml(st.icon || "📱")}</div>
+            <div class="stat-pod-details">
+              <div class="stat-pod-value">${escapeHtml(st.value || "0")}</div>
+              <div class="stat-pod-label">${escapeHtml(st.label || "Metric Label")}</div>
             </div>
           </div>
-          <div class="stat-badge-controls">
-            <label class="switch switch-sm" title="Toggle visibility on portfolio">
+
+          <!-- Controls: Status Pill, Visibility Switch, Edit, Reorder, Delete -->
+          <div class="stat-badge-actions">
+            <span class="stat-status-badge ${st.visible ? "status-live" : "status-hidden"}">
+              ${st.visible ? "● Active on Site" : "○ Inactive (Hidden)"}
+            </span>
+            <label class="switch switch-sm" title="Toggle visibility on live portfolio">
               <input type="checkbox" class="stat-visibility-toggle" data-index="${idx}" ${st.visible ? "checked" : ""}>
               <span class="slider round"></span>
             </label>
-            <button type="button" class="btn-icon-subtle move-up-stat" data-index="${idx}" ${idx === 0 ? "disabled" : ""} title="Move up">▲</button>
-            <button type="button" class="btn-icon-subtle move-down-stat" data-index="${idx}" ${idx === stats.length - 1 ? "disabled" : ""} title="Move down">▼</button>
-            <button type="button" class="btn-icon-subtle delete-stat-btn" data-index="${idx}" title="Delete badge">✕</button>
-          </div>
-        </div>
-
-        <!-- Live Portfolio Card Simulation Preview -->
-        <div class="stat-preview-pod ${st.visible ? "" : "pod-dimmed"}">
-          <div class="stat-preview-val">${escapeHtml(st.value || "0")}</div>
-          <div class="stat-preview-lbl">${escapeHtml(st.label || "Metric Label")}</div>
-        </div>
-
-        <!-- Inputs Row -->
-        <div class="stat-inputs-grid">
-          <div class="form-group-compact">
-            <label>Icon / Emoji</label>
-            <input type="text" class="form-input form-input-sm stat-icon-input" value="${escapeHtml(st.icon || "📱")}" placeholder="📱" maxlength="4">
-          </div>
-          <div class="form-group-compact">
-            <label>Counter Value</label>
-            <input type="text" class="form-input form-input-sm stat-val-input" value="${escapeHtml(st.value || "")}" placeholder="e.g. 10+, 99.9%">
-          </div>
-          <div class="form-group-compact full-span">
-            <label>Metric Label</label>
-            <input type="text" class="form-input form-input-sm stat-lbl-input" value="${escapeHtml(st.label || "")}" placeholder="e.g. Production Apps">
+            <div class="stat-action-buttons">
+              <button type="button" class="btn-icon-action edit-stat-btn" data-index="${idx}" title="Edit Badge Details">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </button>
+              <button type="button" class="btn-icon-action move-up-stat" data-index="${idx}" ${idx === 0 ? "disabled" : ""} title="Move Up">▲</button>
+              <button type="button" class="btn-icon-action move-down-stat" data-index="${idx}" ${idx === stats.length - 1 ? "disabled" : ""} title="Move Down">▼</button>
+              <button type="button" class="btn-icon-action delete-btn delete-stat-btn" data-index="${idx}" title="Delete Badge">✕</button>
+            </div>
           </div>
         </div>
       </div>
@@ -352,38 +568,22 @@ export function renderProfile(container, state, appRouter) {
 
     // Bind visibility toggle switches
     listEl.querySelectorAll(".stat-visibility-toggle").forEach(toggle => {
-      toggle.addEventListener("change", (e) => {
+      toggle.addEventListener("change", () => {
         const i = parseInt(toggle.dataset.index, 10);
         stats[i].visible = toggle.checked;
         renderStatsList();
       });
     });
 
-    // Bind inputs
-    listEl.querySelectorAll(".stat-badge-card").forEach(card => {
-      const idx = parseInt(card.dataset.index, 10);
-      const iconInput = card.querySelector(".stat-icon-input");
-      const valInput = card.querySelector(".stat-val-input");
-      const lblInput = card.querySelector(".stat-lbl-input");
-      const valPreview = card.querySelector(".stat-preview-val");
-      const lblPreview = card.querySelector(".stat-preview-lbl");
-      const iconPreview = card.querySelector(".stat-icon-badge");
-
-      iconInput?.addEventListener("input", () => {
-        stats[idx].icon = iconInput.value.trim();
-        if (iconPreview) iconPreview.textContent = stats[idx].icon || "📱";
-      });
-      valInput?.addEventListener("input", () => {
-        stats[idx].value = valInput.value;
-        if (valPreview) valPreview.textContent = stats[idx].value || "0";
-      });
-      lblInput?.addEventListener("input", () => {
-        stats[idx].label = lblInput.value;
-        if (lblPreview) lblPreview.textContent = stats[idx].label || "Metric Label";
+    // Bind Edit button -> Opens Modal!
+    listEl.querySelectorAll(".edit-stat-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = parseInt(btn.dataset.index, 10);
+        openStatModal(i);
       });
     });
 
-    // Bind reorder
+    // Bind Reorder
     listEl.querySelectorAll(".move-up-stat").forEach(btn => {
       btn.addEventListener("click", () => {
         const i = parseInt(btn.dataset.index, 10);
@@ -405,26 +605,29 @@ export function renderProfile(container, state, appRouter) {
       });
     });
 
-    // Bind delete
+    // Bind Delete with modal confirmation
     listEl.querySelectorAll(".delete-stat-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", async () => {
         const i = parseInt(btn.dataset.index, 10);
-        stats.splice(i, 1);
-        renderStatsList();
+        const item = stats[i];
+        const ok = await modal.confirm({
+          title: "Delete Highlight Badge?",
+          message: `Are you sure you want to remove "${item.value} ${item.label}"? You can also simply toggle it inactive to hide it without deleting.`,
+          confirmText: "Delete Badge",
+          isDanger: true
+        });
+        if (ok) {
+          stats.splice(i, 1);
+          renderStatsList();
+          toast.success("Badge removed.");
+        }
       });
     });
   };
 
-  // Add Stat Button
+  // Add Stat Button opens Modal!
   container.querySelector("#add-stat-btn")?.addEventListener("click", () => {
-    stats.push({
-      icon: "⚡",
-      value: "100%",
-      label: "Performance",
-      visible: true,
-      order: stats.length
-    });
-    renderStatsList();
+    openStatModal(-1);
   });
 
   // ============================================================
