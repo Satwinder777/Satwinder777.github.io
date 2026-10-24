@@ -208,12 +208,13 @@ export function subscribeToInbox(onData, onError) {
   }, onError);
 }
 
-export async function updateContactStatus(id, { isRead, isArchived }) {
+export async function updateContactStatus(id, { isRead, isArchived, isStarred }) {
   try {
     const ref = doc(db, ADMIN_CONFIG.contactSubmissionsCollection, id);
     const updates = {};
     if (typeof isRead === "boolean") updates.isRead = isRead;
     if (typeof isArchived === "boolean") updates.isArchived = isArchived;
+    if (typeof isStarred === "boolean") updates.isStarred = isStarred;
     await updateDoc(ref, updates);
     return true;
   } catch (err) {
