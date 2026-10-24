@@ -17,18 +17,18 @@ import { modal } from "./modal.js";
 import { toast } from "./toast.js";
 
 // Import view modules
-import { renderDashboard } from "./modules/dashboard.js?v=20261024_v20";
-import { renderProfile } from "./modules/profile.js?v=20261024_v20";
-import { renderProjects } from "./modules/projects.js?v=20261024_v20";
-import { renderExperience } from "./modules/experience.js?v=20261024_v20";
-import { renderSkills } from "./modules/skills.js?v=20261024_v20";
-import { renderFeedback } from "./modules/feedback.js?v=20261024_v20";
-import { renderInbox } from "./modules/inbox.js?v=20261024_v20";
-import { renderContributors } from "./modules/contributors.js?v=20261024_v20";
-import { renderSiteContent } from "./modules/site-content.js?v=20261024_v20";
-import { renderResume } from "./modules/resume.js?v=20261024_v20";
-import { renderLogs } from "./modules/logs.js?v=20261024_v20";
-import { renderSettings } from "./modules/settings.js?v=20261024_v20";
+import { renderDashboard } from "./modules/dashboard.js?v=20261024_v21";
+import { renderProfile } from "./modules/profile.js?v=20261024_v21";
+import { renderProjects } from "./modules/projects.js?v=20261024_v21";
+import { renderExperience } from "./modules/experience.js?v=20261024_v21";
+import { renderSkills } from "./modules/skills.js?v=20261024_v21";
+import { renderFeedback } from "./modules/feedback.js?v=20261024_v21";
+import { renderInbox } from "./modules/inbox.js?v=20261024_v21";
+import { renderContributors } from "./modules/contributors.js?v=20261024_v21";
+import { renderSiteContent } from "./modules/site-content.js?v=20261024_v21";
+import { renderResume } from "./modules/resume.js?v=20261024_v21";
+import { renderLogs } from "./modules/logs.js?v=20261024_v21";
+import { renderSettings } from "./modules/settings.js?v=20261024_v21";
 
 class AdminApp {
   constructor() {
