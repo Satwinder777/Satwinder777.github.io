@@ -15,20 +15,95 @@ export function renderSiteContent(container, state) {
     developerName: "Satwinder Singh"
   };
 
+  let sectionVisibility = {
+    about: true,
+    stats: true,
+    skills: true,
+    expertise: true,
+    experience: true,
+    projects: true,
+    contributors: true,
+    upcoming: true,
+    feedback: true,
+    contact: true,
+    resume: true,
+    banner: true,
+    ...(portfolio.sectionVisibility || {})
+  };
+
+  const SECTIONS_CONFIG = [
+    { key: "about", icon: "👤", title: "Hero & Mindset", desc: "Hero bio, avatar, and Engineering Mindset narrative block" },
+    { key: "stats", icon: "📊", title: "Metrics & Stats Row", desc: "Production apps, crash-free rate, and FPS highlights grid" },
+    { key: "skills", icon: "⚡", title: "Technical Skills Arsenal", desc: "Interactive categorized skill chips and domain stacks" },
+    { key: "expertise", icon: "🎯", title: "Core Capabilities Cards", desc: "Architecture, 120fps tuning, and performance cards" },
+    { key: "experience", icon: "💼", title: "Career Timeline", desc: "Chronological roles, milestone accomplishments and dates" },
+    { key: "projects", icon: "🚀", title: "Featured Work & Projects", desc: "Interactive mobile and web project showcase cards" },
+    { key: "contributors", icon: "👥", title: "Contributors & Team", desc: "Open-source collaborators and co-creator profile cards" },
+    { key: "upcoming", icon: "🗺️", title: "Roadmap & Upcoming", desc: "Forward-looking feature milestones and ETA cards" },
+    { key: "feedback", icon: "💬", title: "Signal Feedback Wall", desc: "Community endorsements, verified signals and feedback board" },
+    { key: "contact", icon: "📬", title: "Contact & Hire Gateway", desc: "Direct lead generation form and client inquiry pipeline" },
+    { key: "resume", icon: "📄", title: "Download CV / Resume", desc: "Hero CTA button and public PDF download link" },
+    { key: "banner", icon: "📢", title: "Announcement Marquee", desc: "Live ticker banner broadcast across website header" },
+  ];
+
   let features = Array.isArray(portfolio.upcomingFeatures) ? [...portfolio.upcomingFeatures] : [];
 
   const renderView = () => {
+    const activeCount = Object.values(sectionVisibility).filter(v => v !== false).length;
+
     container.innerHTML = `
       <div class="view-header">
         <div>
-          <h1 class="view-title">Site Content & Roadmap</h1>
-          <p class="view-subtitle">Live website announcement banner ticker and public forward-looking roadmap.</p>
+          <h1 class="view-title">Features &amp; Section Visibility</h1>
+          <p class="view-subtitle">Master switches to activate, deactivate, or hide any portfolio feature, section, or roadmap cell live.</p>
         </div>
         <div class="header-actions">
           <button class="btn btn-primary" id="save-banner-btn">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
             Save Banner Settings
           </button>
+        </div>
+      </div>
+
+      <!-- Master Feature & Section Visibility Matrix -->
+      <div class="card-box" style="margin-bottom: 28px;">
+        <div class="card-box-header">
+          <div class="card-box-title-wrap">
+            <div class="card-header-icon-box" style="background: rgba(0, 217, 255, 0.15); color: #00d9ff; border-color: rgba(0, 217, 255, 0.3);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <div>
+              <h3>Master Feature &amp; Section Visibility</h3>
+              <p class="card-desc">Instantly toggle any main portfolio section or component active/inactive on the live website.</p>
+            </div>
+          </div>
+          <span class="badge badge-info" id="active-sections-counter">${activeCount} / ${SECTIONS_CONFIG.length} Features Active</span>
+        </div>
+
+        <div class="section-vis-grid">
+          ${SECTIONS_CONFIG.map(sec => {
+            const isAct = sectionVisibility[sec.key] !== false;
+            return `
+              <div class="section-vis-card ${isAct ? "" : "is-off"}" data-sec="${sec.key}">
+                <div class="section-vis-info">
+                  <div class="section-vis-icon">${sec.icon}</div>
+                  <div class="section-vis-text">
+                    <h4>${escapeHtml(sec.title)}</h4>
+                    <p>${escapeHtml(sec.desc)}</p>
+                  </div>
+                </div>
+                <div class="section-vis-toggle-wrap">
+                  <span class="section-vis-status ${isAct ? "is-live" : "is-hidden"}">
+                    ${isAct ? "LIVE" : "HIDDEN"}
+                  </span>
+                  <label class="switch">
+                    <input type="checkbox" class="section-vis-checkbox" data-sec="${sec.key}" ${isAct ? "checked" : ""}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            `;
+          }).join("")}
         </div>
       </div>
 
@@ -116,14 +191,21 @@ export function renderSiteContent(container, state) {
               <button class="btn btn-sm btn-secondary" id="btn-seed-roadmap">Add Sample Roadmap Items</button>
             </div>
           ` : features.map((feat, idx) => `
-            <div class="roadmap-admin-card" data-idx="${idx}">
+            <div class="roadmap-admin-card ${feat.visible === false ? "is-inactive-card" : ""}" data-idx="${idx}">
               <div class="roadmap-top">
                 <div class="roadmap-icon-pod">${escapeHtml(feat.icon || "✨")}</div>
                 <div class="roadmap-info">
                   <h4>${escapeHtml(feat.title)}</h4>
-                  <span class="badge badge-info" style="font-size: 0.72rem;">${escapeHtml(feat.eta ? `Target: ${feat.eta}` : "In Development")}</span>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <span class="badge badge-info" style="font-size: 0.72rem;">${escapeHtml(feat.eta ? `Target: ${feat.eta}` : "In Development")}</span>
+                    ${feat.visible === false ? `<span class="badge badge-neutral" style="font-size: 0.7rem;">HIDDEN</span>` : ""}
+                  </div>
                 </div>
                 <div class="right-actions">
+                  <button class="btn-toggle-vis toggle-feat-vis-btn ${feat.visible !== false ? "is-active" : "is-inactive"}" data-idx="${idx}" title="${feat.visible !== false ? "Active on public roadmap (click to hide)" : "Hidden from public roadmap (click to show)"}">
+                    <span class="status-pulse-dot" style="background: ${feat.visible !== false ? "#10b981" : "#64748b"};"></span>
+                    <span>${feat.visible !== false ? "Active" : "Hidden"}</span>
+                  </button>
                   <button class="btn-icon edit-feat-btn" data-idx="${idx}" title="Edit Feature">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                   </button>
@@ -151,7 +233,7 @@ export function renderSiteContent(container, state) {
     `;
 
     // Listeners
-    container.querySelector("#banner-enabled")?.addEventListener("change", (e) => {
+    container.querySelector("#banner-enabled")?.addEventListener("change", async (e) => {
       banner.enabled = e.target.checked;
       const demo = container.querySelector(".live-banner-demo");
       const badge = container.querySelector("#banner-status-badge");
@@ -162,6 +244,13 @@ export function renderSiteContent(container, state) {
       if (badge) {
         badge.className = `badge ${banner.enabled ? "badge-success" : "badge-neutral"}`;
         badge.textContent = banner.enabled ? "LIVE ON PRODUCTION" : "BROADCAST DISABLED";
+      }
+      try {
+        await updatePortfolioField("siteBanner", banner);
+        state.portfolio.siteBanner = banner;
+        toast.success(banner.enabled ? "Banner enabled live on production!" : "Banner broadcast disabled.");
+      } catch (err) {
+        toast.warning("Local toggle updated, remember to click 'Save Banner Settings'.");
       }
     });
 
@@ -227,8 +316,53 @@ export function renderSiteContent(container, state) {
       saveFeatures(features);
     });
 
+    // Section visibility checkbox toggles with instant live sync
+    container.querySelectorAll(".section-vis-checkbox").forEach(chk => {
+      chk.addEventListener("change", async (e) => {
+        const key = chk.dataset.sec;
+        const enabled = e.target.checked;
+        sectionVisibility[key] = enabled;
+        state.portfolio.sectionVisibility = sectionVisibility;
+
+        const card = container.querySelector(`.section-vis-card[data-sec="${key}"]`);
+        if (card) {
+          card.classList.toggle("is-off", !enabled);
+          const st = card.querySelector(".section-vis-status");
+          if (st) {
+            st.className = `section-vis-status ${enabled ? "is-live" : "is-hidden"}`;
+            st.textContent = enabled ? "LIVE" : "HIDDEN";
+          }
+        }
+        const counterEl = container.querySelector("#active-sections-counter");
+        if (counterEl) {
+          const count = Object.values(sectionVisibility).filter(v => v !== false).length;
+          counterEl.textContent = `${count} / ${SECTIONS_CONFIG.length} Features Active`;
+        }
+
+        try {
+          await updatePortfolioField("sectionVisibility", sectionVisibility);
+          toast.success(enabled ? `"${key.toUpperCase()}" feature active on website!` : `"${key.toUpperCase()}" feature deactivated (hidden).`);
+        } catch (err) {
+          toast.error("Failed to update visibility: " + err.message);
+        }
+      });
+    });
+
     // Roadmap Features
     container.querySelector("#add-feature-btn")?.addEventListener("click", () => openFeatureEditor(null));
+
+    // Roadmap active/inactive toggle
+    container.querySelectorAll(".toggle-feat-vis-btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const idx = parseInt(btn.dataset.idx, 10);
+        if (features[idx]) {
+          features[idx].visible = features[idx].visible === false ? true : false;
+          await saveFeatures(features);
+          toast.success(features[idx].visible ? `"${features[idx].title}" activated on roadmap!` : `"${features[idx].title}" hidden from roadmap.`);
+          renderView();
+        }
+      });
+    });
 
     container.querySelectorAll(".edit-feat-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -319,6 +453,18 @@ export function renderSiteContent(container, state) {
             <label for="f-fdesc">Description</label>
             <textarea id="f-fdesc" class="form-textarea" rows="4" placeholder="Brief outline of the technical capability...">${escapeHtml(f.description)}</textarea>
           </div>
+          <div class="form-group full-width">
+            <label class="switch-row">
+              <div>
+                <strong style="color: var(--text-primary); font-size: 13px;">Active on Public Roadmap</strong>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Toggle whether this feature appears on the live website roadmap.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="f-fvis" ${f.visible !== false ? "checked" : ""}>
+                <span class="slider round"></span>
+              </label>
+            </label>
+          </div>
         </div>
       </form>
     `;
@@ -349,7 +495,8 @@ export function renderSiteContent(container, state) {
         title,
         icon: modalEl.querySelector("#f-ficon").value.trim() || "✨",
         eta: modalEl.querySelector("#f-feta").value.trim(),
-        description: modalEl.querySelector("#f-fdesc").value.trim()
+        description: modalEl.querySelector("#f-fdesc").value.trim(),
+        visible: modalEl.querySelector("#f-fvis")?.checked ?? true
       };
 
       if (isNew) {
@@ -370,5 +517,7 @@ function escapeHtml(str) {
   return String(str || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

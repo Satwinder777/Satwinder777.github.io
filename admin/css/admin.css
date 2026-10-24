@@ -6187,5 +6187,177 @@ input:checked + .slider:before {
   }
 }
 
+/* ============================================================
+   Feature & Item Active/Inactive Visibility Controls
+   ============================================================ */
+
+/* Inactive Card Styling across Modules */
+.project-card.is-inactive-card,
+.exp-item-card.is-inactive-card,
+.contributor-admin-card.is-inactive-card,
+.roadmap-card.is-inactive-card,
+.exp-card-outer.is-inactive-card {
+  opacity: 0.62;
+  filter: grayscale(0.25);
+  border-style: dashed !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  transition: opacity 0.2s ease, filter 0.2s ease, border-color 0.2s ease;
+}
+
+.project-card.is-inactive-card:hover,
+.exp-item-card.is-inactive-card:hover,
+.contributor-admin-card.is-inactive-card:hover,
+.roadmap-card.is-inactive-card:hover,
+.exp-card-outer.is-inactive-card:hover {
+  opacity: 0.9;
+  filter: none;
+}
+
+/* Status Toggle Button on Cards */
+.btn-toggle-vis {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface-elevated);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-toggle-vis:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-card);
+}
+
+.btn-toggle-vis.is-active {
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.btn-toggle-vis.is-inactive {
+  color: var(--text-muted);
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Skill Chip Visibility Switch */
+.chip-vis-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.chip-vis-btn:hover {
+  color: var(--accent-cyan);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.skill-chip.is-inactive-chip {
+  opacity: 0.45;
+  text-decoration: line-through;
+  border-style: dashed;
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Global Section Visibility Matrix Grid */
+.section-vis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.section-vis-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  transition: all 0.2s ease;
+}
+
+.section-vis-card:hover {
+  border-color: rgba(0, 217, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.section-vis-card.is-off {
+  opacity: 0.6;
+  border-style: dashed;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.section-vis-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-vis-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  background: rgba(0, 217, 255, 0.1);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(0, 217, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.section-vis-text h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 2px 0;
+}
+
+.section-vis-text p {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.section-vis-toggle-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.section-vis-status {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.section-vis-status.is-live {
+  color: #10b981;
+}
+
+.section-vis-status.is-hidden {
+  color: var(--text-muted);
+}
+
 
 

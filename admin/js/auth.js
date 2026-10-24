@@ -74,7 +74,7 @@ class AuthService {
     const inputHash = await this.hashString(pin.trim());
     const savedHash = this.getSavedPinHash();
 
-    if (inputHash === savedHash || pin.trim() === "7770") {
+    if (inputHash === savedHash) {
       this._createSession({
         method: "master_pin",
         role: "admin",

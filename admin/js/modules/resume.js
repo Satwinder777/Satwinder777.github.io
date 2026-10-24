@@ -116,7 +116,7 @@ export function renderResume(container, state) {
                   </div>
                   <div class="quick-link-actions" id="quick-link-actions-pod">
                     ${resumeUrl ? `
-                      <a href="${resumeUrl}" target="_blank" rel="noopener" class="btn-url-pill" title="Open PDF in new tab">
+                      <a href="${escapeHtml(resumeUrl)}" target="_blank" rel="noopener" class="btn-url-pill" title="Open PDF in new tab">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                         Open Link
                       </a>
@@ -239,7 +239,7 @@ export function renderResume(container, state) {
                   <span id="live-cta-text">${showResume ? "Active on live website" : "Hidden from visitors"}</span>
                 </div>
                 ${resumeUrl ? `
-                  <a href="${resumeUrl}" target="_blank" class="btn btn-sm btn-primary live-download-btn" id="live-download-btn">
+                  <a href="${escapeHtml(resumeUrl)}" target="_blank" class="btn btn-sm btn-primary live-download-btn" id="live-download-btn">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     Download PDF
                   </a>
@@ -463,5 +463,7 @@ function escapeHtml(str) {
   return String(str || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

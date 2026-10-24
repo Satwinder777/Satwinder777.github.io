@@ -9,6 +9,7 @@ export const ADMIN_CONFIG = {
   // Document path
   portfolioCollection: "portfolio",
   mainDocId: "satwinder",
+  portfolioDocId: "satwinder",
   
   // Independent collections
   contactSubmissionsCollection: "contact_submissions",

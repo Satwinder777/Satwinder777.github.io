@@ -3,7 +3,7 @@
 //  Profile, Hero Info, Mindset, Availability & Stats Manager
 // ============================================================
 
-import { updatePortfolioField } from "../firebase-admin.js";
+import { updatePortfolioField, updatePortfolioFields } from "../firebase-admin.js";
 import { uploadToSupabase } from "../supabase.js";
 import { toast } from "../toast.js";
 import { modal } from "../modal.js";
@@ -50,11 +50,11 @@ export function renderProfile(container, state, appRouter) {
     : { ...rawSocials };
 
   const defaultSocials = {
-    github: socialLinks.github || "https://github.com/satwinder777",
-    linkedin: socialLinks.linkedin || "https://linkedin.com/in/satwinder777",
-    whatsapp: socialLinks.whatsapp || "",
-    instagram: socialLinks.instagram || "",
-    email: socialLinks.email || "satwinder88721@gmail.com",
+    github: socialLinks.github !== undefined ? socialLinks.github : "https://github.com/satwinder777",
+    linkedin: socialLinks.linkedin !== undefined ? socialLinks.linkedin : "https://linkedin.com/in/satwinder777",
+    whatsapp: socialLinks.whatsapp !== undefined ? socialLinks.whatsapp : "",
+    instagram: socialLinks.instagram !== undefined ? socialLinks.instagram : "",
+    email: socialLinks.email !== undefined ? socialLinks.email : "satwinder88721@gmail.com",
     showGithub: socialLinks.showGithub !== false,
     showLinkedin: socialLinks.showLinkedin !== false,
     showWhatsapp: socialLinks.showWhatsapp !== false,
@@ -873,9 +873,11 @@ export function renderProfile(container, state, appRouter) {
 
     try {
       toast.info("Saving changes to Firestore...");
-      await updatePortfolioField("profile", updatedProfile);
-      await updatePortfolioField("stats", updatedStats);
-      await updatePortfolioField("socialLinks", updatedSocialLinks);
+      await updatePortfolioFields({
+        profile: updatedProfile,
+        stats: updatedStats,
+        socialLinks: updatedSocialLinks,
+      });
 
       // Update local state
       state.portfolio.profile = updatedProfile;

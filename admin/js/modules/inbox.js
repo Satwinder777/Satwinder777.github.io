@@ -310,7 +310,11 @@ export function renderInbox(container, state) {
         return;
       }
       try {
-        await Promise.all(unreadItems.map(item => updateContactStatus(item.id, { isRead: true })));
+        await Promise.all(
+          unreadItems
+            .filter(item => !String(item.id).startsWith("inq_demo_"))
+            .map(item => updateContactStatus(item.id, { isRead: true }))
+        );
         unreadItems.forEach(item => { item.isRead = true; });
         toast.success(`Marked ${unreadItems.length} inquiries as read.`);
         renderView();
@@ -319,10 +323,17 @@ export function renderInbox(container, state) {
       }
     });
 
-    // Search query
+    // Search query with focus & caret retention
     container.querySelector("#inbox-search")?.addEventListener("input", (e) => {
       searchQuery = e.target.value;
+      const start = e.target.selectionStart;
+      const end = e.target.selectionEnd;
       renderView();
+      const re = container.querySelector("#inbox-search");
+      if (re) {
+        re.focus();
+        try { re.setSelectionRange(start, end); } catch (_) {}
+      }
     });
 
     // Filter pills
@@ -354,7 +365,9 @@ export function renderInbox(container, state) {
 
         const nextStarred = !item.isStarred;
         try {
-          await updateContactStatus(id, { isStarred: nextStarred });
+          if (!id.startsWith("inq_demo_")) {
+            await updateContactStatus(id, { isStarred: nextStarred });
+          }
           item.isStarred = nextStarred;
           toast.success(nextStarred ? "⭐ Lead starred as priority!" : "Removed from starred.");
           renderView();
@@ -438,7 +451,9 @@ export function renderInbox(container, state) {
 
         const nextRead = !item.isRead;
         try {
-          await updateContactStatus(id, { isRead: nextRead });
+          if (!id.startsWith("inq_demo_")) {
+            await updateContactStatus(id, { isRead: nextRead });
+          }
           item.isRead = nextRead;
           toast.success(nextRead ? "Marked as read." : "Marked as unread.");
           renderView();
@@ -457,7 +472,9 @@ export function renderInbox(container, state) {
 
         const nextArchived = !item.isArchived;
         try {
-          await updateContactStatus(id, { isArchived: nextArchived });
+          if (!id.startsWith("inq_demo_")) {
+            await updateContactStatus(id, { isArchived: nextArchived });
+          }
           item.isArchived = nextArchived;
           toast.success(nextArchived ? "Moved to archive." : "Restored to active inbox.");
           renderView();
@@ -483,7 +500,9 @@ export function renderInbox(container, state) {
 
         if (ok) {
           try {
-            await deleteContactSubmission(id);
+            if (!id.startsWith("inq_demo_")) {
+              await deleteContactSubmission(id);
+            }
             inbox = inbox.filter(i => i.id !== id);
             state.inbox = inbox;
             openDrawers.delete(id);
@@ -615,5 +634,7 @@ function escapeHtml(str) {
   return String(str || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

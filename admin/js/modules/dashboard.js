@@ -599,13 +599,23 @@ export function renderDashboard(container, state, appRouter) {
       pingLabel.innerHTML = `Active live sync connected (<span class="font-emerald">${pingLatency}ms latency</span>).`;
     }
 
+    let deductions = 0;
+    if (!resumeOk) deductions += 4;
+    if (!projsOk) deductions += 6;
+    if (!seoOk) deductions += 2;
+    if (!contactOnline) deductions += 15;
+    if (pingLatency > 120) deductions += 3;
+
+    const currentScore = Math.max(60, 100 - deductions);
+    const currentGrade = currentScore >= 95 ? "Grade A+" : (currentScore >= 90 ? "Grade A" : (currentScore >= 80 ? "Grade B+" : "Grade B"));
+
     const scoreVal = container.querySelector("#doctor-score-val");
-    if (scoreVal) scoreVal.textContent = "98";
+    if (scoreVal) scoreVal.textContent = String(currentScore);
 
     const badge = container.querySelector("#health-grade-badge");
-    if (badge) badge.textContent = "Grade A+";
+    if (badge) badge.textContent = currentGrade;
 
-    toast.success("Health Diagnostics Complete: 98/100 · Grade A+ (Production Validated)");
+    toast.success(`Health Diagnostics Complete: ${currentScore}/100 · ${currentGrade}`);
     scanBtn.disabled = false;
     scanBtn.innerHTML = `
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
@@ -703,5 +713,7 @@ function escapeHtml(str) {
   return String(str || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

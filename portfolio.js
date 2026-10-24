@@ -469,7 +469,23 @@ function renderStats(stats = []) {
     .filter((s) => s && s.visible !== false && (s.value || s.label))
     .slice()
     .sort((a, b) => (a.order || 0) - (b.order || 0));
-  if (!list.length) return; // keep static fallback
+
+  const parent = el.closest(".reveal") || el.parentElement;
+  if (!list.length) {
+    if (parent) parent.classList.add("cms-section--hidden");
+    el.innerHTML = "";
+    return;
+  }
+  if (parent) parent.classList.remove("cms-section--hidden");
+
+  const count = list.length;
+  let lgCols = "lg:grid-cols-6";
+  if (count <= 2) lgCols = "lg:grid-cols-2";
+  else if (count === 3) lgCols = "lg:grid-cols-3";
+  else if (count === 4) lgCols = "lg:grid-cols-4";
+  else if (count === 5) lgCols = "lg:grid-cols-5";
+
+  el.className = `grid grid-cols-2 md:grid-cols-3 ${lgCols} gap-6 text-center`;
   el.innerHTML = list.map((s) => buildStatCardHtml(s)).join("");
   setupStatCards(el);
 }
@@ -564,10 +580,13 @@ function renderArsenal(skills = []) {
   const el = $("arsenal-container");
   if (!el) return;
   const list = (skills || [])
-    .filter((s) => s && s.label)
+    .filter((s) => s && s.label && s.visible !== false)
     .slice()
     .sort((a, b) => (a.order || 0) - (b.order || 0));
-  if (!list.length) return;
+  if (!list.length) {
+    el.innerHTML = '<div class="text-sm text-gray-500 italic py-4">No active skills currently listed.</div>';
+    return;
+  }
 
   const ACCENT = {
     frontend:     "border-accent-cyan/40 bg-accent-cyan/10 text-white font-medium shadow-[0_0_15px_rgba(0,217,255,0.1)]",
@@ -645,13 +664,25 @@ function renderArsenal(skills = []) {
 }
 
 function renderExpertise(items = []) {
+  const wrap = $("expertise");
   const el = $("expertise-container");
   if (!el) return;
   const list = (items || [])
     .filter((e) => e && e.visible !== false && (e.title || e.description))
     .slice()
     .sort((a, b) => (a.order || 0) - (b.order || 0));
-  if (!list.length) return;
+  if (!list.length) {
+    if (wrap) {
+      wrap.classList.add("cms-section--hidden");
+      wrap.setAttribute("aria-hidden", "true");
+    }
+    el.innerHTML = "";
+    return;
+  }
+  if (wrap) {
+    wrap.classList.remove("cms-section--hidden");
+    wrap.setAttribute("aria-hidden", "false");
+  }
   el.innerHTML = list
     .map(
       (e, i) => `
@@ -665,10 +696,11 @@ function renderExpertise(items = []) {
 }
 
 function renderExperience(items = []) {
+  const wrap = $("experience");
   const el = $("experience-container");
   if (!el) return;
   const list = (items || [])
-    .filter((e) => e && (e.title || e.company))
+    .filter((e) => e && (e.title || e.company) && e.visible !== false)
     .slice()
     .sort((a, b) => {
       const oa = a.order ?? 9999;
@@ -679,7 +711,18 @@ function renderExperience(items = []) {
       const db_ = b.startDate?.seconds ?? 0;
       return db_ - da; // most recent start date first
     });
-  if (!list.length) return;
+  if (!list.length) {
+    if (wrap) {
+      wrap.classList.add("cms-section--hidden");
+      wrap.setAttribute("aria-hidden", "true");
+    }
+    el.innerHTML = "";
+    return;
+  }
+  if (wrap) {
+    wrap.classList.remove("cms-section--hidden");
+    wrap.setAttribute("aria-hidden", "false");
+  }
 
   el.innerHTML = list
     .map((e, i) => {
@@ -1422,10 +1465,22 @@ const initProjectShowcase = () => {
 };
 
 function renderProjects(items = []) {
+  const wrap = $("projects");
   const el = $("projects-container");
   if (!el) return;
-  const all = (items || []).filter((p) => p && p.name);
-  if (!all.length) return;
+  const all = (items || []).filter((p) => p && p.name && p.visible !== false);
+  if (!all.length) {
+    if (wrap) {
+      wrap.classList.add("cms-section--hidden");
+      wrap.setAttribute("aria-hidden", "true");
+    }
+    el.innerHTML = "";
+    return;
+  }
+  if (wrap) {
+    wrap.classList.remove("cms-section--hidden");
+    wrap.setAttribute("aria-hidden", "false");
+  }
 
   initProjectShowcase();
 
@@ -2261,7 +2316,59 @@ function initFeedbackForm() {
   });
 }
 
+function renderSectionVisibility(visibility = {}) {
+  // Master feature / section visibility mapping
+  const SECTION_MAP = {
+    about:        { id: "about",        nav: '[data-section="about"]' },
+    expertise:    { id: "expertise",    nav: '[data-section="expertise"]' },
+    experience:   { id: "experience",   nav: '[data-section="experience"]' },
+    projects:     { id: "projects",     nav: '[data-section="projects"]' },
+    contributors: { id: "contributors", nav: '[data-section="contributors"]' },
+    upcoming:     { id: "upcoming",     nav: '[data-section="upcoming"]' },
+    feedback:     { id: "feedback",     nav: '[data-section="feedback"]' },
+    contact:      { id: "contact",      nav: '#hire-me-btn' }
+  };
+
+  for (const [key, conf] of Object.entries(SECTION_MAP)) {
+    const isVisible = visibility[key] !== false;
+    const sec = document.getElementById(conf.id);
+    if (!isVisible) {
+      if (sec) {
+        sec.classList.add("cms-section--hidden");
+        sec.setAttribute("aria-hidden", "true");
+      }
+      if (conf.nav) {
+        document.querySelectorAll(conf.nav).forEach((n) => { n.style.display = "none"; });
+      }
+    } else {
+      if (conf.nav) {
+        document.querySelectorAll(conf.nav).forEach((n) => { n.style.display = ""; });
+      }
+    }
+  }
+
+  // Highlight metrics row
+  if (visibility.stats === false) {
+    const statsEl = $("stats-container");
+    const parent = statsEl?.closest(".reveal") || statsEl?.parentElement;
+    if (parent) parent.classList.add("cms-section--hidden");
+  }
+
+  // Resume download button
+  if (visibility.resume === false) {
+    const rBtn = $("resume-download-btn");
+    if (rBtn) rBtn.style.display = "none";
+  }
+
+  // Live Announcement Banner
+  if (visibility.banner === false) {
+    const bannerEl = $("site-announcement-banner");
+    if (bannerEl) bannerEl.style.display = "none";
+  }
+}
+
 function renderAll(data) {
+  try { renderSectionVisibility(data.sectionVisibility || {});               } catch (e) { console.error("renderSectionVisibility", e); }
   try { renderSiteBanner(data.siteBanner);                                   } catch (e) { console.error("renderSiteBanner",     e); }
   try { renderProfile(data.profile);                              } catch (e) { console.error("renderProfile",   e); }
   try { renderStats(data.stats);                                  } catch (e) { console.error("renderStats",     e); }

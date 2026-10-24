@@ -84,20 +84,27 @@ export function renderContributors(container, state) {
           ${items.length === 0 ? `
             <div class="empty-state-sm full-width">No contributors added yet. Click "+ Add Contributor" above.</div>
           ` : items.map((c, idx) => `
-            <div class="contributor-admin-card" data-idx="${idx}">
+            <div class="contributor-admin-card ${c.visible === false ? "is-inactive-card" : ""}" data-idx="${idx}">
               <div class="contrib-top">
                 <div class="contrib-avatar-box">
                   ${c.avatarUrl ? `
-                    <img src="${c.avatarUrl}" alt="${escapeHtml(c.name)}" class="contrib-avatar-img" onerror="this.onerror=null; this.src='../favicon.ico';">
+                    <img src="${escapeHtml(c.avatarUrl)}" alt="${escapeHtml(c.name)}" class="contrib-avatar-img" onerror="this.onerror=null; this.src='../favicon.ico';">
                   ` : `
                     <div class="contrib-avatar-placeholder">${escapeHtml((c.name || "C").charAt(0).toUpperCase())}</div>
                   `}
                 </div>
                 <div class="contrib-info">
-                  <h4 class="contrib-name">${escapeHtml(c.name)}</h4>
+                  <h4 class="contrib-name">
+                    ${escapeHtml(c.name)}
+                    ${c.visible === false ? `<span class="badge badge-neutral" style="margin-left: 6px; font-size: 0.65rem; border: 1px dashed rgba(148, 163, 184, 0.4);">HIDDEN</span>` : ""}
+                  </h4>
                   <span class="contrib-role-badge">${escapeHtml(c.role || "Collaborator")}</span>
                 </div>
-                <div class="contrib-actions-top">
+                <div class="contrib-actions-top" style="display: flex; gap: 4px; align-items: center;">
+                  <button class="btn-toggle-vis toggle-c-vis-btn ${c.visible !== false ? "is-active" : "is-inactive"}" data-idx="${idx}" title="Toggle active/hidden on website" style="padding: 2px 7px; font-size: 0.7rem;">
+                    <span class="status-pulse-dot" style="background: ${c.visible !== false ? "#10b981" : "#64748b"};"></span>
+                    <span>${c.visible !== false ? "Active" : "Hidden"}</span>
+                  </button>
                   <button class="btn-icon edit-contrib-btn" data-idx="${idx}" title="Edit Contributor">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                   </button>
@@ -109,19 +116,19 @@ export function renderContributors(container, state) {
 
               <div class="contrib-links-row">
                 ${c.github ? `
-                  <a href="${c.github}" target="_blank" rel="noopener" class="contrib-link-pill link-github" title="GitHub">
+                  <a href="${escapeHtml(c.github)}" target="_blank" rel="noopener" class="contrib-link-pill link-github" title="GitHub">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                     GitHub
                   </a>
                 ` : ""}
                 ${c.linkedin ? `
-                  <a href="${c.linkedin}" target="_blank" rel="noopener" class="contrib-link-pill link-linkedin" title="LinkedIn">
+                  <a href="${escapeHtml(c.linkedin)}" target="_blank" rel="noopener" class="contrib-link-pill link-linkedin" title="LinkedIn">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
                     LinkedIn
                   </a>
                 ` : ""}
                 ${c.website ? `
-                  <a href="${c.website}" target="_blank" rel="noopener" class="contrib-link-pill link-website" title="Website">
+                  <a href="${escapeHtml(c.website)}" target="_blank" rel="noopener" class="contrib-link-pill link-website" title="Website">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                     Portfolio
                   </a>
@@ -158,6 +165,17 @@ export function renderContributors(container, state) {
     });
 
     container.querySelector("#add-contributor-btn")?.addEventListener("click", () => openContributorEditor(null));
+
+    container.querySelectorAll(".toggle-c-vis-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const idx = parseInt(btn.dataset.idx, 10);
+        if (items[idx]) {
+          items[idx].visible = items[idx].visible === false ? true : false;
+          section.items = items;
+          saveSection(section);
+        }
+      });
+    });
 
     container.querySelectorAll(".edit-contrib-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -211,6 +229,10 @@ export function renderContributors(container, state) {
 
   const saveSection = async (sec) => {
     try {
+      const tInput = container.querySelector("#sec-title");
+      const sInput = container.querySelector("#sec-subtitle");
+      if (tInput && tInput.value.trim()) sec.title = tInput.value.trim();
+      if (sInput && sInput.value.trim()) sec.subtitle = sInput.value.trim();
       await updatePortfolioField("contributorsSection", sec);
       state.portfolio.contributorsSection = sec;
       section = sec;
@@ -262,6 +284,15 @@ export function renderContributors(container, state) {
             <label for="f-cweb">Website / Portfolio URL</label>
             <input type="text" id="f-cweb" class="form-input" value="${escapeHtml(c.website)}" placeholder="https://...">
           </div>
+          <div class="form-group full-width">
+            <label class="switch-row">
+              <span>Show on Website (Active / Inactive)</span>
+              <label class="switch">
+                <input type="checkbox" id="f-cvis" ${c.visible !== false ? "checked" : ""}>
+                <span class="slider round"></span>
+              </label>
+            </label>
+          </div>
         </div>
       </form>
     `;
@@ -294,7 +325,8 @@ export function renderContributors(container, state) {
         avatarUrl: modalEl.querySelector("#f-cavatar").value.trim(),
         github: modalEl.querySelector("#f-cgithub").value.trim(),
         linkedin: modalEl.querySelector("#f-clinkedin").value.trim(),
-        website: modalEl.querySelector("#f-cweb").value.trim()
+        website: modalEl.querySelector("#f-cweb").value.trim(),
+        visible: modalEl.querySelector("#f-cvis") ? modalEl.querySelector("#f-cvis").checked : true
       };
 
       if (isNew) {
@@ -316,5 +348,7 @@ function escapeHtml(str) {
   return String(str || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

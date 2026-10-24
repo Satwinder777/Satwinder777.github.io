@@ -179,7 +179,14 @@ export function renderLogs(container, state) {
     // Listeners
     container.querySelector("#logs-search")?.addEventListener("input", (e) => {
       searchQuery = e.target.value;
+      const start = e.target.selectionStart;
+      const end = e.target.selectionEnd;
       renderView();
+      const re = container.querySelector("#logs-search");
+      if (re) {
+        re.focus();
+        try { re.setSelectionRange(start, end); } catch (_) {}
+      }
     });
 
     container.querySelectorAll(".category-tabs .tab-pill").forEach(tab => {
@@ -342,5 +349,7 @@ function escapeHtml(str) {
   return String(str || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

@@ -3,7 +3,7 @@
 //  Security PIN, Cloud Diagnostics, JSON Backup & Restore
 // ============================================================
 
-import { updatePortfolioField, getPortfolioData } from "../firebase-admin.js";
+import { updatePortfolioField, updatePortfolioFields, getPortfolioData } from "../firebase-admin.js";
 import { authService } from "../auth.js";
 import { ADMIN_CONFIG } from "../config.js";
 import { toast } from "../toast.js";
@@ -17,7 +17,11 @@ export function renderSettings(container, state) {
   const renderView = () => {
     const projectsCount = Array.isArray(portfolio.projects) ? portfolio.projects.length : 0;
     const expCount = Array.isArray(portfolio.experience) ? portfolio.experience.length : 0;
-    const skillsCount = portfolio.skills ? Object.values(portfolio.skills).reduce((acc, arr) => acc + (Array.isArray(arr) ? arr.length : 0), 0) : 0;
+    const skillsCount = Array.isArray(portfolio.technicalArsenal)
+      ? portfolio.technicalArsenal.length
+      : (portfolio.skills && typeof portfolio.skills === "object"
+          ? Object.values(portfolio.skills).reduce((acc, arr) => acc + (Array.isArray(arr) ? arr.length : 0), 0)
+          : 0);
     const approxSizeKb = Math.max(2, Math.round(JSON.stringify(portfolio).length / 1024));
 
     container.innerHTML = `
@@ -313,11 +317,13 @@ export function renderSettings(container, state) {
             throw new Error("Invalid JSON document format.");
           }
 
-          // Save fields
+          // Save fields atomically
+          const updates = {};
           for (const [key, val] of Object.entries(parsed)) {
             if (key === "lastPublishedAt") continue;
-            await updatePortfolioField(key, val);
+            updates[key] = val;
           }
+          await updatePortfolioFields(updates);
 
           toast.success("Portfolio successfully restored from backup! Refreshing...");
           setTimeout(() => window.location.reload(), 1200);

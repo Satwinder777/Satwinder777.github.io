@@ -163,9 +163,16 @@ export function renderSkills(container, state) {
                 ${catSkills.length === 0 ? `
                   <div class="empty-chips-msg">${searchQuery ? "No matching skills found." : `No skills listed in ${cat.label}.`}</div>
                 ` : catSkills.map(s => `
-                  <div class="skill-chip-item" style="border-left: 2px solid ${theme.accent};">
-                    <span class="chip-color-dot" style="background: ${theme.accent}; box-shadow: 0 0 6px ${theme.accent};"></span>
-                    <span class="chip-label">${escapeHtml(s.label)}</span>
+                  <div class="skill-chip-item ${s.visible === false ? "is-inactive-chip" : ""}" style="border-left: 2px solid ${s.visible === false ? "#64748b" : theme.accent};">
+                    <button class="chip-vis-btn" data-label="${escapeHtml(s.label)}" title="${s.visible === false ? "Hidden on live site (Click to show)" : "Active on live site (Click to hide)"}">
+                      ${s.visible === false ? `
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      ` : `
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      `}
+                    </button>
+                    <span class="chip-color-dot" style="background: ${s.visible === false ? "#64748b" : theme.accent}; box-shadow: 0 0 6px ${s.visible === false ? "transparent" : theme.accent};"></span>
+                    <span class="chip-label" style="${s.visible === false ? "text-decoration: line-through; opacity: 0.65;" : ""}">${escapeHtml(s.label)}</span>
                     <button class="chip-del-btn" data-label="${escapeHtml(s.label)}" title="Remove skill">
                       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
@@ -202,16 +209,23 @@ export function renderSkills(container, state) {
           ${expertise.length === 0 ? `
             <div class="empty-state-sm full-width">No competency cards created. Click "+ Add Competency".</div>
           ` : expertise.map((exp, idx) => `
-            <div class="expertise-admin-card" data-id="${exp.id}">
+            <div class="expertise-admin-card ${exp.visible === false ? "is-inactive-card" : ""}" data-id="${exp.id}">
               <div class="exp-card-top">
                 <div class="comp-icon-box">
                   ${getCompetencyIconSvg(exp.icon)}
                 </div>
                 <div class="comp-title-box" style="flex: 1; min-width: 0;">
-                  <h4 class="comp-title" style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 2px;">${escapeHtml(exp.title)}</h4>
+                  <h4 class="comp-title" style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 2px;">
+                    ${escapeHtml(exp.title)}
+                    ${exp.visible === false ? `<span class="badge badge-neutral" style="margin-left: 6px; font-size: 0.65rem; border: 1px dashed rgba(148, 163, 184, 0.4);">HIDDEN</span>` : ""}
+                  </h4>
                   <span class="badge badge-info" style="font-size: 0.72rem;">${escapeHtml(exp.icon || "core")}</span>
                 </div>
-                <div class="comp-card-actions" style="display: flex; gap: 4px;">
+                <div class="comp-card-actions" style="display: flex; gap: 4px; align-items: center;">
+                  <button class="btn-toggle-vis toggle-competency-vis-btn ${exp.visible !== false ? "is-active" : "is-inactive"}" data-idx="${idx}" title="Toggle active/hidden on website" style="padding: 3px 8px; font-size: 0.72rem;">
+                    <span class="status-pulse-dot" style="background: ${exp.visible !== false ? "#10b981" : "#64748b"};"></span>
+                    <span>${exp.visible !== false ? "Active" : "Hidden"}</span>
+                  </button>
                   <button class="btn-icon edit-expertise-btn" data-idx="${idx}" title="Edit Competency">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                   </button>
@@ -227,7 +241,19 @@ export function renderSkills(container, state) {
       </div>
     `;
 
-    // Listeners for skill chip deletions
+    // Listeners for skill chip deletions and visibility
+    container.querySelectorAll(".chip-vis-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const label = btn.dataset.label;
+        const s = skills.find(x => x.label === label);
+        if (s) {
+          s.visible = s.visible === false ? true : false;
+          saveSkills(skills);
+        }
+      });
+    });
+
     container.querySelectorAll(".chip-del-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -315,6 +341,17 @@ export function renderSkills(container, state) {
 
     // Expertise Cards Listeners
     container.querySelector("#add-expertise-btn")?.addEventListener("click", () => openExpertiseEditor(null));
+
+    container.querySelectorAll(".toggle-competency-vis-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const idx = parseInt(btn.dataset.idx, 10);
+        if (expertise[idx]) {
+          expertise[idx].visible = expertise[idx].visible === false ? true : false;
+          saveExpertise(expertise);
+        }
+      });
+    });
 
     container.querySelectorAll(".edit-expertise-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -602,6 +639,16 @@ export function renderSkills(container, state) {
         </div>
 
         <div class="form-group">
+          <label class="switch-row">
+            <span>Show Competency on Website (Active / Inactive)</span>
+            <label class="switch">
+              <input type="checkbox" id="f-expvis" ${cur.visible !== false ? "checked" : ""}>
+              <span class="slider round"></span>
+            </label>
+          </label>
+        </div>
+
+        <div class="form-group">
           <label for="f-expdesc">
             <span>Description & Technical Highlights</span>
             <span class="field-hint">Explain engineering depth, frame budgets, or telemetry</span>
@@ -667,6 +714,7 @@ export function renderSkills(container, state) {
         ...cur,
         title,
         icon: iconInput.value.trim() || "bolt",
+        visible: modalEl.querySelector("#f-expvis") ? modalEl.querySelector("#f-expvis").checked : true,
         description: modalEl.querySelector("#f-expdesc").value.trim()
       };
 
@@ -770,5 +818,7 @@ function escapeHtml(str) {
   return String(str || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

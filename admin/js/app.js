@@ -360,37 +360,37 @@ class AdminApp {
         renderDashboard(mainViewContainer, this.state, this.router);
         break;
       case "profile":
-        renderProfile(mainViewContainer, this.state);
+        renderProfile(mainViewContainer, this.state, this.router);
         break;
       case "projects":
-        renderProjects(mainViewContainer, this.state);
+        renderProjects(mainViewContainer, this.state, this.router);
         break;
       case "experience":
-        renderExperience(mainViewContainer, this.state);
+        renderExperience(mainViewContainer, this.state, this.router);
         break;
       case "skills":
-        renderSkills(mainViewContainer, this.state);
+        renderSkills(mainViewContainer, this.state, this.router);
         break;
       case "feedback":
-        renderFeedback(mainViewContainer, this.state);
+        renderFeedback(mainViewContainer, this.state, this.router);
         break;
       case "inbox":
-        renderInbox(mainViewContainer, this.state);
+        renderInbox(mainViewContainer, this.state, this.router);
         break;
       case "contributors":
-        renderContributors(mainViewContainer, this.state);
+        renderContributors(mainViewContainer, this.state, this.router);
         break;
       case "site_content":
-        renderSiteContent(mainViewContainer, this.state);
+        renderSiteContent(mainViewContainer, this.state, this.router);
         break;
       case "resume":
-        renderResume(mainViewContainer, this.state);
+        renderResume(mainViewContainer, this.state, this.router);
         break;
       case "logs":
-        renderLogs(mainViewContainer, this.state);
+        renderLogs(mainViewContainer, this.state, this.router);
         break;
       case "settings":
-        renderSettings(mainViewContainer, this.state);
+        renderSettings(mainViewContainer, this.state, this.router);
         break;
       default:
         renderDashboard(mainViewContainer, this.state, this.router);

@@ -291,7 +291,6 @@ export async function clearAllLogs() {
 export async function pingFirestoreLatency() {
   const start = performance.now();
   try {
-    const portfolioDocRef = doc(db, ADMIN_CONFIG.portfolioCollection, ADMIN_CONFIG.portfolioDocId);
     await getDoc(portfolioDocRef);
     return Math.max(12, Math.round(performance.now() - start));
   } catch (err) {

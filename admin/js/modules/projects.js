@@ -72,14 +72,15 @@ export function renderProjects(container, state) {
         ` : `
           <div class="projects-grid">
             ${filtered.map((proj, idx) => `
-              <div class="project-card-admin" data-id="${proj.id}">
+              <div class="project-card-admin ${proj.visible === false ? "is-inactive-card" : ""}" data-id="${proj.id}">
                 <div class="project-thumb-box">
                   ${proj.thumbnailUrl ? `
-                    <img src="${proj.thumbnailUrl}" alt="${escapeHtml(proj.name)}" class="proj-thumb-img" onerror="this.onerror=null; this.src='../favicon.ico';">
+                    <img src="${escapeHtml(proj.thumbnailUrl)}" alt="${escapeHtml(proj.name)}" class="proj-thumb-img" onerror="this.onerror=null; this.src='../favicon.ico';">
                   ` : `
                     <div class="thumb-placeholder">${escapeHtml(proj.name.charAt(0) || "P")}</div>
                   `}
                   <div class="project-badges-overlay">
+                    ${proj.visible === false ? `<span class="badge badge-neutral" style="background:rgba(0,0,0,0.85); color:#94a3b8; border-color:#475569;">HIDDEN</span>` : ""}
                     ${proj.featured ? `<span class="badge badge-featured">★ FEATURED</span>` : ""}
                     <span class="badge badge-${(proj.status || "live").toLowerCase()}">
                       <span class="status-pulse-dot"></span>
@@ -97,7 +98,7 @@ export function renderProjects(container, state) {
                       <span class="lang-dot"></span>
                       ${escapeHtml(proj.primaryLanguage || "Dart")}
                     </span>
-                    <span class="proj-id-badge">#${proj.id ? proj.id.slice(-5) : "item"}</span>
+                    <span class="proj-id-badge">#${escapeHtml(proj.id ? proj.id.slice(-5) : "item")}</span>
                   </div>
 
                   <h3 class="proj-card-title">${escapeHtml(proj.name)}</h3>
@@ -134,14 +135,18 @@ export function renderProjects(container, state) {
 
                 <div class="project-card-actions">
                   <div class="reorder-btns">
-                    <button class="btn-icon move-proj-up" data-id="${proj.id}" title="Move Up" ${idx === 0 ? "disabled" : ""}>
+                    <button class="btn-icon move-proj-up" data-id="${proj.id}" title="${filterCategory !== "all" || searchQuery ? "Reordering disabled while filter/search active" : "Move Up"}" ${idx === 0 || filterCategory !== "all" || searchQuery ? "disabled" : ""}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
                     </button>
-                    <button class="btn-icon move-proj-down" data-id="${proj.id}" title="Move Down" ${idx === filtered.length - 1 ? "disabled" : ""}>
+                    <button class="btn-icon move-proj-down" data-id="${proj.id}" title="${filterCategory !== "all" || searchQuery ? "Reordering disabled while filter/search active" : "Move Down"}" ${idx === filtered.length - 1 || filterCategory !== "all" || searchQuery ? "disabled" : ""}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
                     </button>
                   </div>
                   <div class="right-actions">
+                    <button class="btn-toggle-vis toggle-proj-vis-btn ${proj.visible !== false ? "is-active" : "is-inactive"}" data-id="${proj.id}" title="${proj.visible !== false ? "Visible on live site (click to hide)" : "Hidden from live site (click to show)"}">
+                      <span class="status-pulse-dot" style="background: ${proj.visible !== false ? "#10b981" : "#64748b"};"></span>
+                      <span>${proj.visible !== false ? "Active" : "Hidden"}</span>
+                    </button>
                     <button class="btn btn-sm btn-ghost edit-proj-btn" data-id="${proj.id}">
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                       Edit
@@ -168,6 +173,11 @@ export function renderProjects(container, state) {
     searchInput?.addEventListener("input", (e) => {
       searchQuery = e.target.value;
       renderView();
+      const re = container.querySelector("#project-search");
+      if (re) {
+        re.focus();
+        re.setSelectionRange(re.value.length, re.value.length);
+      }
     });
 
     container.querySelectorAll(".category-tabs .tab-pill").forEach(tab => {
@@ -232,6 +242,19 @@ export function renderProjects(container, state) {
           clone.name = `${proj.name} (Copy)`;
           projects.unshift(clone);
           saveProjects(projects);
+        }
+      });
+    });
+
+    // Visibility toggle buttons
+    container.querySelectorAll(".toggle-proj-vis-btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.id;
+        const p = projects.find(x => x.id === id);
+        if (p) {
+          p.visible = p.visible === false ? true : false;
+          await saveProjects(projects);
+          toast.success(p.visible ? `"${p.name}" is now Active on website!` : `"${p.name}" is now Inactive (Hidden).`);
         }
       });
     });
@@ -640,6 +663,16 @@ ${name} is a high-performance cross-platform mobile experience architected from 
             </label>
           </div>
 
+          <div class="form-group">
+            <label class="switch-row" style="margin-top: 24px;">
+              <span>Active on Live Site</span>
+              <label class="switch">
+                <input type="checkbox" id="f-pvis" ${p.visible !== false ? "checked" : ""}>
+                <span class="slider round"></span>
+              </label>
+            </label>
+          </div>
+
           <div class="form-group full-width">
             <label for="f-pshort">Short Tagline / Summary (Shown on Card)</label>
             <textarea id="f-pshort" class="form-textarea" rows="2" placeholder="One sentence summarizing the impact...">${escapeHtml(p.shortDesc || "")}</textarea>
@@ -714,6 +747,7 @@ ${name} is a high-performance cross-platform mobile experience architected from 
         status: modalEl.querySelector("#f-pstatus").value,
         primaryLanguage: modalEl.querySelector("#f-plang").value.trim() || "Dart",
         featured: modalEl.querySelector("#f-pfeat").checked,
+        visible: modalEl.querySelector("#f-pvis") ? modalEl.querySelector("#f-pvis").checked : true,
         shortDesc: modalEl.querySelector("#f-pshort").value.trim(),
         longDesc: modalEl.querySelector("#f-plong").value.trim(),
         technologies,
@@ -738,7 +772,7 @@ ${name} is a high-performance cross-platform mobile experience architected from 
   };
 
   // Listen for global custom event from dashboard quick actions
-  window.addEventListener("admin:open-new-project", () => openProjectEditor(null), { once: true });
+  window.addEventListener("admin:open-new-project", () => openProjectEditor(null));
 
   renderView();
 }
@@ -747,5 +781,7 @@ function escapeHtml(str) {
   return String(str || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

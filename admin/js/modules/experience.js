@@ -36,12 +36,13 @@ export function renderExperience(container, state) {
         ` : `
           <div class="timeline-admin">
             ${experience.map((exp, idx) => `
-              <div class="exp-item-card ${exp.isCurrent ? "is-current-role" : ""}" data-id="${exp.id}">
+              <div class="exp-item-card ${exp.isCurrent ? "is-current-role" : ""} ${exp.visible === false ? "is-inactive-card" : ""}" data-id="${exp.id}">
                 <div class="exp-card-inner">
                   <!-- Company Pod / Logo -->
                   <div class="exp-company-pod">
                     ${exp.companyLogoUrl ? `
-                      <img src="${escapeHtml(exp.companyLogoUrl)}" alt="${escapeHtml(exp.company)}" class="exp-company-img" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\\'exp-initials\\'>${getCompanyInitials(exp.company)}</span>';">
+                      <img src="${escapeHtml(exp.companyLogoUrl)}" alt="${escapeHtml(exp.company)}" class="exp-company-img" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                      <span class="exp-initials" style="display:none;">${getCompanyInitials(exp.company)}</span>
                     ` : `
                       <span class="exp-initials">${getCompanyInitials(exp.company)}</span>
                     `}
@@ -53,6 +54,7 @@ export function renderExperience(container, state) {
                       <div class="exp-role-info">
                         <div class="exp-title-row">
                           <h3 class="exp-title">${escapeHtml(exp.title)}</h3>
+                          ${exp.visible === false ? `<span class="badge badge-neutral" style="background: rgba(148, 163, 184, 0.15); color: #94a3b8; font-size: 0.65rem; border: 1px dashed rgba(148, 163, 184, 0.3);">HIDDEN</span>` : ""}
                           ${exp.isCurrent ? `
                             <span class="badge badge-success exp-current-badge">
                               <span class="status-pulse-dot"></span>
@@ -108,6 +110,10 @@ export function renderExperience(container, state) {
                     </button>
                   </div>
                   <div class="right-actions">
+                    <button class="btn-toggle-vis toggle-exp-vis-btn ${exp.visible !== false ? "is-active" : "is-inactive"}" data-id="${exp.id}" title="Toggle Website Visibility">
+                      <span class="status-pulse-dot" style="background: ${exp.visible !== false ? "#10b981" : "#64748b"};"></span>
+                      <span>${exp.visible !== false ? "Active" : "Hidden"}</span>
+                    </button>
                     <button class="btn btn-sm btn-ghost edit-exp-btn" data-id="${exp.id}">
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                       Edit Milestone
@@ -149,6 +155,17 @@ export function renderExperience(container, state) {
           const temp = experience[idx];
           experience[idx] = experience[idx + 1];
           experience[idx + 1] = temp;
+          saveExperience(experience);
+        }
+      });
+    });
+
+    container.querySelectorAll(".toggle-exp-vis-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.id;
+        const item = experience.find(e => e.id === id);
+        if (item) {
+          item.visible = item.visible === false ? true : false;
           saveExperience(experience);
         }
       });
@@ -246,6 +263,16 @@ export function renderExperience(container, state) {
 
           <div class="form-group full-width">
             <label class="switch-row">
+              <span>Show on Website (Active / Inactive)</span>
+              <label class="switch">
+                <input type="checkbox" id="f-evis" ${e.visible !== false ? "checked" : ""}>
+                <span class="slider round"></span>
+              </label>
+            </label>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="switch-row">
               <span>Currently Working in this Role (Present)</span>
               <label class="switch">
                 <input type="checkbox" id="f-ecurrent" ${e.isCurrent ? "checked" : ""}>
@@ -308,6 +335,7 @@ export function renderExperience(container, state) {
         startDate: modalEl.querySelector("#f-estart").value.trim(),
         endDate: isCurrentCheck.checked ? null : modalEl.querySelector("#f-eend").value.trim(),
         isCurrent: isCurrentCheck.checked,
+        visible: modalEl.querySelector("#f-evis") ? modalEl.querySelector("#f-evis").checked : true,
         technologies,
         description: modalEl.querySelector("#f-edesc").value.trim()
       };
@@ -324,7 +352,9 @@ export function renderExperience(container, state) {
     });
   };
 
-  window.addEventListener("admin:open-new-experience", () => openExperienceEditor(null), { once: true });
+  window.__adminOpenNewExpHandler && window.removeEventListener("admin:open-new-experience", window.__adminOpenNewExpHandler);
+  window.__adminOpenNewExpHandler = () => openExperienceEditor(null);
+  window.addEventListener("admin:open-new-experience", window.__adminOpenNewExpHandler);
 
   renderView();
 }
@@ -372,5 +402,7 @@ function escapeHtml(str) {
   return String(str || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

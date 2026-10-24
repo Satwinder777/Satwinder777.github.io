@@ -287,6 +287,7 @@ export function renderFeedback(container, state) {
     });
 
     // Save developer reply
+    // Save developer reply
     container.querySelectorAll(".save-reply-btn").forEach(btn => {
       btn.addEventListener("click", async () => {
         const id = btn.dataset.id;
@@ -296,12 +297,14 @@ export function renderFeedback(container, state) {
         const isPublic = isPublicCheckbox ? isPublicCheckbox.checked : true;
 
         try {
-          await updateFeedbackItem(id, {
-            developerReply: replyText,
-            visibleOnWeb: isPublic,
-            status: replyText ? "reviewed" : "in_review",
-            repliedAt: new Date().toISOString()
-          });
+          if (!id.startsWith("sim-")) {
+            await updateFeedbackItem(id, {
+              developerReply: replyText,
+              visibleOnWeb: isPublic,
+              status: replyText ? "reviewed" : "in_review",
+              repliedAt: new Date().toISOString()
+            });
+          }
 
           // Update local state
           const item = feedback.find(f => f.id === id);
@@ -326,7 +329,9 @@ export function renderFeedback(container, state) {
         const id = sel.dataset.id;
         const newStatus = e.target.value;
         try {
-          await updateFeedbackItem(id, { status: newStatus });
+          if (!id.startsWith("sim-")) {
+            await updateFeedbackItem(id, { status: newStatus });
+          }
           const item = feedback.find(f => f.id === id);
           if (item) item.status = newStatus;
           toast.success(`Signal status changed to ${newStatus}.`);
@@ -350,7 +355,9 @@ export function renderFeedback(container, state) {
 
         if (ok) {
           try {
-            await deleteFeedbackItem(id);
+            if (!id.startsWith("sim-")) {
+              await deleteFeedbackItem(id);
+            }
             feedback = feedback.filter(f => f.id !== id);
             state.feedback = feedback;
             toast.success("Feedback signal deleted.");
@@ -387,11 +394,22 @@ export function renderFeedback(container, state) {
 function renderFeedbackMessage(text) {
   if (!text) return "(No message content)";
   const escaped = escapeHtml(text);
-  const urlRegex = /(https?:\/\/[^\s<]+)/g;
+  const urlRegex = /(https?:\/\/[^\s<"']+)/g;
   return escaped.replace(urlRegex, (url) => {
-    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="feedback-bubble-link" title="Open external link">
+    let cleanUrl = url;
+    try {
+      const parsed = new URL(url);
+      if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+        cleanUrl = encodeURI(parsed.href);
+      } else {
+        return escapeHtml(url);
+      }
+    } catch (_) {
+      return escapeHtml(url);
+    }
+    return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="feedback-bubble-link" title="Open external link">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      <span>${url}</span>
+      <span>${escapeHtml(url)}</span>
     </a>`;
   });
 }
@@ -410,5 +428,7 @@ function escapeHtml(str) {
   return String(str || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
