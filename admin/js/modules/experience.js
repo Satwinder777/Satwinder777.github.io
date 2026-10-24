@@ -284,10 +284,32 @@ export function renderExperience(container, state) {
 }
 
 function formatExpDates(start, end, isCurrent) {
-  const s = start || "";
-  if (isCurrent) return `${s} — Present`;
-  const e = end || "";
-  return s && e ? `${s} — ${e}` : (s || e || "Timeline");
+  const parseOne = (val) => {
+    if (!val) return "";
+    if (typeof val === "object" && typeof val.seconds === "number") {
+      const d = new Date(val.seconds * 1000);
+      return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+    }
+    let str = String(val);
+    str = str.replace(/Timestamp\(seconds=(\d+)[^)]*\)/g, (_, sec) => {
+      const d = new Date(parseInt(sec, 10) * 1000);
+      return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+    });
+    str = str.replace(/seconds=(\d+)/g, (_, sec) => {
+      const d = new Date(parseInt(sec, 10) * 1000);
+      return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+    });
+    return str.trim();
+  };
+
+  const s = parseOne(start);
+  if (isCurrent) return `${s || "Started"} — Present`;
+  const e = parseOne(end);
+  if (s && e) {
+    if (s.includes("—")) return s;
+    return `${s} — ${e}`;
+  }
+  return s || e || "Timeline";
 }
 
 function escapeHtml(str) {

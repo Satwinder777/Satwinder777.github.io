@@ -14,30 +14,33 @@ import {
 import { toast } from "./toast.js";
 
 // Import view modules
-import { renderDashboard } from "./modules/dashboard.js";
-import { renderProfile } from "./modules/profile.js";
-import { renderProjects } from "./modules/projects.js";
-import { renderExperience } from "./modules/experience.js";
-import { renderSkills } from "./modules/skills.js";
-import { renderFeedback } from "./modules/feedback.js";
-import { renderInbox } from "./modules/inbox.js";
-import { renderContributors } from "./modules/contributors.js";
-import { renderSiteContent } from "./modules/site-content.js";
-import { renderResume } from "./modules/resume.js";
-import { renderLogs } from "./modules/logs.js";
-import { renderSettings } from "./modules/settings.js";
+import { renderDashboard } from "./modules/dashboard.js?v=20261024_v3";
+import { renderProfile } from "./modules/profile.js?v=20261024_v3";
+import { renderProjects } from "./modules/projects.js?v=20261024_v3";
+import { renderExperience } from "./modules/experience.js?v=20261024_v3";
+import { renderSkills } from "./modules/skills.js?v=20261024_v3";
+import { renderFeedback } from "./modules/feedback.js?v=20261024_v3";
+import { renderInbox } from "./modules/inbox.js?v=20261024_v3";
+import { renderContributors } from "./modules/contributors.js?v=20261024_v3";
+import { renderSiteContent } from "./modules/site-content.js?v=20261024_v3";
+import { renderResume } from "./modules/resume.js?v=20261024_v3";
+import { renderLogs } from "./modules/logs.js?v=20261024_v3";
+import { renderSettings } from "./modules/settings.js?v=20261024_v3";
 
 class AdminApp {
   constructor() {
+    // Read shared theme key or default
+    const savedTheme = localStorage.getItem("satwinder_portfolio_theme") || localStorage.getItem("satwinderx_admin_theme") || "default";
     this.state = {
       portfolio: null,
       feedback: [],
       inbox: [],
       logs: [],
       currentRoute: "dashboard",
-      theme: localStorage.getItem("satwinderx_admin_theme") || "dark"
+      theme: ["default", "light", "dark"].includes(savedTheme) ? savedTheme : "default"
     };
 
+    this.fluidApp = null;
     this.unsubscribers = [];
     this.router = {
       navigate: (route) => this.navigateTo(route)
@@ -46,7 +49,9 @@ class AdminApp {
 
   init() {
     this.applyTheme(this.state.theme);
+    this._initFluid();
     this._bindAuthGate();
+    this._bindThemeButtons();
 
     authService.onAuthChanged((isAuth) => {
       if (isAuth) {
@@ -58,6 +63,42 @@ class AdminApp {
 
     // Check existing session
     authService.checkExistingSession();
+  }
+
+  _initFluid() {
+    const canvas = document.getElementById("fluid-canvas");
+    if (!canvas || typeof window.WebGLFluid !== "function") return;
+
+    try {
+      this.fluidApp = window.WebGLFluid(canvas, {
+        IMMEDIATE: true,
+        TRIGGER: "hover",
+        SIM_RESOLUTION: 64,
+        DYE_RESOLUTION: 512,
+        DENSITY_DISSIPATION: 1.1,
+        VELOCITY_DISSIPATION: 2.0,
+        PRESSURE: 0.1,
+        PRESSURE_ITERATIONS: 4,
+        CURL: 8,
+        SPLAT_RADIUS: 0.22,
+        SPLAT_FORCE: 5000,
+        SHADING: true,
+        COLORFUL: true,
+        COLOR_UPDATE_SPEED: 8,
+        TRANSPARENT: true,
+        BLOOM: false,
+        SUNRAYS: false,
+        BACK_COLOR: { r: 8, g: 12, b: 30 }
+      });
+
+      document.addEventListener("visibilitychange", () => {
+        if (this.fluidApp && typeof this.fluidApp === "object" && "PAUSED" in this.fluidApp) {
+          this.fluidApp.PAUSED = document.hidden;
+        }
+      });
+    } catch (err) {
+      console.warn("[Admin Fluid] WebGL Fluid failed to initialize:", err);
+    }
   }
 
   _bindAuthGate() {
@@ -232,27 +273,34 @@ class AdminApp {
       authService.logout();
       toast.info("Admin locked.");
     });
+  }
 
-    // Topbar Theme Switcher
-    const themeBtn = document.getElementById("topbar-theme-btn");
-    themeBtn?.addEventListener("click", () => {
-      const next = this.state.theme === "dark" ? "light" : "dark";
-      this.applyTheme(next);
-      toast.info(`Theme set to ${next}.`);
+  _bindThemeButtons() {
+    // 3-Way Segmented Switcher buttons
+    document.querySelectorAll(".theme-seg-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const themeVal = btn.dataset.themeVal;
+        if (themeVal) {
+          this.applyTheme(themeVal);
+          toast.info(`Theme changed to ${themeVal.toUpperCase()}`);
+        }
+      });
     });
   }
 
   applyTheme(theme) {
+    if (!["default", "light", "dark"].includes(theme)) theme = "default";
     this.state.theme = theme;
+    localStorage.setItem("satwinder_portfolio_theme", theme);
     localStorage.setItem("satwinderx_admin_theme", theme);
     document.documentElement.setAttribute("data-theme", theme);
 
-    const iconEl = document.getElementById("theme-btn-icon");
-    if (iconEl) {
-      iconEl.innerHTML = theme === "dark"
-        ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
-        : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`;
-    }
+    // Update segmented buttons active state
+    document.querySelectorAll(".theme-seg-btn").forEach(btn => {
+      const isActive = btn.dataset.themeVal === theme;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-checked", isActive ? "true" : "false");
+    });
   }
 
   navigateTo(route) {

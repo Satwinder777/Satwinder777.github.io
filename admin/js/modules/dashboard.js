@@ -167,29 +167,37 @@ export function renderDashboard(container, state, appRouter) {
             <h3>Quick Actions</h3>
           </div>
           <div class="quick-actions-list">
-            <button class="quick-action-btn" id="qa-new-project">
-              <span class="qa-icon">+</span>
+            <button class="quick-action-btn qa-btn-cyan" id="qa-new-project">
+              <span class="qa-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/></svg>
+              </span>
               <div class="qa-text">
                 <strong>Add New Project</strong>
                 <small>Create an app showcase card with tech stack</small>
               </div>
             </button>
-            <button class="quick-action-btn" id="qa-new-experience">
-              <span class="qa-icon">+</span>
+            <button class="quick-action-btn qa-btn-purple" id="qa-new-experience">
+              <span class="qa-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+              </span>
               <div class="qa-text">
                 <strong>Add Career Milestone</strong>
                 <small>Add new role, company, or promotion timeline</small>
               </div>
             </button>
-            <button class="quick-action-btn" id="qa-review-feedback">
-              <span class="qa-icon">💬</span>
+            <button class="quick-action-btn qa-btn-amber" id="qa-review-feedback">
+              <span class="qa-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              </span>
               <div class="qa-text">
-                <strong>Review Feedback (${pendingFeedback} pending)</strong>
+                <strong>Review Feedback <span class="font-amber">(${pendingFeedback})</span></strong>
                 <small>Moderate visitor suggestions & send replies</small>
               </div>
             </button>
-            <button class="quick-action-btn" id="qa-edit-banner">
-              <span class="qa-icon">📢</span>
+            <button class="quick-action-btn qa-btn-emerald" id="qa-edit-banner">
+              <span class="qa-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 14.959V9a2 2 0 012-2h2l4-4v18l-4-4H4a2 2 0 01-2-2z"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+              </span>
               <div class="qa-text">
                 <strong>Update Site Banner</strong>
                 <small>Change announcement text or developer tag</small>
