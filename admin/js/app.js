@@ -5,12 +5,15 @@
 
 import { authService } from "./auth.js";
 import {
+  auth,
   getPortfolioData,
   subscribeToPortfolio,
   subscribeToFeedback,
   subscribeToInbox,
   subscribeToLogs
 } from "./firebase-admin.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { modal } from "./modal.js";
 import { toast } from "./toast.js";
 
 // Import view modules
@@ -43,7 +46,8 @@ class AdminApp {
     this.fluidApp = null;
     this.unsubscribers = [];
     this.router = {
-      navigate: (route) => this.navigateTo(route)
+      navigate: (route) => this.navigateTo(route),
+      showQuickFirebaseConnectModal: () => this.showQuickFirebaseConnectModal()
     };
   }
 
@@ -59,6 +63,10 @@ class AdminApp {
       } else {
         this.onUserLoggedOut();
       }
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      this._updateSyncIndicator(user);
     });
 
     // Check existing session
@@ -419,6 +427,101 @@ class AdminApp {
     const roleEl = document.getElementById("sidebar-user-role");
     if (nameEl && prof.name) nameEl.textContent = prof.name;
     if (roleEl && prof.title) roleEl.textContent = prof.title;
+  }
+
+  _updateSyncIndicator(user) {
+    const indicator = document.getElementById("topbar-live-indicator");
+    const label = document.getElementById("topbar-sync-label");
+    const pulse = document.getElementById("topbar-pulse-dot");
+    if (!indicator || !label || !pulse) return;
+
+    if (user) {
+      indicator.classList.remove("pin-mode");
+      indicator.classList.add("firebase-connected");
+      indicator.title = `Firebase Cloud Sync Active (${user.email}) — Live Firestore writes authorized`;
+      label.textContent = `Cloud Sync: ${user.email}`;
+      pulse.style.background = "#00e676";
+      pulse.style.boxShadow = "0 0 8px #00e676";
+      indicator.onclick = null;
+      indicator.style.cursor = "default";
+    } else {
+      indicator.classList.remove("firebase-connected");
+      indicator.classList.add("pin-mode");
+      indicator.title = "Master PIN Mode (Local View). Click here to connect Firebase and enable live saves.";
+      label.innerHTML = `<span>PIN Mode (Click to Connect Cloud)</span>`;
+      pulse.style.background = "#ff9800";
+      pulse.style.boxShadow = "0 0 8px #ff9800";
+      indicator.style.cursor = "pointer";
+      indicator.onclick = () => this.showQuickFirebaseConnectModal();
+    }
+  }
+
+  showQuickFirebaseConnectModal() {
+    const bodyHtml = `
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+          You unlocked the admin with <strong>Master PIN (7770)</strong>. To save changes and toggle switches in Firestore without permission errors, connect your authorized Firebase account.
+        </p>
+        <div class="form-group" style="text-align: left;">
+          <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px;">Firebase Admin Email</label>
+          <input type="email" id="quick-fb-email" class="form-input" value="satwinder@gmail.com" placeholder="satwinder@gmail.com">
+        </div>
+        <div class="form-group" style="text-align: left;">
+          <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px;">Password</label>
+          <input type="password" id="quick-fb-password" class="form-input" placeholder="••••••••" autofocus>
+        </div>
+        <div id="quick-fb-error" style="display: none; font-size: 12px; color: #ff5252; background: rgba(255, 82, 82, 0.1); padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid rgba(255, 82, 82, 0.3);"></div>
+      </div>
+    `;
+
+    const footerHtml = `
+      <button class="btn btn-secondary" id="quick-fb-cancel">Cancel</button>
+      <button class="btn btn-primary" id="quick-fb-submit">Connect Cloud</button>
+    `;
+
+    const modalEl = modal.open({
+      title: "Connect Firebase Cloud Sync",
+      bodyHtml,
+      footerHtml,
+      size: "sm"
+    });
+
+    const emailInput = modalEl.querySelector("#quick-fb-email");
+    const passInput = modalEl.querySelector("#quick-fb-password");
+    const errorEl = modalEl.querySelector("#quick-fb-error");
+    const cancelBtn = modalEl.querySelector("#quick-fb-cancel");
+    const submitBtn = modalEl.querySelector("#quick-fb-submit");
+
+    cancelBtn?.addEventListener("click", () => modal.close());
+
+    const doConnect = async () => {
+      const email = emailInput.value.trim();
+      const pass = passInput.value;
+      if (!email || !pass) {
+        errorEl.textContent = "Please enter email and password.";
+        errorEl.style.display = "block";
+        return;
+      }
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Connecting...";
+      errorEl.style.display = "none";
+
+      const res = await authService.loginWithFirebase(email, pass);
+      if (res.success) {
+        toast.success("Firebase connected! Live Firestore writes enabled.");
+        modal.close();
+      } else {
+        errorEl.textContent = res.error || "Login failed.";
+        errorEl.style.display = "block";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Connect Cloud";
+      }
+    };
+
+    submitBtn?.addEventListener("click", doConnect);
+    passInput?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") doConnect();
+    });
   }
 }
 

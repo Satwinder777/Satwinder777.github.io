@@ -219,40 +219,49 @@ export function renderDashboard(container, state, appRouter) {
 
   // Bind live switches
   const switchAvailability = container.querySelector("#switch-availability");
-  switchAvailability.addEventListener("change", async () => {
+  switchAvailability?.addEventListener("change", async () => {
     const newVal = switchAvailability.checked;
     try {
       const updatedProfile = { ...(portfolio.profile || {}), availability: newVal };
       await updatePortfolioField("profile", updatedProfile);
       toast.success(`Availability badge set to ${newVal ? "Active" : "Disabled"}`);
     } catch (e) {
-      toast.error("Failed to update availability: " + e.message);
+      toast.error(e.message || "Failed to update availability");
       switchAvailability.checked = !newVal;
+      if (e.code === "auth-required" && typeof appRouter?.showQuickFirebaseConnectModal === "function") {
+        appRouter.showQuickFirebaseConnectModal();
+      }
     }
   });
 
   const switchBanner = container.querySelector("#switch-site-banner");
-  switchBanner.addEventListener("change", async () => {
+  switchBanner?.addEventListener("change", async () => {
     const newVal = switchBanner.checked;
     try {
       const updatedBanner = { ...(portfolio.siteBanner || {}), enabled: newVal };
       await updatePortfolioField("siteBanner", updatedBanner);
       toast.success(`Live Announcement Banner ${newVal ? "Enabled" : "Disabled"}`);
     } catch (e) {
-      toast.error("Failed to toggle banner: " + e.message);
+      toast.error(e.message || "Failed to toggle banner");
       switchBanner.checked = !newVal;
+      if (e.code === "auth-required" && typeof appRouter?.showQuickFirebaseConnectModal === "function") {
+        appRouter.showQuickFirebaseConnectModal();
+      }
     }
   });
 
   const switchContact = container.querySelector("#switch-contact-enabled");
-  switchContact.addEventListener("change", async () => {
+  switchContact?.addEventListener("change", async () => {
     const newVal = switchContact.checked;
     try {
       await updatePortfolioField("contactEnabled", newVal);
       toast.success(`Contact Form Submissions ${newVal ? "Enabled" : "Disabled"}`);
     } catch (e) {
-      toast.error("Failed to toggle contact submissions: " + e.message);
+      toast.error(e.message || "Failed to toggle contact submissions");
       switchContact.checked = !newVal;
+      if (e.code === "auth-required" && typeof appRouter?.showQuickFirebaseConnectModal === "function") {
+        appRouter.showQuickFirebaseConnectModal();
+      }
     }
   });
 

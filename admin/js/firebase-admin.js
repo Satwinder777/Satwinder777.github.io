@@ -60,6 +60,11 @@ export async function getPortfolioData() {
  * (e.g., 'profile', 'projects', 'experience', 'siteBanner', etc.)
  */
 export async function updatePortfolioField(fieldKey, value) {
+  if (!auth.currentUser) {
+    const err = new Error("Firebase account not connected. Please connect your Firebase Admin email (satwinder@gmail.com) to save live updates to Firestore.");
+    err.code = "auth-required";
+    throw err;
+  }
   try {
     await updateDoc(portfolioDocRef, {
       [fieldKey]: value,
@@ -68,6 +73,9 @@ export async function updatePortfolioField(fieldKey, value) {
     return true;
   } catch (err) {
     console.error(`[FirebaseAdmin] updatePortfolioField (${fieldKey}) error:`, err);
+    if (err.code === "permission-denied") {
+      throw new Error("Firestore permission denied. Please verify you are logged in with your owner email (satwinder@gmail.com).");
+    }
     throw err;
   }
 }
@@ -76,6 +84,11 @@ export async function updatePortfolioField(fieldKey, value) {
  * Update multiple fields on portfolio/satwinder
  */
 export async function updatePortfolioFields(updates) {
+  if (!auth.currentUser) {
+    const err = new Error("Firebase account not connected. Please connect your Firebase Admin email (satwinder@gmail.com) to save live updates to Firestore.");
+    err.code = "auth-required";
+    throw err;
+  }
   try {
     const payload = {
       ...updates,
@@ -85,6 +98,9 @@ export async function updatePortfolioFields(updates) {
     return true;
   } catch (err) {
     console.error("[FirebaseAdmin] updatePortfolioFields error:", err);
+    if (err.code === "permission-denied") {
+      throw new Error("Firestore permission denied. Please verify you are logged in with your owner email (satwinder@gmail.com).");
+    }
     throw err;
   }
 }

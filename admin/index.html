@@ -18,7 +18,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Admin Design System -->
-  <link rel="stylesheet" href="./css/admin.css?v=20261024_v4">
+  <link rel="stylesheet" href="./css/admin.css?v=20261024_v5">
 
   <!-- WebGL Fluid Simulation Engine -->
   <script src="../assets/webgl-fluid.umd.min.js"></script>
@@ -82,7 +82,7 @@
       <form id="auth-fb-form" class="auth-form" style="display: none;">
         <div class="form-group auth-field-group" style="text-align: left;">
           <label for="auth-fb-email" class="auth-field-label" style="text-align: left;">Firebase Admin Email</label>
-          <input type="email" id="auth-fb-email" class="form-input" placeholder="admin@domain.com">
+          <input type="email" id="auth-fb-email" class="form-input" placeholder="satwinder@gmail.com" value="satwinder@gmail.com">
         </div>
         <div class="form-group auth-field-group" style="text-align: left;">
           <label for="auth-fb-password" class="auth-field-label" style="text-align: left;">Password</label>
@@ -226,9 +226,9 @@
           <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
-          <div class="live-indicator">
-            <span class="pulse-dot"></span>
-            <span>Live Firestore Sync</span>
+          <div class="live-indicator" id="topbar-live-indicator" title="Firebase Cloud Sync Status">
+            <span class="pulse-dot" id="topbar-pulse-dot"></span>
+            <span id="topbar-sync-label">Checking Sync...</span>
           </div>
         </div>
 
@@ -268,6 +268,6 @@
   </div>
 
   <!-- Main ES Module Application Script -->
-  <script type="module" src="./js/app.js?v=20261024_v4"></script>
+  <script type="module" src="./js/app.js?v=20261024_v5"></script>
 </body>
 </html>
