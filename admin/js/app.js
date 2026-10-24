@@ -110,6 +110,19 @@ class AdminApp {
     const toggleToFb = document.getElementById("toggle-auth-fb");
     const toggleToPin = document.getElementById("toggle-auth-pin");
 
+    const pinEyeBtn = document.getElementById("toggle-pin-visibility");
+    pinEyeBtn?.addEventListener("click", () => {
+      const isPass = pinInput.type === "password";
+      pinInput.type = isPass ? "text" : "password";
+      const eyeOpen = pinEyeBtn.querySelector(".eye-open-icon");
+      const eyeClosed = pinEyeBtn.querySelector(".eye-closed-icon");
+      if (eyeOpen && eyeClosed) {
+        eyeOpen.style.display = isPass ? "none" : "block";
+        eyeClosed.style.display = isPass ? "block" : "none";
+      }
+      pinInput.focus();
+    });
+
     pinForm?.addEventListener("submit", async (e) => {
       e.preventDefault();
       const val = pinInput.value.trim();
@@ -117,7 +130,7 @@ class AdminApp {
 
       const submitBtn = pinForm.querySelector("button[type='submit']");
       submitBtn.disabled = true;
-      submitBtn.innerText = "Verifying...";
+      submitBtn.innerHTML = `<span>Verifying...</span>`;
 
       const res = await authService.loginWithPin(val);
       if (!res.success) {
@@ -125,7 +138,10 @@ class AdminApp {
         pinInput.value = "";
         pinInput.focus();
         submitBtn.disabled = false;
-        submitBtn.innerText = "Unlock Admin";
+        submitBtn.innerHTML = `
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <span>Unlock Admin</span>
+        `;
       }
     });
 
@@ -137,13 +153,16 @@ class AdminApp {
 
       const submitBtn = fbForm.querySelector("button[type='submit']");
       submitBtn.disabled = true;
-      submitBtn.innerText = "Authenticating...";
+      submitBtn.innerHTML = `<span>Authenticating...</span>`;
 
       const res = await authService.loginWithFirebase(email, pass);
       if (!res.success) {
         toast.error(res.error);
         submitBtn.disabled = false;
-        submitBtn.innerText = "Sign In with Firebase";
+        submitBtn.innerHTML = `
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          <span>Sign In with Firebase</span>
+        `;
       }
     });
 
