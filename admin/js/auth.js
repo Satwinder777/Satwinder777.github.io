@@ -16,10 +16,11 @@ class AuthService {
   constructor() {
     this.isAuthenticated = false;
     this.currentUser = null;
-    this.idleTimer = null;
     this.authListeners = [];
     this.lastActivity = Date.now();
 
+    // Check and restore existing session from storage immediately on instantiation
+    this.checkExistingSession();
     this._initActivityListeners();
   }
 
@@ -43,25 +44,24 @@ class AuthService {
     });
   }
 
-  // Check if session token exists and is valid
+  // Check if session token exists in localStorage (persistent across reloads)
   checkExistingSession() {
     try {
-      const token = sessionStorage.getItem(ADMIN_CONFIG.sessionKey);
-      if (!token) return false;
+      const raw = localStorage.getItem(ADMIN_CONFIG.sessionKey) || sessionStorage.getItem(ADMIN_CONFIG.sessionKey);
+      if (!raw) return false;
 
-      const data = JSON.parse(token);
-      const now = Date.now();
-      const maxAgeMs = ADMIN_CONFIG.inactivityTimeoutMinutes * 60 * 1000;
+      const data = JSON.parse(raw);
+      if (!data || !data.user) return false;
 
-      if (now - data.timestamp > maxAgeMs) {
-        this.logout();
-        return false;
-      }
-
-      // Valid session
+      // Valid persistent session
       this.isAuthenticated = true;
-      this.currentUser = data.user || { role: "admin", method: data.method };
-      this._resetIdleTimer();
+      this.currentUser = data.user || { role: "admin", method: data.method || "master_pin" };
+      
+      // Ensure kept in localStorage for reliable reload persistence
+      localStorage.setItem(ADMIN_CONFIG.sessionKey, raw);
+      
+      // Notify any registered listeners
+      this._notifyListeners(true);
       return true;
     } catch (_) {
       this.logout();
@@ -105,7 +105,7 @@ class AuthService {
       if (err.code === "auth/user-not-found" || err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
         msg = "Invalid email or password.";
       } else if (err.code === "auth/too-many-requests") {
-        msg = "Too many attempts. Please try again later or use Master PIN.";
+        msg = "Too many attempts. Please try again later or use Master Passcode.";
       }
       return { success: false, error: msg };
     }
@@ -114,20 +114,22 @@ class AuthService {
   _createSession(userData) {
     this.isAuthenticated = true;
     this.currentUser = userData;
-    sessionStorage.setItem(ADMIN_CONFIG.sessionKey, JSON.stringify({
+    const payload = JSON.stringify({
       timestamp: Date.now(),
       method: userData.method,
       user: userData
-    }));
-    this._resetIdleTimer();
+    });
+    localStorage.setItem(ADMIN_CONFIG.sessionKey, payload);
+    sessionStorage.setItem(ADMIN_CONFIG.sessionKey, payload);
     this._notifyListeners(true);
   }
 
+  // Logout only when explicitly triggered by user
   logout() {
     this.isAuthenticated = false;
     this.currentUser = null;
+    localStorage.removeItem(ADMIN_CONFIG.sessionKey);
     sessionStorage.removeItem(ADMIN_CONFIG.sessionKey);
-    clearTimeout(this.idleTimer);
     try {
       signOut(auth);
     } catch (_) {}
@@ -154,24 +156,12 @@ class AuthService {
     const reset = () => {
       if (this.isAuthenticated) {
         this.lastActivity = Date.now();
-        this._resetIdleTimer();
       }
     };
     window.addEventListener("mousemove", reset, { passive: true });
     window.addEventListener("keydown", reset, { passive: true });
     window.addEventListener("click", reset, { passive: true });
     window.addEventListener("touchstart", reset, { passive: true });
-  }
-
-  _resetIdleTimer() {
-    clearTimeout(this.idleTimer);
-    const timeoutMs = ADMIN_CONFIG.inactivityTimeoutMinutes * 60 * 1000;
-    this.idleTimer = setTimeout(() => {
-      if (this.isAuthenticated) {
-        toast.warning("Session locked due to inactivity.");
-        this.logout();
-      }
-    }, timeoutMs);
   }
 }
 

@@ -33,7 +33,7 @@ export function renderSettings(container, state) {
           <h3>Admin Master Passcode / PIN</h3>
         </div>
         <p class="card-desc">
-          Update the master secret used to unlock this web admin panel. (Default on install was <code>7770</code>).
+          Update the private master secret passcode used to unlock this web admin panel.
         </p>
 
         <form id="pin-change-form" class="editor-form" style="margin-top: 16px;">

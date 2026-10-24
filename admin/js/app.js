@@ -460,7 +460,7 @@ class AdminApp {
     const bodyHtml = `
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; margin: 0;">
-          You unlocked the admin with <strong>Master PIN (7770)</strong>. To save changes and toggle switches in Firestore without permission errors, connect your authorized Firebase account.
+          You unlocked the admin with <strong>Master Passcode</strong>. To save changes and toggle switches in Firestore without permission errors, connect your authorized Firebase account.
         </p>
         <div class="form-group" style="text-align: left;">
           <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px;">Firebase Admin Email</label>
