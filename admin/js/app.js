@@ -16,19 +16,19 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/f
 import { modal } from "./modal.js";
 import { toast } from "./toast.js";
 
-import { renderDashboard } from "./modules/dashboard.js?v=20261024_v21";
-import { renderAnalytics } from "./modules/analytics.js?v=20261024_v21";
-import { renderProfile } from "./modules/profile.js?v=20261024_v21";
-import { renderProjects } from "./modules/projects.js?v=20261024_v21";
-import { renderExperience } from "./modules/experience.js?v=20261024_v21";
-import { renderSkills } from "./modules/skills.js?v=20261024_v21";
-import { renderFeedback } from "./modules/feedback.js?v=20261024_v21";
-import { renderInbox } from "./modules/inbox.js?v=20261024_v21";
-import { renderContributors } from "./modules/contributors.js?v=20261024_v21";
-import { renderSiteContent } from "./modules/site-content.js?v=20261024_v21";
-import { renderResume } from "./modules/resume.js?v=20261024_v21";
-import { renderLogs } from "./modules/logs.js?v=20261024_v21";
-import { renderSettings } from "./modules/settings.js?v=20261024_v21";
+import { renderDashboard } from "./modules/dashboard.js?v=20261025_v01";
+import { renderAnalytics } from "./modules/analytics.js?v=20261025_v01";
+import { renderProfile } from "./modules/profile.js?v=20261025_v01";
+import { renderProjects } from "./modules/projects.js?v=20261025_v01";
+import { renderExperience } from "./modules/experience.js?v=20261025_v01";
+import { renderSkills } from "./modules/skills.js?v=20261025_v01";
+import { renderFeedback } from "./modules/feedback.js?v=20261025_v01";
+import { renderInbox } from "./modules/inbox.js?v=20261025_v01";
+import { renderContributors } from "./modules/contributors.js?v=20261025_v01";
+import { renderSiteContent } from "./modules/site-content.js?v=20261025_v01";
+import { renderResume } from "./modules/resume.js?v=20261025_v01";
+import { renderLogs } from "./modules/logs.js?v=20261025_v01";
+import { renderSettings } from "./modules/settings.js?v=20261025_v01";
 
 class AdminApp {
   constructor() {

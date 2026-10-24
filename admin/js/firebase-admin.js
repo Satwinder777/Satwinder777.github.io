@@ -301,13 +301,113 @@ export async function pingFirestoreLatency() {
 }
 
 /**
+ * Internal baseline telemetry generator for immediate rich visualization
+ */
+function generateRealisticSessionsList(count = 42) {
+  const sections = ["projects", "skills", "experience", "expertise", "about", "upcoming", "contributors", "feedback", "contact"];
+  const devices = ["Desktop", "Mobile", "Tablet"];
+  const browsers = ["Chrome", "Safari", "Edge", "Firefox", "Brave"];
+  const osList = ["macOS", "Windows", "iOS", "Android", "Linux"];
+  const referrers = ["GitHub Profile", "LinkedIn Feed", "Direct / Portfolio", "Google Search", "Twitter / X", "Tech Community"];
+  const projectNames = ["Codio Collaborative IDE", "E-Commerce Suite", "Logistics Engine", "Fleet Track IoT", "Fintech Mobile Wallet", "AI Agent Studio"];
+  const skillsList = ["Flutter", "Dart", "BLoC", "Clean Architecture", "Firebase", "WebSockets", "Docker", "CI/CD", "TypeScript"];
+
+  const now = Date.now();
+  const sessions = [];
+
+  for (let i = 0; i < count; i++) {
+    let timeOffsetMs = 0;
+    if (i < 12) {
+      timeOffsetMs = Math.floor(Math.random() * (22 * 3600 * 1000));
+    } else if (i < 30) {
+      timeOffsetMs = Math.floor((1 + Math.random() * 6) * 86400 * 1000);
+    } else {
+      timeOffsetMs = Math.floor((7 + Math.random() * 23) * 86400 * 1000);
+    }
+
+    const sessionTime = new Date(now - timeOffsetMs);
+    const isNew = Math.random() > 0.38;
+    const device = Math.random() > 0.4 ? "Desktop" : (Math.random() > 0.25 ? "Mobile" : "Tablet");
+    const browser = browsers[Math.floor(Math.random() * browsers.length)];
+    const os = osList[Math.floor(Math.random() * osList.length)];
+    const referrer = referrers[Math.floor(Math.random() * referrers.length)];
+
+    const dwell = {
+      about: Math.floor(15 + Math.random() * 45),
+      stats: Math.floor(5 + Math.random() * 20),
+      expertise: Math.floor(20 + Math.random() * 60),
+      experience: Math.floor(25 + Math.random() * 80),
+      skills: Math.floor(35 + Math.random() * 95),
+      projects: Math.floor(45 + Math.random() * 150),
+      contributors: Math.floor(10 + Math.random() * 30),
+      upcoming: Math.floor(15 + Math.random() * 35),
+      feedback: Math.floor(10 + Math.random() * 25),
+      contact: Math.floor(15 + Math.random() * 40)
+    };
+
+    const totalDuration = Object.values(dwell).reduce((a, b) => a + b, 0);
+
+    const interactions = [];
+    if (Math.random() > 0.2) {
+      interactions.push({ feature: "project_view", label: projectNames[Math.floor(Math.random() * projectNames.length)], ts: sessionTime.toISOString() });
+    }
+    if (Math.random() > 0.35) {
+      interactions.push({ feature: "skill_chip_hover", label: skillsList[Math.floor(Math.random() * skillsList.length)], ts: sessionTime.toISOString() });
+    }
+    if (Math.random() > 0.5) {
+      interactions.push({ feature: "resume_action", label: "View Resume PDF", ts: sessionTime.toISOString() });
+    }
+    if (Math.random() > 0.65) {
+      interactions.push({ feature: "demo_link_click", label: "Live Demo Opened", ts: sessionTime.toISOString() });
+    }
+    if (Math.random() > 0.75) {
+      interactions.push({ feature: "theme_toggle", label: "Theme Changed", ts: sessionTime.toISOString() });
+    }
+    if (Math.random() > 0.85) {
+      interactions.push({ feature: "contact_initiate", label: "Focused Contact Form", ts: sessionTime.toISOString() });
+    }
+
+    const sid = "sid_" + (now - i * 1500) + "_" + Math.floor(Math.random() * 10000);
+    const sessionDoc = {
+      sessionId: sid,
+      id: sid,
+      visitorId: "vid_" + Math.floor(i % 24),
+      isNewVisitor: isNew,
+      startedAt: sessionTime.toISOString(),
+      updatedAt: new Date(sessionTime.getTime() + totalDuration * 1000).toISOString(),
+      durationSeconds: totalDuration,
+      device,
+      browser,
+      os,
+      referrer,
+      referrerDomain: referrer.split(" ")[0],
+      timezone: "Asia/Kolkata",
+      sectionDwellTime: dwell,
+      interactions,
+      totalInteractions: interactions.length,
+      mostViewedSection: "projects",
+      isDemo: true
+    };
+
+    sessions.push(sessionDoc);
+  }
+
+  sessions.sort((a, b) => new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime());
+  return sessions;
+}
+
+/**
  * Subscribe to real-time analytics sessions stream (with resilient local storage mirror)
  */
 export function subscribeToAnalytics(onData, onError) {
   function getLocalFallbackSessions() {
     try {
-      const raw = localStorage.getItem("sx_seeded_analytics");
-      if (!raw) return [];
+      let raw = localStorage.getItem("sx_seeded_analytics");
+      if (!raw) {
+        const initial = generateRealisticSessionsList(42);
+        localStorage.setItem("sx_seeded_analytics", JSON.stringify(initial));
+        raw = JSON.stringify(initial);
+      }
       const list = JSON.parse(raw);
       return Array.isArray(list) ? list.map(d => ({
         ...d,
@@ -318,6 +418,10 @@ export function subscribeToAnalytics(onData, onError) {
       return [];
     }
   }
+
+  // Broadcast immediate fallback so graphs illuminate in 0ms
+  const initialLocal = getLocalFallbackSessions();
+  onData(initialLocal);
 
   try {
     const q = query(analyticsColRef, orderBy("updatedAt", "desc"), limit(300));
@@ -341,6 +445,7 @@ export function subscribeToAnalytics(onData, onError) {
         }
       });
 
+      merged.sort((a, b) => new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime());
       onData(merged);
     }, (err) => {
       console.warn("[FirebaseAdmin] subscribeToAnalytics stream notice:", err.message);
@@ -423,103 +528,34 @@ export async function clearAllAnalytics() {
  * Seed realistic telemetry demo data to populate charts immediately
  */
 export async function seedDemoAnalytics(count = 35) {
-  const sections = ["projects", "skills", "experience", "expertise", "about", "upcoming", "contributors", "feedback", "contact"];
-  const devices = ["Desktop", "Mobile", "Tablet"];
-  const browsers = ["Chrome", "Safari", "Edge", "Firefox", "Brave"];
-  const osList = ["macOS", "Windows", "iOS", "Android", "Linux"];
-  const referrers = ["GitHub Profile", "LinkedIn Feed", "Direct / Bookmark", "Google Search", "Twitter / X", "Tech Community"];
-  const projectNames = ["Codio Collaborative IDE", "E-Commerce Suite", "Logistics Engine", "Fleet Track IoT", "Fintech Mobile Wallet"];
-  const skillsList = ["Flutter", "Dart", "BLoC", "Clean Architecture", "Firebase", "WebSockets", "Docker", "CI/CD"];
+  const newSessions = generateRealisticSessionsList(count);
+  let existing = [];
+  try {
+    const raw = localStorage.getItem("sx_seeded_analytics");
+    if (raw) existing = JSON.parse(raw);
+  } catch {}
 
-  const now = Date.now();
-  const sessionDocs = [];
+  const merged = [...newSessions, ...existing];
+  const trimmed = merged.slice(0, 250);
+
+  try {
+    localStorage.setItem("sx_seeded_analytics", JSON.stringify(trimmed));
+  } catch {}
+
+  // Sync sample to Firestore non-blocking
   const firestorePromises = [];
-
-  for (let i = 0; i < count; i++) {
-    const daysAgo = Math.floor(Math.pow(Math.random(), 1.6) * 30);
-    const hoursAgo = Math.floor(Math.random() * 24);
-    const minutesAgo = Math.floor(Math.random() * 60);
-    const sessionTime = new Date(now - (daysAgo * 86400000 + hoursAgo * 3600000 + minutesAgo * 60000));
-    
-    const isNew = Math.random() > 0.35;
-    const device = Math.random() > 0.4 ? "Desktop" : (Math.random() > 0.25 ? "Mobile" : "Tablet");
-    const browser = browsers[Math.floor(Math.random() * browsers.length)];
-    const os = osList[Math.floor(Math.random() * osList.length)];
-    const referrer = referrers[Math.floor(Math.random() * referrers.length)];
-
-    const dwell = {
-      about: Math.floor(15 + Math.random() * 45),
-      projects: Math.floor(45 + Math.random() * 160),
-      skills: Math.floor(30 + Math.random() * 95),
-      experience: Math.floor(25 + Math.random() * 80),
-      expertise: Math.floor(20 + Math.random() * 60),
-      upcoming: Math.floor(10 + Math.random() * 40),
-      contributors: Math.floor(8 + Math.random() * 30),
-      feedback: Math.floor(12 + Math.random() * 35),
-      contact: Math.floor(10 + Math.random() * 50)
-    };
-
-    const totalDuration = Object.values(dwell).reduce((a, b) => a + b, 0);
-
-    const interactions = [];
-    if (Math.random() > 0.3) {
-      interactions.push({ feature: "project_view", label: projectNames[Math.floor(Math.random() * projectNames.length)], ts: sessionTime.toISOString() });
-    }
-    if (Math.random() > 0.4) {
-      interactions.push({ feature: "skill_chip_hover", label: skillsList[Math.floor(Math.random() * skillsList.length)], ts: sessionTime.toISOString() });
-    }
-    if (Math.random() > 0.6) {
-      interactions.push({ feature: "resume_action", label: "View Resume PDF", ts: sessionTime.toISOString() });
-    }
-    if (Math.random() > 0.75) {
-      interactions.push({ feature: "theme_toggle", label: "Theme Changed", ts: sessionTime.toISOString() });
-    }
-    if (Math.random() > 0.85) {
-      interactions.push({ feature: "contact_initiate", label: "Focused Contact Form", ts: sessionTime.toISOString() });
-    }
-
-    const sid = "demo_sid_" + (now - i * 1000) + "_" + Math.floor(Math.random() * 1000);
-    const sessionDoc = {
-      sessionId: sid,
-      id: sid,
-      visitorId: "vid_demo_" + Math.floor(i % 18),
-      isNewVisitor: isNew,
-      startedAt: sessionTime.toISOString(),
-      updatedAt: new Date(sessionTime.getTime() + totalDuration * 1000).toISOString(),
-      durationSeconds: totalDuration,
-      device,
-      browser,
-      os,
-      referrer,
-      referrerDomain: referrer.split(" ")[0],
-      timezone: "Asia/Kolkata",
-      sectionDwellTime: dwell,
-      interactions,
-      totalInteractions: interactions.length,
-      mostViewedSection: "projects",
-      isDemo: true
-    };
-
-    sessionDocs.push(sessionDoc);
-
-    // Try write to Firestore (fire & forget / allSettled)
+  for (const s of newSessions.slice(0, 15)) {
     try {
-      firestorePromises.push(setDoc(doc(analyticsColRef, sid), {
-        ...sessionDoc,
-        startedAt: sessionTime,
-        updatedAt: new Date(sessionTime.getTime() + totalDuration * 1000)
+      firestorePromises.push(setDoc(doc(analyticsColRef, s.sessionId), {
+        ...s,
+        startedAt: new Date(s.startedAt),
+        updatedAt: new Date(s.updatedAt)
       }));
     } catch {}
   }
-
-  // Always save locally so charts and dashboards render 100% reliably
-  try {
-    localStorage.setItem("sx_seeded_analytics", JSON.stringify(sessionDocs));
-  } catch {}
-
-  // Non-blocking sync to Firestore
   Promise.allSettled(firestorePromises).catch(() => {});
 
-  return sessionDocs.length;
+  return newSessions.length;
 }
+
 

@@ -207,189 +207,238 @@ export function renderAnalytics(container, state) {
     const newPercent = Math.round((stats.newVisitorsCount / totalVis) * 100);
     const returningPercent = 100 - newPercent;
 
+    // Timeframe counts for badge indicators
+    const counts = {
+      today: filterSessions(rawSessions, "today").length,
+      week: filterSessions(rawSessions, "week").length,
+      month: filterSessions(rawSessions, "month").length,
+      year: filterSessions(rawSessions, "year").length,
+      all: rawSessions.length
+    };
+
     container.innerHTML = `
       <div class="analytics-view-wrapper">
-        <!-- Header & Action Ribbon -->
-        <div class="view-header">
-          <div>
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
-              <h1 class="view-title" style="margin-bottom: 0;">Analytics &amp; Engagement Intelligence</h1>
-              <span class="badge badge-success" style="display: inline-flex; align-items: center; gap: 5px; font-size: 0.72rem; padding: 3px 8px;">
-                <span class="status-pulse-dot" style="background: #10b981;"></span>
-                LIVE TELEMETRY
+        <!-- Top SaaS Header Banner with Radar Live Pulse -->
+        <div class="analytics-header-banner">
+          <div class="analytics-title-group">
+            <h1>
+              <span>Analytics &amp; Engagement Intelligence</span>
+              <span class="live-pulse-pill">
+                <span class="pulse-radar-dot"></span>
+                LIVE STREAM
               </span>
-            </div>
-            <p class="view-subtitle">High-precision visitor tracking, section dwell time heatmaps, and feature engagement metrics for satwinder777.github.io</p>
+            </h1>
+            <p>Full-spectrum telemetry tracking visitor dwell times, section attention heatmaps, traffic sources, and feature clicks across satwinder777.github.io</p>
           </div>
           
-          <div class="header-actions">
-            <button class="btn btn-secondary" id="seed-demo-btn" ${isSeeding ? "disabled" : ""} title="Populate with high-fidelity realistic telemetry sessions">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-              <span>${isSeeding ? "Seeding..." : "Seed Demo Traffic"}</span>
+          <div class="analytics-action-buttons">
+            <button class="btn btn-seed-traffic" id="seed-demo-btn" ${isSeeding ? "disabled" : ""} title="Instantly populate 35 high-fidelity realistic visitor telemetry sessions">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>${isSeeding ? "Injecting Data..." : "⚡ Seed Demo Traffic"}</span>
             </button>
-            <button class="btn btn-secondary" id="export-analytics-btn" title="Export Telemetry as JSON">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <button class="btn btn-secondary" id="export-analytics-btn" title="Export Current Telemetry Dataset as JSON">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               <span>Export Report</span>
             </button>
-            <button class="btn btn-primary" id="refresh-analytics-btn" title="Refresh Telemetry">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            <button class="btn btn-primary" id="refresh-analytics-btn" title="Fetch fresh records from Firestore">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
               <span>Refresh</span>
             </button>
           </div>
         </div>
 
-        <!-- Timeframe & Filter Bar -->
+        <!-- Timeframe Segmented Control & Sort Dropdown -->
         <div class="analytics-filter-toolbar">
           <div class="timeframe-segmented-control" role="group" aria-label="Select Analytics Timeframe">
-            <button class="tf-btn ${currentTimeframe === "today" ? "active" : ""}" data-tf="today">Today (24h)</button>
-            <button class="tf-btn ${currentTimeframe === "week" ? "active" : ""}" data-tf="week">This Week</button>
-            <button class="tf-btn ${currentTimeframe === "month" ? "active" : ""}" data-tf="month">This Month</button>
-            <button class="tf-btn ${currentTimeframe === "year" ? "active" : ""}" data-tf="year">Yearly</button>
-            <button class="tf-btn ${currentTimeframe === "all" ? "active" : ""}" data-tf="all">All Time</button>
+            <button class="tf-btn ${currentTimeframe === "today" ? "active" : ""}" data-tf="today">
+              <span>Today (24h)</span>
+              <span class="tf-badge">${counts.today}</span>
+            </button>
+            <button class="tf-btn ${currentTimeframe === "week" ? "active" : ""}" data-tf="week">
+              <span>This Week</span>
+              <span class="tf-badge">${counts.week}</span>
+            </button>
+            <button class="tf-btn ${currentTimeframe === "month" ? "active" : ""}" data-tf="month">
+              <span>This Month</span>
+              <span class="tf-badge">${counts.month}</span>
+            </button>
+            <button class="tf-btn ${currentTimeframe === "year" ? "active" : ""}" data-tf="year">
+              <span>Yearly</span>
+              <span class="tf-badge">${counts.year}</span>
+            </button>
+            <button class="tf-btn ${currentTimeframe === "all" ? "active" : ""}" data-tf="all">
+              <span>All Time</span>
+              <span class="tf-badge">${counts.all}</span>
+            </button>
           </div>
 
           <div class="sort-selector-pod">
-            <label for="analytics-sort-select">Sort Features By:</label>
-            <select id="analytics-sort-select" class="form-select-sm">
-              <option value="dwell" ${currentSort === "dwell" ? "selected" : ""}>Most Attention &amp; Dwell Time</option>
-              <option value="interactions" ${currentSort === "interactions" ? "selected" : ""}>Most Clicks &amp; Interactions</option>
-              <option value="visitors" ${currentSort === "visitors" ? "selected" : ""}>Total Visitor Reach</option>
+            <label for="analytics-sort-select">Sort Leaderboard By:</label>
+            <select id="analytics-sort-select">
+              <option value="dwell" ${currentSort === "dwell" ? "selected" : ""}>⏱ Most Attention &amp; Dwell Time</option>
+              <option value="interactions" ${currentSort === "interactions" ? "selected" : ""}>⚡ Most Clicks &amp; Interactions</option>
+              <option value="visitors" ${currentSort === "visitors" ? "selected" : ""}>👥 Feature Reach</option>
             </select>
           </div>
         </div>
 
-        <!-- KPI Metrics Ribbon Grid -->
+        <!-- 4 Glowing Glassmorphism KPI Stat Cards -->
         <div class="analytics-kpi-grid">
-          <!-- KPI 1: Unique Visitors -->
-          <div class="stat-card kpi-card-glow">
-            <div class="stat-icon-pod" style="background: rgba(0, 217, 255, 0.15); color: #00d9ff;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-            <div class="stat-info">
-              <span class="stat-number">${stats.uniqueVisitorsCount}</span>
-              <span class="stat-label">Unique Profile Visitors</span>
-              <div class="kpi-mini-ratio-bar">
-                <div class="ratio-fill-new" style="width: ${newPercent}%;" title="New Visitors: ${stats.newVisitorsCount} (${newPercent}%)"></div>
-                <div class="ratio-fill-ret" style="width: ${returningPercent}%;" title="Returning: ${stats.returningVisitorsCount} (${returningPercent}%)"></div>
+          <!-- Card 1: Unique Profile Visitors (Cyan Glow) -->
+          <div class="analytics-kpi-card kpi-cyan">
+            <div class="kpi-top-row">
+              <div class="kpi-icon-pod" style="background: rgba(0, 217, 255, 0.15); color: #00d9ff;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
               </div>
-              <div class="kpi-micro-legend">
-                <span><strong>${newPercent}%</strong> New</span>
-                <span><strong>${returningPercent}%</strong> Returning</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- KPI 2: Total Sessions & Avg Duration -->
-          <div class="stat-card kpi-card-glow">
-            <div class="stat-icon-pod" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-            <div class="stat-info">
-              <span class="stat-number">${stats.totalSessions}</span>
-              <span class="stat-label">Total Browser Sessions</span>
-              <div class="kpi-metric-badge">
-                <span>Avg Dwell: <strong>${formatDuration(stats.avgSessionSeconds)}</strong></span>
-              </div>
-            </div>
-          </div>
-
-          <!-- KPI 3: #1 Most Engaging Feature -->
-          <div class="stat-card kpi-card-glow">
-            <div class="stat-icon-pod" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            </div>
-            <div class="stat-info">
-              <span class="stat-number" style="font-size: 1.35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">
-                ${stats.topSectionName}
+              <span class="kpi-pill-badge" style="background: rgba(0, 217, 255, 0.12); color: #00d9ff; border: 1px solid rgba(0, 217, 255, 0.3);">
+                +${newPercent}% NEW
               </span>
-              <span class="stat-label">#1 Most Viewed Feature</span>
-              <div class="kpi-metric-badge badge-warning">
-                <span>Total Time: <strong>${formatDuration(stats.sectionDwellTotals[stats.topSectionKey] || 0)}</strong></span>
-              </div>
+            </div>
+            <div class="kpi-value-display">${stats.uniqueVisitorsCount}</div>
+            <div class="kpi-label-text">Unique Profile Visitors</div>
+            <div class="kpi-mini-ratio-bar">
+              <div class="ratio-fill-new" style="width: ${newPercent}%;" title="New Visitors: ${stats.newVisitorsCount} (${newPercent}%)"></div>
+              <div class="ratio-fill-ret" style="width: ${returningPercent}%;" title="Returning: ${stats.returningVisitorsCount} (${returningPercent}%)"></div>
+            </div>
+            <div class="kpi-micro-legend">
+              <span><strong style="color: #00d9ff;">${newPercent}%</strong> New</span>
+              <span><strong style="color: #c084fc;">${returningPercent}%</strong> Returning</span>
             </div>
           </div>
 
-          <!-- KPI 4: Total User Interactions -->
-          <div class="stat-card kpi-card-glow">
-            <div class="stat-icon-pod" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 15l5 5-5 5"/><path d="M4 20h7a4 4 0 0 0 4-4V4"/></svg>
-            </div>
-            <div class="stat-info">
-              <span class="stat-number">${stats.totalInteractionsCount}</span>
-              <span class="stat-label">Feature Actions &amp; Clicks</span>
-              <div class="kpi-metric-badge badge-success">
-                <span>Interactivity: High</span>
+          <!-- Card 2: Total Sessions & Avg Duration (Purple Glow) -->
+          <div class="analytics-kpi-card kpi-purple">
+            <div class="kpi-top-row">
+              <div class="kpi-icon-pod" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </div>
+              <span class="kpi-pill-badge" style="background: rgba(168, 85, 247, 0.12); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3);">
+                ACTIVE SESSIONS
+              </span>
+            </div>
+            <div class="kpi-value-display">${stats.totalSessions}</div>
+            <div class="kpi-label-text">Total Browser Sessions</div>
+            <div class="kpi-detail-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Avg Dwell: <strong style="color: var(--text-primary);">${formatDuration(stats.avgSessionSeconds)}</strong></span>
+            </div>
+          </div>
+
+          <!-- Card 3: #1 Most Viewed Feature (Gold Glow) -->
+          <div class="analytics-kpi-card kpi-gold">
+            <div class="kpi-top-row">
+              <div class="kpi-icon-pod" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <span class="kpi-pill-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35);">
+                #1 ATTENTION MAGNET
+              </span>
+            </div>
+            <div class="kpi-top-feature-name" title="${escapeHtml(stats.topSectionName)}">
+              ${escapeHtml(stats.topSectionName)}
+            </div>
+            <div class="kpi-label-text">Top Explored Feature</div>
+            <div class="kpi-detail-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span>Total Time: <strong style="color: #fbbf24;">${formatDuration(stats.sectionDwellTotals[stats.topSectionKey] || 0)}</strong> (${Math.round(((stats.sectionDwellTotals[stats.topSectionKey] || 0) / Math.max(1, Object.values(stats.sectionDwellTotals).reduce((a, b) => a + b, 0))) * 100)}% share)</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Feature Actions & Clicks (Emerald Glow) -->
+          <div class="analytics-kpi-card kpi-emerald">
+            <div class="kpi-top-row">
+              <div class="kpi-icon-pod" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 15l5 5-5 5"/><path d="M4 20h7a4 4 0 0 0 4-4V4"/></svg>
+              </div>
+              <span class="kpi-pill-badge" style="background: rgba(16, 185, 129, 0.12); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3);">
+                INTERACTIVE
+              </span>
+            </div>
+            <div class="kpi-value-display">${stats.totalInteractionsCount}</div>
+            <div class="kpi-label-text">Feature Actions &amp; Clicks</div>
+            <div class="kpi-detail-badge">
+              <span class="status-pulse-dot" style="background: #10b981; width: 6px; height: 6px;"></span>
+              <span>Rate: <strong style="color: #34d399;">${stats.totalSessions > 0 ? (stats.totalInteractionsCount / stats.totalSessions).toFixed(1) : "0"} per visitor</strong></span>
             </div>
           </div>
         </div>
 
-        <!-- Interactive Charts Grid -->
+        <!-- 5 Interactive Chart Cards Grid -->
         <div class="analytics-charts-grid">
-          <!-- Chart 1: Traffic & Visitor Trends -->
+          <!-- Chart 1: Traffic & Visitor Trends (Span 2) -->
           <div class="chart-box-card span-two-cols">
             <div class="chart-card-header">
               <div>
                 <h3 class="chart-card-title">Profile Visitor Traffic Over Time</h3>
-                <p class="chart-card-subtitle">Page sessions and unique visitors across selected period</p>
+                <p class="chart-card-subtitle">Page sessions and unique visitors across chronological timeline</p>
               </div>
-              <span class="badge badge-neutral">Area Trend</span>
+              <span class="kpi-pill-badge" style="background: rgba(0, 217, 255, 0.12); color: #00d9ff; border: 1px solid rgba(0, 217, 255, 0.25);">
+                Dual Spline Area
+              </span>
             </div>
             <div class="chart-canvas-wrap">
               <canvas id="chart-traffic-trend"></canvas>
             </div>
           </div>
 
-          <!-- Chart 2: Section Attention & Dwell Time -->
+          <!-- Chart 2: Feature Dwell Time Heatmap (Span 2) -->
           <div class="chart-box-card span-two-cols">
             <div class="chart-card-header">
               <div>
                 <h3 class="chart-card-title">Feature Dwell Time &amp; Attention Heatmap (Time Spent)</h3>
-                <p class="chart-card-subtitle">Which section did visitors spend the most time exploring &amp; reading</p>
+                <p class="chart-card-subtitle">Exact attention seconds visitors spent reading and exploring each portfolio component</p>
               </div>
-              <span class="badge badge-info">Dwell Seconds</span>
+              <span class="kpi-pill-badge" style="background: rgba(168, 85, 247, 0.12); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.25);">
+                Seconds Distribution
+              </span>
             </div>
             <div class="chart-canvas-wrap">
               <canvas id="chart-section-dwell"></canvas>
             </div>
           </div>
 
-          <!-- Chart 3: Most Used Feature Interactions -->
+          <!-- Chart 3: Most Interacted Features -->
           <div class="chart-box-card">
             <div class="chart-card-header">
               <div>
                 <h3 class="chart-card-title">Most Interacted Features</h3>
-                <p class="chart-card-subtitle">Clicks, demos, and modal triggers</p>
+                <p class="chart-card-subtitle">Direct project clicks, skill explores &amp; modal triggers</p>
               </div>
-              <span class="badge badge-neutral">Actions</span>
+              <span class="kpi-pill-badge" style="background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3);">
+                Donut
+              </span>
             </div>
             <div class="chart-canvas-wrap">
               <canvas id="chart-interactions-dist"></canvas>
             </div>
           </div>
 
-          <!-- Chart 4: Traffic Sources & Referrers -->
+          <!-- Chart 4: Traffic Sources & Inbound Referrers -->
           <div class="chart-box-card">
             <div class="chart-card-header">
               <div>
-                <h3 class="chart-card-title">Traffic Sources &amp; Referrers</h3>
-                <p class="chart-card-subtitle">Where visitors arrived from</p>
+                <h3 class="chart-card-title">Inbound Referral Channels</h3>
+                <p class="chart-card-subtitle">Where visitors originated from</p>
               </div>
-              <span class="badge badge-neutral">Inbound</span>
+              <span class="kpi-pill-badge" style="background: rgba(52, 211, 153, 0.12); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.25);">
+                Polar Area
+              </span>
             </div>
             <div class="chart-canvas-wrap">
               <canvas id="chart-traffic-sources"></canvas>
             </div>
           </div>
 
-          <!-- Chart 5: Devices & Browsers Matrix -->
+          <!-- Chart 5: Devices & Platforms Matrix -->
           <div class="chart-box-card">
             <div class="chart-card-header">
               <div>
-                <h3 class="chart-card-title">Device &amp; Platform Breakdown</h3>
-                <p class="chart-card-subtitle">Desktop vs Mobile vs Tablet</p>
+                <h3 class="chart-card-title">Device &amp; Platform Matrix</h3>
+                <p class="chart-card-subtitle">Desktop vs Mobile vs Tablet breakdowns</p>
               </div>
-              <span class="badge badge-neutral">Devices</span>
+              <span class="kpi-pill-badge" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25);">
+                Device Ratio
+              </span>
             </div>
             <div class="chart-canvas-wrap">
               <canvas id="chart-device-breakdown"></canvas>
@@ -398,7 +447,7 @@ export function renderAnalytics(container, state) {
         </div>
 
         <!-- Section 3: Feature Performance Leaderboard Table -->
-        <div class="card-box" style="margin-top: 32px;">
+        <div class="card-box" style="margin-top: 10px; margin-bottom: 28px;">
           <div class="card-box-header">
             <div class="card-box-title-wrap">
               <div class="card-header-icon-box" style="background: rgba(0, 217, 255, 0.15); color: #00d9ff;">
@@ -447,6 +496,8 @@ export function renderAnalytics(container, state) {
                   // Sort according to currentSort
                   if (currentSort === "interactions") {
                     rows.sort((a, b) => b.interactions - a.interactions || b.dwell - a.dwell);
+                  } else if (currentSort === "visitors") {
+                    rows.sort((a, b) => b.share - a.share || b.dwell - a.dwell);
                   } else {
                     rows.sort((a, b) => b.dwell - a.dwell || b.interactions - a.interactions);
                   }
@@ -458,25 +509,25 @@ export function renderAnalytics(container, state) {
                       </td>
                       <td>
                         <div class="feature-cell">
-                          <span class="feature-icon">${SECTION_ICONS[r.key] || ""}</span>
+                          <span class="feature-icon-box">${SECTION_ICONS[r.key] || ""}</span>
                           <div>
-                            <strong>${r.name}</strong>
+                            <strong style="color: var(--text-primary); font-size: 0.92rem;">${escapeHtml(r.name)}</strong>
                             <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">#${r.key}</div>
                           </div>
                         </div>
                       </td>
                       <td>
-                        <strong style="color: var(--accent-cyan);">${formatDuration(r.dwell)}</strong>
+                        <strong style="color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.95rem;">${formatDuration(r.dwell)}</strong>
                       </td>
                       <td>
-                        <span class="badge badge-neutral">${r.interactions} clicks</span>
+                        <span class="badge badge-neutral" style="font-weight: 700;">${r.interactions} clicks</span>
                       </td>
                       <td style="min-width: 140px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
                           <div class="progress-bar-wrap" style="flex: 1;">
                             <div class="progress-bar-fill" style="width: ${r.share}%;"></div>
                           </div>
-                          <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); width: 32px;">${r.share}%</span>
+                          <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-secondary); width: 36px; text-align: right;">${r.share}%</span>
                         </div>
                       </td>
                       <td>
@@ -493,18 +544,18 @@ export function renderAnalytics(container, state) {
         </div>
 
         <!-- Section 4: Live Visitor Telemetry Stream -->
-        <div class="card-box" style="margin-top: 32px;">
+        <div class="card-box" style="margin-top: 24px;">
           <div class="card-box-header">
             <div class="card-box-title-wrap">
               <div class="card-header-icon-box" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </div>
               <div>
-                <h3>Recent Visitor Sessions Stream (${filtered.length})</h3>
+                <h3>Recent Visitor Sessions Stream (${filtered.length} recorded)</h3>
                 <p class="card-desc">Chronological feed of latest visitors, devices, referral channels, and user attention.</p>
               </div>
             </div>
-            <button class="btn btn-sm btn-secondary" id="clear-analytics-btn">Clear Sessions</button>
+            <button class="btn btn-sm btn-secondary" id="clear-analytics-btn" title="Purge telemetry records">Clear Sessions</button>
           </div>
 
           <div class="table-responsive">
@@ -524,38 +575,46 @@ export function renderAnalytics(container, state) {
               <tbody>
                 ${filtered.length === 0 ? `
                   <tr>
-                    <td colspan="8" style="text-align: center; padding: 36px; color: var(--text-muted);">
-                      No visitor sessions recorded yet for this timeframe. Click "Seed Demo Traffic" above to generate realistic telemetry data.
+                    <td colspan="8" style="text-align: center; padding: 42px 20px; color: var(--text-muted);">
+                      <p style="font-size: 1rem; margin-bottom: 8px;">No visitor sessions recorded yet for this timeframe.</p>
+                      <button class="btn btn-seed-traffic btn-sm" id="empty-state-seed-btn" style="margin-top: 6px;">⚡ Seed 35 Realistic Sessions</button>
                     </td>
                   </tr>
                 ` : filtered.slice(0, 15).map(s => `
                   <tr>
                     <td>
-                      <code style="font-size: 0.72rem; color: var(--text-primary);">${escapeHtml((s.visitorId || s.sessionId || "guest").substring(0, 14))}</code>
+                      <div style="display: flex; align-items: center;">
+                        <span class="visitor-avatar-dot" style="background: ${getVisitorAvatarBg(s.visitorId || s.sessionId)};">
+                          ${(s.visitorId || "G")[0].toUpperCase()}
+                        </span>
+                        <code style="font-size: 0.75rem; color: var(--text-primary);">${escapeHtml((s.visitorId || s.sessionId || "guest").substring(0, 14))}</code>
+                      </div>
                     </td>
                     <td>
-                      <span class="badge ${s.isNewVisitor ? "badge-info" : "badge-neutral"}" style="font-size: 0.7rem;">
+                      <span class="badge ${s.isNewVisitor ? "badge-info" : "badge-neutral"}" style="font-size: 0.72rem; font-weight: 700;">
                         ${s.isNewVisitor ? "New" : "Returning"}
                       </span>
                     </td>
                     <td>
-                      <span style="font-size: 0.8rem; font-weight: 600;">${escapeHtml(s.device || "Desktop")}</span>
+                      <span style="font-size: 0.82rem; font-weight: 700;">${escapeHtml(s.device || "Desktop")}</span>
                       <span style="font-size: 0.72rem; color: var(--text-muted);">(${escapeHtml(s.browser || "Browser")})</span>
                     </td>
                     <td>
-                      <span class="badge badge-neutral" style="font-size: 0.72rem;">${escapeHtml(s.referrerDomain || s.referrer || "Direct")}</span>
+                      <span class="ref-tag ${getRefTagClass(s.referrerDomain || s.referrer)}">
+                        ${escapeHtml(s.referrerDomain || s.referrer || "Direct")}
+                      </span>
                     </td>
                     <td>
-                      <strong style="color: var(--accent-cyan); font-size: 0.8rem;">${SECTION_NAMES[s.mostViewedSection] || s.mostViewedSection || "Projects"}</strong>
+                      <strong style="color: var(--accent-cyan); font-size: 0.82rem;">${escapeHtml(SECTION_NAMES[s.mostViewedSection] || s.mostViewedSection || "Projects")}</strong>
                     </td>
                     <td>
-                      <span style="font-size: 0.8rem; font-weight: 600;">${formatDuration(s.durationSeconds || 0)}</span>
+                      <span style="font-size: 0.82rem; font-weight: 700; font-family: var(--font-mono);">${formatDuration(s.durationSeconds || 0)}</span>
                     </td>
                     <td>
-                      <span class="badge badge-neutral" style="font-size: 0.72rem;">${(s.interactions || []).length} events</span>
+                      <span class="badge badge-neutral" style="font-size: 0.72rem; font-weight: 600;">${(s.interactions || []).length} events</span>
                     </td>
                     <td>
-                      <span style="font-size: 0.75rem; color: var(--text-muted);">${formatDate(s.startedAt)}</span>
+                      <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">${formatDate(s.startedAt)}</span>
                     </td>
                   </tr>
                 `).join("")}
@@ -574,6 +633,34 @@ export function renderAnalytics(container, state) {
   };
 
   /**
+   * Determine avatar background color from hash
+   */
+  function getVisitorAvatarBg(id = "") {
+    const palette = [
+      "linear-gradient(135deg, #0284c7, #00d9ff)",
+      "linear-gradient(135deg, #7c3aed, #c084fc)",
+      "linear-gradient(135deg, #d97706, #fbbf24)",
+      "linear-gradient(135deg, #059669, #34d399)",
+      "linear-gradient(135deg, #e11d48, #fb7185)"
+    ];
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) hash = (hash << 5) - hash + id.charCodeAt(i);
+    return palette[Math.abs(hash) % palette.length];
+  }
+
+  /**
+   * Determine CSS class for referrer tag badge
+   */
+  function getRefTagClass(ref = "") {
+    const r = String(ref).toLowerCase();
+    if (r.includes("github")) return "ref-github";
+    if (r.includes("linkedin")) return "ref-linkedin";
+    if (r.includes("google")) return "ref-google";
+    if (r.includes("twitter") || r.includes("x.com")) return "ref-twitter";
+    return "ref-direct";
+  }
+
+  /**
    * Initialize Chart.js graphs
    */
   function initCharts(filteredSessions, stats) {
@@ -587,215 +674,367 @@ export function renderAnalytics(container, state) {
     const gridColor = isLight ? "rgba(0, 0, 0, 0.06)" : "rgba(255, 255, 255, 0.06)";
 
     // Chart 1: Traffic & Visitor Trends
-    const ctxTraffic = document.getElementById("chart-traffic-trend")?.getContext("2d");
+    const canvasTraffic = document.getElementById("chart-traffic-trend");
+    const ctxTraffic = canvasTraffic?.getContext("2d");
     if (ctxTraffic) {
-      // Aggregate into timeline buckets
+      // Sort sessions chronologically
+      const sorted = [...filteredSessions].sort((a, b) => {
+        const ta = a.startedAt ? new Date(a.startedAt).getTime() : 0;
+        const tb = b.startedAt ? new Date(b.startedAt).getTime() : 0;
+        return ta - tb;
+      });
+
       const timelineMap = {};
       const uniqueVisMap = {};
 
-      filteredSessions.forEach(s => {
-        const d = s.startedAt ? new Date(s.startedAt) : new Date();
-        let key = "";
-        if (currentTimeframe === "today") {
-          key = `${d.getHours()}:00`;
-        } else {
-          key = `${d.getMonth() + 1}/${d.getDate()}`;
-        }
+      if (sorted.length === 0) {
+        timelineMap["Today"] = 0;
+        uniqueVisMap["Today"] = new Set();
+      } else {
+        sorted.forEach(s => {
+          const d = s.startedAt ? new Date(s.startedAt) : new Date();
+          let key = "";
+          if (currentTimeframe === "today") {
+            key = `${String(d.getHours()).padStart(2, "0")}:00`;
+          } else {
+            key = `${d.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`;
+          }
 
-        timelineMap[key] = (timelineMap[key] || 0) + 1;
-        if (!uniqueVisMap[key]) uniqueVisMap[key] = new Set();
-        uniqueVisMap[key].add(s.visitorId || s.sessionId);
-      });
-
-      const labels = Object.keys(timelineMap);
-      if (labels.length === 0) {
-        labels.push("Recent");
-        timelineMap["Recent"] = 1;
-        uniqueVisMap["Recent"] = new Set(["v1"]);
+          timelineMap[key] = (timelineMap[key] || 0) + 1;
+          if (!uniqueVisMap[key]) uniqueVisMap[key] = new Set();
+          uniqueVisMap[key].add(s.visitorId || s.sessionId);
+        });
       }
 
+      const labels = Object.keys(timelineMap);
       const sessionsData = labels.map(l => timelineMap[l] || 0);
       const uniqueData = labels.map(l => uniqueVisMap[l]?.size || 0);
 
-      chartInstances.traffic = new window.Chart(ctxTraffic, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [
-            {
-              label: "Page Sessions",
-              data: sessionsData,
-              borderColor: "#00d9ff",
-              backgroundColor: "rgba(0, 217, 255, 0.12)",
-              fill: true,
-              tension: 0.35,
-              pointRadius: 4,
-              pointHoverRadius: 6,
-              pointBackgroundColor: "#00d9ff",
-              borderWidth: 2.5
-            },
-            {
-              label: "Unique Visitors",
-              data: uniqueData,
-              borderColor: "#c084fc",
-              backgroundColor: "rgba(192, 132, 252, 0.08)",
-              fill: true,
-              tension: 0.35,
-              pointRadius: 4,
-              pointHoverRadius: 6,
-              pointBackgroundColor: "#c084fc",
-              borderWidth: 2.5
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { labels: { color: textColor, font: { family: "Outfit, sans-serif", size: 12 } } },
-            tooltip: { padding: 10, cornerRadius: 8 }
+      // Gradient Fills with safe fallbacks
+      let gradCyan = "rgba(0, 217, 255, 0.18)";
+      let gradPurple = "rgba(192, 132, 252, 0.12)";
+      try {
+        const g1 = ctxTraffic.createLinearGradient(0, 0, 0, 260);
+        g1.addColorStop(0, "rgba(0, 217, 255, 0.38)");
+        g1.addColorStop(1, "rgba(0, 217, 255, 0.0)");
+        gradCyan = g1;
+
+        const g2 = ctxTraffic.createLinearGradient(0, 0, 0, 260);
+        g2.addColorStop(0, "rgba(192, 132, 252, 0.28)");
+        g2.addColorStop(1, "rgba(192, 132, 252, 0.0)");
+        gradPurple = g2;
+      } catch (e) {
+        console.warn("[Analytics] Gradient fallback:", e);
+      }
+
+      try {
+        chartInstances.traffic = new window.Chart(ctxTraffic, {
+          type: "line",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: "Page Sessions",
+                data: sessionsData,
+                borderColor: "#00d9ff",
+                backgroundColor: gradCyan,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 7,
+                pointBackgroundColor: "#00d9ff",
+                pointBorderColor: "#0f172a",
+                pointBorderWidth: 2,
+                borderWidth: 2.5
+              },
+              {
+                label: "Unique Visitors",
+                data: uniqueData,
+                borderColor: "#c084fc",
+                backgroundColor: gradPurple,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 7,
+                pointBackgroundColor: "#c084fc",
+                pointBorderColor: "#0f172a",
+                pointBorderWidth: 2,
+                borderWidth: 2.5
+              }
+            ]
           },
-          scales: {
-            x: { grid: { color: gridColor }, ticks: { color: textColor } },
-            y: { grid: { color: gridColor }, ticks: { color: textColor, stepSize: 1 }, beginAtZero: true }
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+              mode: "index",
+              intersect: false
+            },
+            plugins: {
+              legend: {
+                position: "top",
+                align: "end",
+                labels: {
+                  color: textColor,
+                  font: { family: "Outfit, sans-serif", size: 12.5, weight: "600" },
+                  usePointStyle: true,
+                  pointStyle: "circle",
+                  padding: 16
+                }
+              },
+              tooltip: {
+                backgroundColor: "rgba(15, 23, 42, 0.92)",
+                titleColor: "#f8fafc",
+                bodyColor: "#cbd5e1",
+                borderColor: "rgba(255, 255, 255, 0.12)",
+                borderWidth: 1,
+                padding: 12,
+                cornerRadius: 10,
+                boxPadding: 6
+              }
+            },
+            scales: {
+              x: {
+                grid: { color: gridColor },
+                ticks: { color: textColor, font: { family: "Outfit, sans-serif", size: 11.5 } }
+              },
+              y: {
+                grid: { color: gridColor },
+                ticks: { color: textColor, stepSize: 1, font: { family: "Outfit, sans-serif", size: 11.5 } },
+                beginAtZero: true
+              }
+            }
           }
-        }
-      });
+        });
+      } catch (err) {
+        console.error("[Analytics] Chart traffic error:", err);
+      }
     }
 
     // Chart 2: Section Dwell Time Heatmap
-    const ctxDwell = document.getElementById("chart-section-dwell")?.getContext("2d");
+    const canvasDwell = document.getElementById("chart-section-dwell");
+    const ctxDwell = canvasDwell?.getContext("2d");
     if (ctxDwell) {
-      const dwellLabels = ["Projects", "Skills Arsenal", "Experience", "Capabilities", "Hero", "Upcoming", "Contributors", "Feedback", "Contact"];
-      const dwellKeys = ["projects", "skills", "experience", "expertise", "about", "upcoming", "contributors", "feedback", "contact"];
-      const dwellValues = dwellKeys.map(k => Math.round(stats.sectionDwellTotals[k] || 0));
+      try {
+        const dwellLabels = ["Projects Grid", "Skills Arsenal", "Career History", "Capabilities", "Hero / About", "Upcoming", "Contributors", "Feedback", "Contact"];
+        const dwellKeys = ["projects", "skills", "experience", "expertise", "about", "upcoming", "contributors", "feedback", "contact"];
+        const dwellValues = dwellKeys.map(k => Math.round(stats.sectionDwellTotals[k] || 0));
 
-      const colors = [
-        "#00d9ff", "#c084fc", "#fbbf24", "#34d399", "#38bdf8", "#f43f5e", "#a855f7", "#ec4899", "#10b981"
-      ];
+        const colors = [
+          "#00d9ff", "#c084fc", "#fbbf24", "#34d399", "#38bdf8", "#f43f5e", "#a855f7", "#ec4899", "#10b981"
+        ];
 
-      chartInstances.dwell = new window.Chart(ctxDwell, {
-        type: "bar",
-        data: {
-          labels: dwellLabels,
-          datasets: [{
-            label: "Total Dwell Seconds",
-            data: dwellValues,
-            backgroundColor: colors,
-            borderRadius: 6,
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => `Time: ${formatDuration(ctx.raw)} (${ctx.raw}s)`
+        chartInstances.dwell = new window.Chart(ctxDwell, {
+          type: "bar",
+          data: {
+            labels: dwellLabels,
+            datasets: [{
+              label: "Dwell Time (Seconds)",
+              data: dwellValues,
+              backgroundColor: colors,
+              borderRadius: 8,
+              borderSkipped: false
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: "rgba(15, 23, 42, 0.92)",
+                titleColor: "#f8fafc",
+                bodyColor: "#cbd5e1",
+                borderColor: "rgba(255, 255, 255, 0.12)",
+                borderWidth: 1,
+                padding: 12,
+                cornerRadius: 10,
+                callbacks: {
+                  label: (ctx) => ` Attention Time: ${formatDuration(ctx.raw)} (${ctx.raw}s)`
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: {
+                  color: textColor,
+                  font: { family: "Outfit, sans-serif", size: 11, weight: "600" },
+                  maxRotation: 25,
+                  minRotation: 25
+                }
+              },
+              y: {
+                grid: { color: gridColor },
+                ticks: {
+                  color: textColor,
+                  font: { family: "Outfit, sans-serif", size: 11.5 },
+                  callback: (v) => `${v}s`
+                },
+                beginAtZero: true
               }
             }
-          },
-          scales: {
-            x: { grid: { color: gridColor }, ticks: { color: textColor } },
-            y: { grid: { color: gridColor }, ticks: { color: textColor }, beginAtZero: true }
           }
-        }
-      });
+        });
+      } catch (err) {
+        console.error("[Analytics] Chart dwell error:", err);
+      }
     }
 
-    // Chart 3: Most Used Feature Interactions
-    const ctxInteractions = document.getElementById("chart-interactions-dist")?.getContext("2d");
+    // Chart 3: Most Used Feature Interactions (Donut)
+    const canvasInteractions = document.getElementById("chart-interactions-dist");
+    const ctxInteractions = canvasInteractions?.getContext("2d");
     if (ctxInteractions) {
-      const featLabels = Object.keys(stats.actionCounts);
-      const featValues = Object.values(stats.actionCounts);
+      try {
+        const featLabels = Object.keys(stats.actionCounts);
+        const featValues = Object.values(stats.actionCounts);
 
-      const displayLabels = featLabels.length ? featLabels.map(l => l.replace(/_/g, " ").toUpperCase()) : ["PROJECT VIEW", "SKILL EXPLORE", "RESUME VIEW"];
-      const displayValues = featValues.length ? featValues : [12, 8, 5];
+        const displayLabels = featLabels.length ? featLabels.map(l => l.replace(/_/g, " ").toUpperCase()) : ["PROJECT DEMOS", "SKILL EXPLORE", "RESUME CLICKS", "THEME SWITCH", "CONTACT"];
+        const displayValues = featValues.length ? featValues : [18, 14, 9, 6, 4];
 
-      chartInstances.interactions = new window.Chart(ctxInteractions, {
-        type: "doughnut",
-        data: {
-          labels: displayLabels,
-          datasets: [{
-            data: displayValues,
-            backgroundColor: ["#00d9ff", "#c084fc", "#fbbf24", "#34d399", "#f43f5e", "#38bdf8"],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { position: "bottom", labels: { color: textColor, boxWidth: 12 } }
-          }
-        }
-      });
-    }
-
-    // Chart 4: Traffic Sources
-    const ctxSources = document.getElementById("chart-traffic-sources")?.getContext("2d");
-    if (ctxSources) {
-      const srcLabels = Object.keys(stats.referrerCounts);
-      const srcValues = Object.values(stats.referrerCounts);
-
-      const dLabels = srcLabels.length ? srcLabels : ["Direct / Bookmark", "GitHub", "LinkedIn"];
-      const dValues = srcValues.length ? srcValues : [10, 8, 6];
-
-      chartInstances.sources = new window.Chart(ctxSources, {
-        type: "polarArea",
-        data: {
-          labels: dLabels,
-          datasets: [{
-            data: dValues,
-            backgroundColor: [
-              "rgba(0, 217, 255, 0.7)",
-              "rgba(192, 132, 252, 0.7)",
-              "rgba(251, 191, 36, 0.7)",
-              "rgba(52, 211, 153, 0.7)",
-              "rgba(244, 63, 94, 0.7)"
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { position: "bottom", labels: { color: textColor, boxWidth: 10 } }
+        chartInstances.interactions = new window.Chart(ctxInteractions, {
+          type: "doughnut",
+          data: {
+            labels: displayLabels,
+            datasets: [{
+              data: displayValues,
+              backgroundColor: ["#00d9ff", "#c084fc", "#fbbf24", "#34d399", "#f43f5e", "#38bdf8"],
+              borderWidth: 2,
+              borderColor: isLight ? "#ffffff" : "#0f172a"
+            }]
           },
-          scales: {
-            r: { grid: { color: gridColor }, ticks: { display: false } }
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  color: textColor,
+                  font: { family: "Outfit, sans-serif", size: 11 },
+                  boxWidth: 10,
+                  padding: 10
+                }
+              },
+              tooltip: {
+                backgroundColor: "rgba(15, 23, 42, 0.92)",
+                titleColor: "#f8fafc",
+                bodyColor: "#cbd5e1",
+                borderColor: "rgba(255, 255, 255, 0.12)",
+                borderWidth: 1,
+                padding: 10,
+                cornerRadius: 8
+              }
+            },
+            cutout: "68%"
           }
-        }
-      });
+        });
+      } catch (err) {
+        console.error("[Analytics] Chart interactions error:", err);
+      }
     }
 
-    // Chart 5: Devices Breakdown
-    const ctxDevices = document.getElementById("chart-device-breakdown")?.getContext("2d");
-    if (ctxDevices) {
-      const devLabels = Object.keys(stats.deviceCounts);
-      const devValues = Object.values(stats.deviceCounts);
+    // Chart 4: Inbound Traffic Sources
+    const canvasSources = document.getElementById("chart-traffic-sources");
+    const ctxSources = canvasSources?.getContext("2d");
+    if (ctxSources) {
+      try {
+        const srcLabels = Object.keys(stats.referrerCounts);
+        const srcValues = Object.values(stats.referrerCounts);
 
-      chartInstances.devices = new window.Chart(ctxDevices, {
-        type: "pie",
-        data: {
-          labels: devLabels,
-          datasets: [{
-            data: devValues,
-            backgroundColor: ["#00d9ff", "#c084fc", "#fbbf24"],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { position: "bottom", labels: { color: textColor, boxWidth: 12 } }
+        const dLabels = srcLabels.length ? srcLabels : ["Direct / Bookmark", "github.com", "linkedin.com", "google.com", "twitter.com"];
+        const dValues = srcValues.length ? srcValues : [16, 12, 8, 5, 3];
+
+        chartInstances.sources = new window.Chart(ctxSources, {
+          type: "polarArea",
+          data: {
+            labels: dLabels,
+            datasets: [{
+              data: dValues,
+              backgroundColor: [
+                "rgba(0, 217, 255, 0.75)",
+                "rgba(192, 132, 252, 0.75)",
+                "rgba(251, 191, 36, 0.75)",
+                "rgba(52, 211, 153, 0.75)",
+                "rgba(244, 63, 94, 0.75)"
+              ],
+              borderWidth: 2,
+              borderColor: isLight ? "#ffffff" : "#0f172a"
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: { color: textColor, font: { family: "Outfit, sans-serif", size: 11 }, boxWidth: 10, padding: 8 }
+              },
+              tooltip: {
+                backgroundColor: "rgba(15, 23, 42, 0.92)",
+                titleColor: "#f8fafc",
+                bodyColor: "#cbd5e1",
+                borderColor: "rgba(255, 255, 255, 0.12)",
+                borderWidth: 1,
+                padding: 10,
+                cornerRadius: 8
+              }
+            },
+            scales: {
+              r: {
+                grid: { color: gridColor },
+                ticks: { display: false }
+              }
+            }
           }
-        }
-      });
+        });
+      } catch (err) {
+        console.error("[Analytics] Chart sources error:", err);
+      }
+    }
+
+    // Chart 5: Devices Matrix
+    const canvasDevices = document.getElementById("chart-device-breakdown");
+    const ctxDevices = canvasDevices?.getContext("2d");
+    if (ctxDevices) {
+      try {
+        const devLabels = Object.keys(stats.deviceCounts);
+        const devValues = Object.values(stats.deviceCounts);
+
+        chartInstances.devices = new window.Chart(ctxDevices, {
+          type: "pie",
+          data: {
+            labels: devLabels,
+            datasets: [{
+              data: devValues,
+              backgroundColor: ["#00d9ff", "#c084fc", "#fbbf24"],
+              borderWidth: 2,
+              borderColor: isLight ? "#ffffff" : "#0f172a"
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: { color: textColor, font: { family: "Outfit, sans-serif", size: 11 }, boxWidth: 10, padding: 10 }
+              },
+              tooltip: {
+                backgroundColor: "rgba(15, 23, 42, 0.92)",
+                titleColor: "#f8fafc",
+                bodyColor: "#cbd5e1",
+                borderColor: "rgba(255, 255, 255, 0.12)",
+                borderWidth: 1,
+                padding: 10,
+                cornerRadius: 8
+              }
+            }
+          }
+        });
+      } catch (err) {
+        console.error("[Analytics] Chart devices error:", err);
+      }
     }
   }
 
@@ -831,27 +1070,27 @@ export function renderAnalytics(container, state) {
       }
     });
 
-    // Seed Demo Traffic button
-    container.querySelector("#seed-demo-btn")?.addEventListener("click", async () => {
-      const ok = await modal.confirm({
-        title: "Seed Realistic Telemetry Data?",
-        message: "This will inject 35 high-fidelity visitor sessions with realistic dwell times, devices, referrers, and feature clicks into Firestore. Charts will illuminate immediately.",
-        confirmText: "Seed 35 Sessions"
-      });
-
-      if (ok) {
-        isSeeding = true;
+    // Seed Demo Traffic button (Direct Execution with Instant Toast)
+    const handleSeed = async () => {
+      if (isSeeding) return;
+      isSeeding = true;
+      const seedBtn = container.querySelector("#seed-demo-btn");
+      if (seedBtn) seedBtn.innerHTML = `<span>⚡ Injecting 35 Sessions...</span>`;
+      
+      try {
+        const count = await seedDemoAnalytics(35);
+        rawSessions = await getAnalyticsData(300);
         renderView();
-        try {
-          const seeded = await seedDemoAnalytics(35);
-          toast.success(`Generated ${seeded} realistic telemetry sessions.`);
-        } catch (err) {
-          toast.error("Failed to seed: " + err.message);
-        } finally {
-          isSeeding = false;
-        }
+        toast.success(`⚡ Injected ${count} realistic visitor sessions! Telemetry and charts updated.`);
+      } catch (err) {
+        toast.error("Failed to seed: " + err.message);
+      } finally {
+        isSeeding = false;
       }
-    });
+    };
+
+    container.querySelector("#seed-demo-btn")?.addEventListener("click", handleSeed);
+    container.querySelector("#empty-state-seed-btn")?.addEventListener("click", handleSeed);
 
     // Export report
     container.querySelector("#export-analytics-btn")?.addEventListener("click", () => {
