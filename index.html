@@ -45,7 +45,18 @@
 </script>
 <link rel="stylesheet" href="./feedback-studio.css?v=20260628">
 <link rel="stylesheet" href="./ai-assistant.css?v=20261024">
+<link rel="stylesheet" href="./theme-switch.css?v=20261024">
+<script>
+  // Instant Theme Loader (Zero FOUC)
+  (function () {
+    try {
+      var t = localStorage.getItem('satwinder_portfolio_theme') || 'default';
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 <script src="./assets/webgl-fluid.umd.min.js" defer></script>
+<script src="./theme-switcher.js?v=20261024" defer></script>
 <script type="module" src="./ai-assistant.js?v=20261024"></script>
 <script type="module" src="./portfolio.js?v=20260703"></script>
 <script>
@@ -2804,10 +2815,58 @@ animation: spin 1s linear infinite;
 <a href="#feedback" class="nav-dock__link interactive nav-link" data-section="feedback" title="Feedback"><i data-lucide="message-square-plus"></i><span>Feedback</span></a>
 </div>
 
-<a href="#contact" id="hire-me-btn" class="site-nav__cta hidden md:inline-flex interactive">
-<i data-lucide="send"></i>
-<span>Hire Me</span>
-</a>
+<div class="flex items-center gap-2">
+  <!-- 3-Way Theme Switcher (Default, Light, Dark) -->
+  <div class="theme-switcher" id="theme-switcher" role="region" aria-label="Theme Switcher">
+    <button type="button" id="theme-toggle-btn" class="theme-toggle-btn interactive" aria-haspopup="true" aria-expanded="false" title="Switch Theme (Current: Default)">
+      <span id="theme-active-icon" class="theme-icon-wrap">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+      </span>
+      <span id="theme-active-label" class="theme-active-label hidden sm:inline">Default</span>
+      <i data-lucide="chevron-down" class="w-3 h-3 theme-chevron"></i>
+    </button>
+    
+    <div id="theme-menu" class="theme-menu" role="menu">
+      <button type="button" class="theme-opt interactive is-active" data-theme-value="default" role="menuitem">
+        <span class="theme-opt__icon-wrap theme-opt__icon-wrap--default">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+        </span>
+        <div class="theme-opt__text">
+          <span class="theme-opt__name">Default</span>
+          <span class="theme-opt__desc">Midnight Cyberpunk</span>
+        </div>
+        <i data-lucide="check" class="w-3.5 h-3.5 theme-opt__check"></i>
+      </button>
+      
+      <button type="button" class="theme-opt interactive" data-theme-value="light" role="menuitem">
+        <span class="theme-opt__icon-wrap theme-opt__icon-wrap--light">
+          <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+        </span>
+        <div class="theme-opt__text">
+          <span class="theme-opt__name">Light</span>
+          <span class="theme-opt__desc">Clean Slate Day</span>
+        </div>
+        <i data-lucide="check" class="w-3.5 h-3.5 theme-opt__check"></i>
+      </button>
+      
+      <button type="button" class="theme-opt interactive" data-theme-value="dark" role="menuitem">
+        <span class="theme-opt__icon-wrap theme-opt__icon-wrap--dark">
+          <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+        </span>
+        <div class="theme-opt__text">
+          <span class="theme-opt__name">Dark</span>
+          <span class="theme-opt__desc">Onyx AMOLED Night</span>
+        </div>
+        <i data-lucide="check" class="w-3.5 h-3.5 theme-opt__check"></i>
+      </button>
+    </div>
+  </div>
+
+  <a href="#contact" id="hire-me-btn" class="site-nav__cta hidden md:inline-flex interactive">
+    <i data-lucide="send"></i>
+    <span>Hire Me</span>
+  </a>
+</div>
 </div>
 
 <div class="nav-dock nav-dock--mobile md:hidden" id="nav-dock-mobile" aria-label="Mobile sections">
