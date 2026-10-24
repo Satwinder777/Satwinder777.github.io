@@ -1142,20 +1142,30 @@ a:hover {
   gap: 18px;
 }
 
+.editor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .form-group.full-width {
   grid-column: 1 / -1;
 }
 
-.form-group label {
-  font-size: 12.5px;
+.form-group label, .editor-form label {
+  font-size: 13px;
   font-weight: 700;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  letter-spacing: -0.1px;
 }
 
 .form-input, .form-textarea, .form-select {
@@ -2236,26 +2246,92 @@ input:checked + .slider:before {
   line-height: 1.55;
   margin: 0;
 }
-.btn-preset-pill {
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-card);
+/* Competency Icon Selector & Presets */
+.icon-input-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.icon-live-preview-pod {
+  width: 50px;
+  height: 50px;
   border-radius: 14px;
-  padding: 4px 10px;
+  background: rgba(0, 217, 255, 0.1);
+  border: 1.5px solid rgba(0, 217, 255, 0.4);
+  color: var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(0, 217, 255, 0.2);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.icon-presets-container {
+  margin-top: 12px;
+  padding: 14px;
+  background: var(--bg-surface-elevated);
+  border-radius: 12px;
+  border: 1px solid var(--border-card);
+}
+
+.icon-presets-label {
   font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.icon-preset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.btn-preset-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-card);
+  border-radius: 10px;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  text-align: left;
 }
+
 .btn-preset-pill:hover {
-  border-color: var(--accent-cyan);
-  color: var(--text-primary);
+  background: rgba(0, 217, 255, 0.08);
+  border-color: rgba(0, 217, 255, 0.45);
+  color: var(--accent-cyan);
+  transform: translateY(-1px);
 }
+
 .btn-preset-pill.active {
-  background: rgba(0, 217, 255, 0.15);
+  background: rgba(0, 217, 255, 0.16);
   border-color: var(--accent-cyan);
   color: var(--accent-cyan);
-  box-shadow: 0 0 8px rgba(0, 217, 255, 0.25);
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.25);
+}
+
+.preset-pill-emoji {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.preset-pill-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ── 15. FEEDBACK, INBOX & LOGS ────────────────────────────── */
@@ -2423,9 +2499,9 @@ input:checked + .slider:before {
   transform: scale(1);
 }
 
-.size-sm { max-width: 440px; }
+.size-sm { max-width: 480px; }
 .size-md { max-width: 620px; }
-.size-lg { max-width: 840px; }
+.size-lg { max-width: 860px; }
 
 .admin-modal-header {
   padding: 22px 26px;

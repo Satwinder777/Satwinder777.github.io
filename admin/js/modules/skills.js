@@ -367,11 +367,17 @@ export function renderSkills(container, state) {
     const modalBodyHtml = `
       <form id="skill-chip-form" class="editor-form">
         <div class="form-group">
-          <label for="f-slabel">Skill Label *</label>
+          <label for="f-slabel">
+            <span>Skill Label <strong style="color: var(--accent-cyan);">*</strong></span>
+            <span class="field-hint">e.g. Kotlin Coroutines, Docker, WebSockets</span>
+          </label>
           <input type="text" id="f-slabel" class="form-input" required placeholder="e.g. Kotlin Coroutines, GraphQL, Docker">
         </div>
         <div class="form-group">
-          <label for="f-scat">Category Domain</label>
+          <label for="f-scat">
+            <span>Category Domain</span>
+            <span class="field-hint">Placement category</span>
+          </label>
           <select id="f-scat" class="form-select">
             ${SKILL_CATEGORIES.map(c => `
               <option value="${c.key}" ${c.key === defaultCategory ? "selected" : ""}>${c.label}</option>
@@ -426,39 +432,59 @@ export function renderSkills(container, state) {
     };
 
     const iconPresets = [
-      { key: "bolt", label: "⚡ Bolt / Perf" },
-      { key: "mobile", label: "📱 Mobile App" },
-      { key: "layers", label: "🗂️ Architecture" },
-      { key: "code", label: "💻 Code / SDKs" },
-      { key: "database", label: "🗄️ Database" },
-      { key: "graph", label: "📈 Real-Time" },
-      { key: "map", label: "🗺️ Geo Maps" },
-      { key: "palette", label: "🎨 UI / Canvas" },
-      { key: "shield", label: "🛡️ Security" },
-      { key: "wifi", label: "📶 Offline Sync" }
+      { key: "bolt", label: "Performance", icon: "⚡" },
+      { key: "mobile", label: "Mobile Apps", icon: "📱" },
+      { key: "layers", label: "Architecture", icon: "🗂️" },
+      { key: "code", label: "SDKs & Code", icon: "💻" },
+      { key: "database", label: "Database", icon: "🗄️" },
+      { key: "graph", label: "Real-Time", icon: "📈" },
+      { key: "map", label: "Geo Maps", icon: "🗺️" },
+      { key: "palette", label: "UI / Canvas", icon: "🎨" },
+      { key: "shield", label: "Security", icon: "🛡️" },
+      { key: "wifi", label: "Offline Sync", icon: "📶" }
     ];
 
     const modalBodyHtml = `
       <form id="expertise-form" class="editor-form">
         <div class="form-group">
-          <label for="f-exptitle">Competency Title *</label>
-          <input type="text" id="f-exptitle" class="form-input" required value="${escapeHtml(cur.title)}" placeholder="e.g. 120fps Perf. Tuning">
+          <label for="f-exptitle">
+            <span>Competency Title <strong style="color: var(--accent-cyan);">*</strong></span>
+            <span class="field-hint">e.g. 120fps Perf. Tuning, Clean Architecture</span>
+          </label>
+          <input type="text" id="f-exptitle" class="form-input" required value="${escapeHtml(cur.title)}" placeholder="e.g. 120fps Perf. Tuning & Budgeting">
         </div>
         
         <div class="form-group">
-          <label for="f-expicon">Icon Identifier or Emoji</label>
-          <input type="text" id="f-expicon" class="form-input" value="${escapeHtml(cur.icon || "bolt")}" placeholder="e.g. bolt, mobile, layers, database">
-          <div class="icon-preset-pills" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
-            ${iconPresets.map(p => `
-              <button type="button" class="btn-preset-pill ${cur.icon === p.key ? "active" : ""}" data-key="${p.key}">
-                ${p.label}
-              </button>
-            `).join("")}
+          <label for="f-expicon">
+            <span>Visual Icon</span>
+            <span class="field-hint">Pick preset below or type identifier / emoji</span>
+          </label>
+          
+          <div class="icon-input-preview-row">
+            <div class="icon-live-preview-pod" id="comp-preview-pod" title="Live Icon Preview">
+              ${getCompetencyIconSvg(cur.icon || "bolt")}
+            </div>
+            <input type="text" id="f-expicon" class="form-input" value="${escapeHtml(cur.icon || "bolt")}" placeholder="e.g. bolt, mobile, layers, database">
+          </div>
+
+          <div class="icon-presets-container">
+            <div class="icon-presets-label">Popular Competency Presets:</div>
+            <div class="icon-preset-grid">
+              ${iconPresets.map(p => `
+                <button type="button" class="btn-preset-pill ${cur.icon === p.key ? "active" : ""}" data-key="${p.key}">
+                  <span class="preset-pill-emoji">${p.icon}</span>
+                  <span class="preset-pill-name">${p.label}</span>
+                </button>
+              `).join("")}
+            </div>
           </div>
         </div>
 
-        <div class="form-group full-width">
-          <label for="f-expdesc">Description & Technical Highlights</label>
+        <div class="form-group">
+          <label for="f-expdesc">
+            <span>Description & Technical Highlights</span>
+            <span class="field-hint">Explain engineering depth, frame budgets, or telemetry</span>
+          </label>
           <textarea id="f-expdesc" class="form-textarea" rows="4" placeholder="Explain your core capabilities, frame budgeting, or architecture patterns...">${escapeHtml(cur.description || "")}</textarea>
         </div>
       </form>
@@ -473,15 +499,37 @@ export function renderSkills(container, state) {
       title: isNew ? "Add Core Competency" : `Edit: ${cur.title}`,
       bodyHtml: modalBodyHtml,
       footerHtml,
-      size: "sm"
+      size: "md"
     });
 
     const iconInput = modalEl.querySelector("#f-expicon");
+    const previewPod = modalEl.querySelector("#comp-preview-pod");
+
+    const updatePreview = (val) => {
+      if (previewPod) {
+        previewPod.innerHTML = getCompetencyIconSvg(val);
+      }
+    };
+
+    iconInput?.addEventListener("input", () => {
+      const val = iconInput.value.trim();
+      updatePreview(val);
+      modalEl.querySelectorAll(".btn-preset-pill").forEach(p => {
+        if (p.dataset.key.toLowerCase() === val.toLowerCase()) {
+          p.classList.add("active");
+        } else {
+          p.classList.remove("active");
+        }
+      });
+    });
+
     modalEl.querySelectorAll(".btn-preset-pill").forEach(pill => {
       pill.addEventListener("click", () => {
-        iconInput.value = pill.dataset.key;
+        const key = pill.dataset.key;
+        iconInput.value = key;
         modalEl.querySelectorAll(".btn-preset-pill").forEach(p => p.classList.remove("active"));
         pill.classList.add("active");
+        updatePreview(key);
       });
     });
 
@@ -552,7 +600,7 @@ function getCompetencyIconSvg(iconName) {
     case "location":
     case "pin":
     case "🗺️":
-      return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 combat 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`;
+      return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`;
     case "palette":
     case "paint":
     case "ui":
