@@ -36,40 +36,86 @@ export function renderExperience(container, state) {
         ` : `
           <div class="timeline-admin">
             ${experience.map((exp, idx) => `
-              <div class="exp-item-card" data-id="${exp.id}">
-                <div class="exp-meta-bar">
-                  <div class="exp-role-info">
-                    <h3 class="exp-title">${escapeHtml(exp.title)}</h3>
-                    <div class="exp-company-row">
-                      <span class="exp-company">${escapeHtml(exp.company)}</span>
-                      <span class="exp-dot">•</span>
-                      <span class="exp-location">${escapeHtml(exp.location || "Remote")}</span>
-                      ${exp.isCurrent ? `<span class="badge badge-success">Present</span>` : ""}
+              <div class="exp-item-card ${exp.isCurrent ? "is-current-role" : ""}" data-id="${exp.id}">
+                <div class="exp-card-inner">
+                  <!-- Company Pod / Logo -->
+                  <div class="exp-company-pod">
+                    ${exp.companyLogoUrl ? `
+                      <img src="${escapeHtml(exp.companyLogoUrl)}" alt="${escapeHtml(exp.company)}" class="exp-company-img" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\\'exp-initials\\'>${getCompanyInitials(exp.company)}</span>';">
+                    ` : `
+                      <span class="exp-initials">${getCompanyInitials(exp.company)}</span>
+                    `}
+                  </div>
+
+                  <!-- Milestone Info Block -->
+                  <div class="exp-main-body">
+                    <div class="exp-meta-bar">
+                      <div class="exp-role-info">
+                        <div class="exp-title-row">
+                          <h3 class="exp-title">${escapeHtml(exp.title)}</h3>
+                          ${exp.isCurrent ? `
+                            <span class="badge badge-success exp-current-badge">
+                              <span class="status-pulse-dot"></span>
+                              Active Role
+                            </span>
+                          ` : ""}
+                        </div>
+
+                        <div class="exp-company-row">
+                          <span class="exp-company">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 7V3h12v4M9 11h2M13 11h2M9 15h2M13 15h2"/></svg>
+                            ${escapeHtml(exp.company)}
+                          </span>
+                          <span class="exp-dot">•</span>
+                          <span class="exp-location">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            ${escapeHtml(exp.location || "Remote")}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="exp-date-pill">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        <span>${formatExpDates(exp.startDate, exp.endDate, exp.isCurrent)}</span>
+                      </div>
+                    </div>
+
+                    <div class="exp-desc-box">
+                      <p>${escapeHtml(exp.description || "No description provided.")}</p>
+                    </div>
+
+                    <div class="exp-tech-tags-wrapper">
+                      ${(exp.technologies || []).length > 0 ? `
+                        <div class="exp-tech-tags">
+                          ${(exp.technologies || []).map(t => `<span class="tech-tag exp-tech-chip">${escapeHtml(t)}</span>`).join("")}
+                        </div>
+                      ` : `
+                        <div class="exp-no-tech-hint">
+                          <button class="btn-link edit-exp-btn" data-id="${exp.id}">+ Add Tech Stack Chips</button>
+                        </div>
+                      `}
                     </div>
                   </div>
-                  <div class="exp-date-pill">
-                    ${formatExpDates(exp.startDate, exp.endDate, exp.isCurrent)}
-                  </div>
                 </div>
-
-                <div class="exp-desc-box">
-                  <p>${escapeHtml(exp.description || "No description provided.")}</p>
-                </div>
-
-                ${(exp.technologies || []).length > 0 ? `
-                  <div class="exp-tech-tags">
-                    ${(exp.technologies || []).map(t => `<span class="tech-tag">${escapeHtml(t)}</span>`).join("")}
-                  </div>
-                ` : ""}
 
                 <div class="exp-card-footer">
                   <div class="reorder-btns">
-                    <button class="btn-icon move-exp-up" data-id="${exp.id}" title="Move Up" ${idx === 0 ? "disabled" : ""}>↑</button>
-                    <button class="btn-icon move-exp-down" data-id="${exp.id}" title="Move Down" ${idx === experience.length - 1 ? "disabled" : ""}>↓</button>
+                    <button class="btn-icon move-exp-up" data-id="${exp.id}" title="Move Up" ${idx === 0 ? "disabled" : ""}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                    </button>
+                    <button class="btn-icon move-exp-down" data-id="${exp.id}" title="Move Down" ${idx === experience.length - 1 ? "disabled" : ""}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                    </button>
                   </div>
                   <div class="right-actions">
-                    <button class="btn btn-sm btn-ghost edit-exp-btn" data-id="${exp.id}">Edit</button>
-                    <button class="btn btn-sm btn-danger-ghost delete-exp-btn" data-id="${exp.id}">Delete</button>
+                    <button class="btn btn-sm btn-ghost edit-exp-btn" data-id="${exp.id}">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                      Edit Milestone
+                    </button>
+                    <button class="btn btn-sm btn-danger-ghost delete-exp-btn" data-id="${exp.id}">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
@@ -310,6 +356,16 @@ function formatExpDates(start, end, isCurrent) {
     return `${s} — ${e}`;
   }
   return s || e || "Timeline";
+}
+
+function getCompanyInitials(name) {
+  if (!name) return "CO";
+  const clean = name.replace(/[^\w\s]/gi, "").trim();
+  const parts = clean.split(/\s+/);
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+  return clean.slice(0, 2).toUpperCase() || "CO";
 }
 
 function escapeHtml(str) {
