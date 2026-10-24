@@ -25,7 +25,7 @@
       email: "satwindersinghasr2@gmail.com",
       whatsapp: "+91 98779 95250",
       github: "https://github.com/Satwinder777",
-      linkedin: "https://linkedin.com/in/satwinder777",
+      linkedin: "https://www.linkedin.com/in/satwinder-singh-809a6b256",
       location: "India (Open to Remote Globally)"
     },
     skills: {
@@ -127,79 +127,251 @@
   // ------------------------------------------------------------
   //  3. Grounded Intelligence Engine (Local RAG & Semantic Match)
   // ------------------------------------------------------------
+  // ------------------------------------------------------------
+  //  3. Grounded Intelligence Engine (Multi-Case Intent Matcher)
+  // ------------------------------------------------------------
   function generateLocalResponse(query, history) {
     const q = query.toLowerCase().trim();
 
-    // Check context from recent message for follow-ups
-    const lastUserMsg = history.length > 2 ? history[history.length - 2]?.text?.toLowerCase() : '';
-
-    // 1. Contact / Hiring / Email / WhatsApp
-    if (/hire|contact|email|reach|phone|whatsapp|call|available|interview|freelance|rate|salary|resume/i.test(q)) {
+    // 1. Greetings & Casual Introductions
+    if (/^(hi|hello|hey|namaste|sat sri akaal|hola|greetings|good morning|good afternoon|good evening|yo)\b/i.test(q)) {
       return {
-        text: `**Satwinder is actively open for high-impact roles!** 🚀\n\n- **Role Focus:** Senior Flutter Engineer, Staff Mobile Architect, or Technical Lead.\n- **Email:** [${portfolioKnowledge.contact.email}](mailto:${portfolioKnowledge.contact.email})\n- **WhatsApp:** [${portfolioKnowledge.contact.whatsapp}](https://wa.me/919877995250)\n- **GitHub:** [${portfolioKnowledge.contact.github}](${portfolioKnowledge.contact.github})\n\nYou can also click the **"Hire Me"** button in the navbar to connect immediately!`,
+        text: `Hello! 👋 Welcome to **Satwinder Singh's Portfolio Assistant**.\n\nSatwinder is a **Senior Flutter Engineer & System Architect** with 3+ years of experience delivering 10+ production apps with 99.9% crash-free uptime.\n\nHow can I help you today? You can ask about his **skills**, **flagship projects**, **clean architecture**, or **how to hire him**.`,
         followUps: [
-          "What is his Flutter experience?",
-          "Can you share his flagship projects?",
-          "Does he work with Clean Architecture?"
+          "What are his core technical skills?",
+          "Tell me about his top projects",
+          "What is his experience with Flutter & BLoC?",
+          "How can I contact or hire Satwinder?"
         ]
       };
     }
 
-    // 2. Skills / Tech Stack
-    if (/skill|tech|stack|arsenal|language|framework|dart|kotlin|swift|state|riverpod|bloc/i.test(q)) {
+    // 2. Specific Project: Vibe Real-Time Collaboration
+    if (/vibe/i.test(q)) {
       return {
-        text: `**Satwinder's Core Technical Arsenal:**\n\n- **Mobile Engineering:** Expert in **Flutter & Dart**, with native bridges into **Android (Kotlin/Java)** and **iOS (Swift)**.\n- **State Management:** Production mastery of **BLoC, Cubit, and Riverpod**.\n- **Architecture:** Domain-Driven Design (DDD), Clean Architecture, Modular Packages, Isolates.\n- **Backend & Real-Time:** Firebase (Firestore, Auth, Rules), WebSockets, REST APIs, and Offline-First synchronization.\n- **Testing & DevOps:** Fastlane CI/CD, GitHub Actions, and high-frequency UI/Unit testing suites.`,
+        text: `**Vibe Real-Time Collaboration Platform** 🚀\n\n- **Overview:** Full-stack reactive mobile and web platform engineered for ultra-low latency team collaboration.\n- **Architecture:** Rigid **Clean Architecture** driven by **BLoC & Cubit** state management.\n- **Real-Time Engine:** Bi-directional **WebSockets** state synchronization delivering sub-50ms event updates across connected clients.\n- **Offline-First:** Local caching using SQLite & Hive with **optimistic UI updates** and automated conflict resolution upon network reconnection.\n- **Key Outcome:** Shipped with seamless real-time CMS sync, zero-latency reactive canvas, and 99.9% session stability.`,
         followUps: [
+          "Tell me about Satcraft",
+          "What state management does he prefer?",
           "How does he handle offline sync in Flutter?",
-          "Tell me about the Vibe project",
+          "How can I hire him for a project?"
+        ]
+      };
+    }
+
+    // 3. Specific Project: Satcraft Resume Suite
+    if (/satcraft/i.test(q)) {
+      return {
+        text: `**Satcraft Resume & Portfolio Suite** 📄⚡\n\n- **Overview:** High-performance reactive web application designed for instant, dynamic ATS-compliant document generation.\n- **Tech Stack:** **TypeScript, Vite, React, Tailwind CSS**, and client-side vector PDF generation engines.\n- **Engineering Feat:** Replaced slow server-side PDF render pipelines with instant client-side vector generation (via jsPDF & Canvas), eliminating server latency and cloud compute costs.\n- **User Experience:** Live interactive split-pane preview, customizable typography, and sub-second export times.`,
+        followUps: [
+          "Tell me more about Vibe's architecture",
+          "What are his core technical skills?",
+          "Can I download his CV?",
+          "How can I contact Satwinder?"
+        ]
+      };
+    }
+
+    // 4. Specific Project: Enterprise Multi-Tenant Mobile Suite
+    if (/enterprise|multi-tenant|tenant|100k|workload/i.test(q)) {
+      return {
+        text: `**Enterprise Multi-Tenant Mobile Suite** 🏢📱\n\n- **Scale:** Engineered for high-concurrency enterprise workloads serving **100,000+ monthly active users**.\n- **State & Architecture:** Modular multi-package architecture built with **Riverpod**, custom Render Objects, and strict separation of concerns.\n- **Dynamic White-Labeling:** Multi-flavor runtime configuration allowing clients to run branded themes, feature flags, and custom tenant workflows from a single codebase.\n- **Reliability:** Maintained a strict **99.9% crash-free rate** backed by automated Fastlane CI/CD and regression testing suites.`,
+        followUps: [
+          "What makes his Flutter apps crash-free?",
+          "What is his testing strategy?",
+          "How can I hire him for a project?"
+        ]
+      };
+    }
+
+    // 5. State Management Preferences (BLoC vs Riverpod vs GetX)
+    if (/state\s*management|prefer|bloc|riverpod|getx|cubit|provider|which state/i.test(q)) {
+      return {
+        text: `**Satwinder's State Management Philosophy:** 🧠\n\n- **Enterprise Scale — BLoC / Cubit:** His primary choice for mission-critical enterprise applications. BLoC enforces strict **unidirectional data flow (Events → States)**, ensures complete UI decoupling, and enables 100% deterministic unit testing.\n- **Reactive Modern Apps — Riverpod:** Extensively used for apps requiring compile-time safety, auto-dispose lifecycle management, and clean dependency injection without ` + "`BuildContext`" + ` limitations.\n- **Pragmatic Exposure — GetX & Provider:** Proficient in both for rapid prototyping or maintaining legacy systems, but advocates BLoC/Riverpod for scalable, testable architectures.`,
+        followUps: [
+          "How does he structure Clean Architecture?",
+          "Tell me more about Vibe's architecture",
           "What makes his Flutter apps crash-free?"
         ]
       };
     }
 
-    // 3. Projects
-    if (/project|portfolio|work|app|built|vibe|satcraft|showcase/i.test(q)) {
+    // 6. Offline-First Architecture & Synchronization
+    if (/offline|sync|caching|cache|connectivity|sqlite|hive|isar|network loss/i.test(q)) {
       return {
-        text: `Here are **Satwinder's flagship engineering projects**:\n\n1. **Vibe Real-Time Platform:** Full-stack reactive collaboration app with real-time CMS, offline caching, and instant WebSocket state synchronization.\n2. **Satcraft Resume Suite:** High-performance web app built with TypeScript, Vite, and client-side vector PDF generation.\n3. **Enterprise Multi-Tenant Mobile Suite:** Production Flutter architecture serving 100K+ monthly active users with strict 99.9% crash-free uptime.`,
+        text: `**Offline-First Architecture & Synchronization:** 📡💾\n\nSatwinder designs mobile systems that work effortlessly regardless of network conditions:\n\n1. **Local Single Source of Truth:** The UI always binds to local reactive stores (**Hive, Isar, or SQLite**), never directly blocking on HTTP requests.\n2. **Optimistic UI Updates:** User interactions reflect immediately on screen while mutation operations are dispatched to a persistent queue.\n3. **Resilient Background Sync Queue:** Network mutations are retried automatically with exponential backoff via background workers.\n4. **Conflict Resolution:** Employs timestamp-based reconciliation and idempotent API endpoints to prevent data duplication.\n5. **Reactive Connectivity Listeners:** Instant transition between online and offline states without disrupting user sessions.`,
         followUps: [
+          "What makes his Flutter apps crash-free?",
           "Tell me more about Vibe's architecture",
-          "How can I hire him for a project?",
           "What state management does he prefer?"
         ]
       };
     }
 
-    // 4. Architecture / BLoC / Performance / Crash-free
-    if (/architecture|clean|bloc|performance|fps|speed|jank|crash|pattern/i.test(q)) {
+    // 7. 99.9% Crash-Free Stability & Error Boundaries
+    if (/crash|99\.9|stability|reliable|error handling|sentry|crashlytics|bugs/i.test(q)) {
       return {
-        text: `**Satwinder's Architecture Philosophy:**\n\n- **Clean Architecture & Separation of Concerns:** Rigid isolation between Data, Domain, and Presentation layers.\n- **BLoC & Unidirectional Data Flow:** Predictable state transitions with reactive Streams.\n- **Performance Tuning:** Profile-guided optimization eliminating dropped frames at 60/120 FPS by optimizing widget rebuild trees and offloading heavy JSON decoding onto Dart Isolates.\n- **99.9% Stability:** Rigorous defensive null-safety, offline circuit breakers, and automated testing.`,
+        text: `**How Satwinder Achieves 99.9% Crash-Free Rates:** 🛡️\n\nAcross 10+ shipped production apps and 100K+ active users, he guarantees stability through:\n\n- **Strict Defensive Null-Safety:** Never uses risky force-unwraps (` + "`!`" + `) in production code; every asynchronous response and model field is safely guarded.\n- **Layered Error Boundaries:** Application wrapped in ` + "`runZonedGuarded`" + ` and ` + "`FlutterError.onError`" + ` catching unhandled asynchronous microtask errors and rendering graceful user fallbacks.\n- **Real-Time Telemetry:** Integrated **Firebase Crashlytics** and **Sentry** with custom breadcrumbs and user journey tags for sub-15-minute bug triage.\n- **Defensive API Circuit Breakers:** Graceful fallbacks for network drops, malformed JSON payloads, and server timeouts.`,
+        followUps: [
+          "How does he optimize 60 FPS rendering?",
+          "What is his testing strategy?",
+          "How can I contact or hire Satwinder?"
+        ]
+      };
+    }
+
+    // 8. Performance Optimization & 60/120 FPS Rendering
+    if (/performance|fps|jank|speed|frame|profiling|isolate|optimize|rendering|lag/i.test(q)) {
+      return {
+        text: `**Performance Tuning & 60/120 FPS Rendering:** ⚡🎬\n\nSatwinder has optimized Flutter rendering pipelines reducing frame jank from 18% down to **under 1.2%**:\n\n- **DevTools Timeline Profiling:** Continuous profiling of UI and Raster threads to eliminate frame drops and expensive layout passes.\n- **Dart Isolates (Multi-Threading):** Offloads heavy JSON parsing, cryptography, and image compression completely off the UI thread.\n- **Rebuild Minimization:** Aggressive use of ` + "`const`" + ` constructors, granular ` + "`BlocBuilder`" + ` scoping, and ` + "`RepaintBoundary`" + ` to prevent unnecessary subtree repaints.\n- **Image & Memory Management:** Pre-caching asset bundles, downsampling textures, and leak detection via DevTools Memory Snapshots.`,
+        followUps: [
+          "What makes his Flutter apps crash-free?",
+          "What state management does he prefer?",
+          "Tell me about his top projects"
+        ]
+      };
+    }
+
+    // 9. Clean Architecture & Domain-Driven Design
+    if (/clean architecture|clean|ddd|domain-driven|separation of concerns|layers|pattern/i.test(q)) {
+      return {
+        text: `**Clean Architecture & System Design:** 🏛️\n\nSatwinder strictly enforces separation of concerns across 3 distinct tiers:\n\n1. **Domain Layer (Core):** Pure Dart — contains **Entities**, **Use Cases / Interactors**, and **Repository Interfaces**. Zero dependencies on Flutter UI or third-party packages.\n2. **Data Layer:** Repository implementations, Data Sources (REST, WebSockets, Firebase, Local DB), and Model serialization (DTOs).\n3. **Presentation Layer:** Reactive UI widgets wired to **BLoC / Riverpod** state emitters. UI components remain pure and stateless whenever possible.\n\n**Result:** Fully testable business logic that can swap backend databases or API protocols without touching UI code.`,
+        followUps: [
+          "What state management does he prefer?",
+          "How does he handle offline sync in Flutter?",
+          "Tell me about his top projects"
+        ]
+      };
+    }
+
+    // 10. Native Android & iOS Bridges (Method Channels / Kotlin / Swift)
+    if (/native|kotlin|swift|method channel|event channel|platform channel|java|bridge|android native|ios native/i.test(q)) {
+      return {
+        text: `**Native Android & iOS Engineering Depth:** 📱⚙️\n\nUnlike pure cross-platform wrappers, Satwinder bridges deep into native platform layers:\n\n- **Native Android (Kotlin/Java):** 3+ years writing background services, BroadcastReceivers, Jetpack components, and custom native Views.\n- **Native iOS (Swift):** Custom MethodChannels, AppDelegate lifecycle hooks, and CoreLocation / StoreKit integration.\n- **Bidirectional Channels:** EventChannels for continuous sensor and audio streams; MethodChannels for synchronous native hardware execution.\n- **Third-Party SDKs:** Seamless native bridging for biometric auth, payment SDKs, and BLE (Bluetooth Low Energy) hardware devices.`,
         followUps: [
           "What are his core technical skills?",
-          "How can I contact Satwinder?",
-          "Can you summarize his background?"
+          "What is his experience with Flutter & BLoC?",
+          "How can I contact Satwinder?"
         ]
       };
     }
 
-    // 5. Experience / Background
-    if (/who|experience|background|about|bio|satwinder|years|senior/i.test(q)) {
+    // 11. Testing & Automated CI/CD (Fastlane & GitHub Actions)
+    if (/test|testing|unit test|widget test|integration|fastlane|ci\/cd|pipeline|github actions|automation/i.test(q)) {
       return {
-        text: `**Satwinder Singh** is a Senior Mobile Engineer & System Architect specializing in **Flutter** and scalable cross-platform systems.\n\nHe has delivered **10+ production mobile applications** across consumer and enterprise sectors, maintaining a **99.9% crash-free rate** and delighting hundreds of thousands of users. He is passionate about high-performance mobile UI, smooth micro-interactions, and robust system architecture.`,
+        text: `**Testing & Automated CI/CD Pipelines:** 🧪🚀\n\n- **Unit Testing:** Comprehensive test coverage for Domain use cases and BLoC state streams using ` + "`package:test`" + ` and ` + "`mocktail`" + `.\n- **Widget & Component Testing:** Golden tests and interaction simulations ensuring responsive rendering across varied screen densities.\n- **Automated CI/CD with Fastlane:** Scripted pipelines in **GitHub Actions** executing static analysis (` + "`dart analyze`" + `), test suites, keystore code signing, and 1-click deployments to **Google Play Console** and **Apple TestFlight**.`,
         followUps: [
-          "What are his top projects?",
-          "How can I contact him?",
-          "What is his tech stack?"
+          "What makes his Flutter apps crash-free?",
+          "How does he structure Clean Architecture?",
+          "How can I hire him for a project?"
         ]
       };
     }
 
-    // 6. Default Conversational Fallback
+    // 12. Why Hire Satwinder / Key Value Proposition (Check before generic hiring)
+    if (/\b(why\s+(should\s+i\s+)?hire|why\s+satwinder|strengths?|key\s+value|stand\s*out|advantage)\b/i.test(q)) {
+      return {
+        text: `**Why Hire Satwinder Singh?** ⭐\n\n1. **Architectural Discipline:** He builds with Clean Architecture and strict separation of concerns, ensuring codebases remain maintainable as teams scale.\n2. **Rock-Solid Stability:** Proven **99.9% crash-free rate** across 100K+ monthly active users.\n3. **Native Depth:** Native Android Kotlin skills enable him to write custom hardware drivers and MethodChannels without third-party limitations.\n4. **End-to-End Ownership:** From initial architectural design to Fastlane CI/CD automated deployment on App Store & Google Play.`,
+        followUps: [
+          "Tell me about his top projects",
+          "How can I hire him for a project?",
+          "What are his core technical skills?"
+        ]
+      };
+    }
+
+    // 13. Location & Timezone (Check before generic work)
+    if (/\b(location|where\s+(is\s+he|are\s+you|is\s+satwinder)|where\s+based|timezone|time\s*zone|city|punjab|amritsar|india|remote\s+work|work\s+remote)\b/i.test(q)) {
+      return {
+        text: `**Location & Timezone Availability:** 🌍\n\n- **Base:** Punjab / Amritsar, India (IST — UTC+5:30).\n- **Remote Flexibility:** Experienced working with distributed international teams across **US (EST/PST), UK/Europe (GMT/CET), and APAC** timezones with reliable daily overlap.\n- **Setup:** High-speed gigabit fiber connection, professional testing lab with physical Android & iOS devices.`,
+        followUps: [
+          "How can I hire him for a project?",
+          "How can I contact Satwinder?",
+          "What are his core technical skills?"
+        ]
+      };
+    }
+
+    // 14. Career Trajectory & Work Experience / Companies (Check before projects)
+    if (/\b(where\s+(has\s+he|did\s+he)\s+worked?|work(ed)?\s+(history|at|for)|experience|career|companies|company|toxsl|seraphic|blocvibe|possibility|history|trajectory|timeline|background|who is satwinder)\b/i.test(q)) {
+      return {
+        text: `**Satwinder's Career Trajectory (3+ Years Experience):** 💼📈\n\n- **Senior Software Developer @ ToXSL Technologies** *(Jan 2025 – Present)*\n  Leading mobile architectures, performance optimization, CI/CD pipeline automation, and mentoring engineering teams in Clean Architecture.\n- **Flutter Developer @ Seraphic Infosolutions** *(Jun 2024 – Jun 2025)*\n  Engineered cross-platform mobile apps with Flutter & Dart, complex UI animations, MethodChannels, and REST APIs.\n- **Android Developer @ Blocvibe Technologies** *(Oct 2023 – Jun 2024)*\n  Developed responsive native Android apps using Kotlin and Jetpack components.\n- **Android Developer @ Possibility Solutions** *(Jan 2022 – Jan 2024)*\n  Handled native Java/Kotlin modules, UI debugging, and system integration.`,
+        followUps: [
+          "What are his core technical skills?",
+          "Tell me about his top projects",
+          "How can I contact or hire Satwinder?"
+        ]
+      };
+    }
+
+    // 15. Resume / CV Download
+    if (/\b(resume|cv|curriculum|download\s+cv|download\s+resume)\b/i.test(q)) {
+      return {
+        text: `**Satwinder Singh — Senior Flutter Engineer Resume:** 📄\n\n- **Experience:** 3+ Years in Mobile Engineering & System Architecture\n- **Delivered:** 10+ Production Apps | 99.9% Crash-Free | 60+ FPS Rendering\n- **Core Stack:** Flutter, Dart, Android (Kotlin), Clean Architecture, BLoC, Riverpod, Fastlane CI/CD.\n\nTo view or download his official resume, click the **"Download CV"** button in the hero section or email him directly at [${portfolioKnowledge.contact.email}](mailto:${portfolioKnowledge.contact.email}).`,
+        followUps: [
+          "How can I contact or hire Satwinder?",
+          "What are his core technical skills?",
+          "Tell me about his top projects"
+        ]
+      };
+    }
+
+    // 16. Hiring, Rates, Availability & Working Modes
+    if (/\b(hire|rates?|salary|pricing|cost|available|availability|contract|freelance|interview|notice\s*period)\b/i.test(q)) {
+      return {
+        text: `**Satwinder is Actively Available for High-Impact Roles!** 🚀\n\n- **Target Roles:** Senior Flutter Engineer, Staff Mobile Architect, or Technical Mobile Lead.\n- **Engagement Types:** Full-time roles, contract architecture consulting, or high-value freelance projects.\n- **Working Mode:** Remote globally with full timezone alignment for US, UK, Europe, and APAC teams.\n- **Direct Contact:**\n  - **Email:** [${portfolioKnowledge.contact.email}](mailto:${portfolioKnowledge.contact.email})\n  - **WhatsApp:** [${portfolioKnowledge.contact.whatsapp}](https://wa.me/919877995250)\n  - **GitHub:** [${portfolioKnowledge.contact.github}](${portfolioKnowledge.contact.github})\n\nYou can also click the **"Get In Touch"** button on this page to initiate an interview!`,
+        followUps: [
+          "Can I download his CV?",
+          "What are his core technical skills?",
+          "Tell me about his top projects"
+        ]
+      };
+    }
+
+    // 17. Contact Details & Socials
+    if (/\b(contact|email|whatsapp|phone|call|reach|linkedin|github|instagram|social)\b/i.test(q)) {
+      return {
+        text: `**Get in Touch with Satwinder Singh:** 📬\n\n- **Email:** [${portfolioKnowledge.contact.email}](mailto:${portfolioKnowledge.contact.email})\n- **WhatsApp:** [${portfolioKnowledge.contact.whatsapp}](https://wa.me/919877995250)\n- **GitHub:** [${portfolioKnowledge.contact.github}](${portfolioKnowledge.contact.github})\n- **LinkedIn:** [linkedin.com/in/satwinder-singh-809a6b256](https://www.linkedin.com/in/satwinder-singh-809a6b256)\n- **Location:** Punjab, India (Open to Remote Globally)\n\nHe typically responds to serious inquiries within a few hours!`,
+        followUps: [
+          "What is his Flutter experience?",
+          "Can I download his CV?",
+          "Tell me about his top projects"
+        ]
+      };
+    }
+
+    // 18. Projects Showcase (Overview of all projects)
+    if (/\b(projects?|portfolio|showcase|flagship|apps?\s+(shipped|built)|what\s+apps?)\b/i.test(q)) {
+      return {
+        text: `Here are **Satwinder's flagship engineering projects**:\n\n1. **Vibe Real-Time Platform:** Full-stack reactive collaboration app with real-time CMS, offline caching, and instant WebSocket state synchronization.\n2. **Satcraft Resume Suite:** High-performance web app built with TypeScript, Vite, and client-side vector PDF generation.\n3. **Enterprise Multi-Tenant Mobile Suite:** Production Flutter architecture serving 100K+ monthly active users with strict 99.9% crash-free uptime.`,
+        followUps: [
+          "Tell me more about Vibe's architecture",
+          "Tell me about Satcraft",
+          "How can I hire him for a project?"
+        ]
+      };
+    }
+
+    // 19. Technical Arsenal / Skills Breakdown
+    if (/\b(skills?|tech\s*stack|stack|arsenal|languages?|frameworks?|tools?|what does he know)\b/i.test(q)) {
+      return {
+        text: `**Satwinder's Core Technical Arsenal:** 🛠️\n\n- **Mobile Engineering:** Expert in **Flutter & Dart**, with native bridges into **Android (Kotlin/Java)** and **iOS (Swift)**.\n- **State Management:** Production mastery of **BLoC, Cubit, and Riverpod**.\n- **Architecture:** Domain-Driven Design (DDD), Clean Architecture, Modular Packages, Isolates.\n- **Backend & Real-Time:** Firebase (Firestore, Auth, Rules), WebSockets, REST APIs, and Offline-First synchronization.\n- **Testing & DevOps:** Fastlane CI/CD, GitHub Actions, and high-frequency UI/Unit testing suites.`,
+        followUps: [
+          "What state management does he prefer?",
+          "How does he optimize 60 FPS rendering?",
+          "Tell me about his top projects"
+        ]
+      };
+    }
+
+    // 20. Default Conversational Fallback
     return {
-      text: `Thanks for asking! As **Satwinder's AI Assistant**, I can help you evaluate his fit for your team.\n\nSatwinder is a **Senior Flutter Engineer & Architect** with a track record of shipping production apps with clean architecture, high FPS performance, and resilient offline capabilities.`,
+      text: `Thanks for asking! As **Satwinder's AI Assistant**, I can help you evaluate his fit for your engineering team.\n\nSatwinder is a **Senior Flutter Engineer & Architect** with 3+ years experience, 10+ shipped production apps, and proven expertise in Clean Architecture and 60 FPS performance.\n\nWhat would you like to know more about?`,
       followUps: [
-        "What are his core skills?",
-        "Tell me about his projects",
-        "How do I get in touch with him?"
+        "What are his core technical skills?",
+        "Tell me about his top projects",
+        "What is his experience with Flutter & BLoC?",
+        "How can I contact or hire Satwinder?"
       ]
     };
   }
