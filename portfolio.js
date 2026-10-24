@@ -18,6 +18,7 @@ import {
   orderBy,
   limit,
 } from "./firebase.js";
+import { initPortfolioAnalytics } from "./analytics-tracker.js";
 
 // ------------------------------------------------------------
 //  CMS error logging (inlined — GitHub Pages only ships portfolio.js
@@ -76,6 +77,7 @@ function installWebErrorHandlers() {
 }
 
 installWebErrorHandlers();
+initPortfolioAnalytics();
 document.documentElement.classList.add("portfolio-ready");
 
 // ------------------------------------------------------------

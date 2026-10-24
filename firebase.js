@@ -8,6 +8,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import {
   getFirestore,
   doc,
+  setDoc,
   onSnapshot,
   collection,
   addDoc,
@@ -26,8 +27,11 @@ export const portfolioRef = doc(db, "portfolio", "satwinder");
 export const submissionsCol = collection(db, "contact_submissions");
 export const feedbackCol = collection(db, "feedback_submissions");
 export const cmsLogsCol = collection(db, "cms_logs");
+export const analyticsSessionsCol = collection(db, "analytics_sessions");
 
 export {
+  doc,
+  setDoc,
   onSnapshot,
   addDoc,
   serverTimestamp,

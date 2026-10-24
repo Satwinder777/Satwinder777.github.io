@@ -16,8 +16,8 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/f
 import { modal } from "./modal.js";
 import { toast } from "./toast.js";
 
-// Import view modules
 import { renderDashboard } from "./modules/dashboard.js?v=20261024_v21";
+import { renderAnalytics } from "./modules/analytics.js?v=20261024_v21";
 import { renderProfile } from "./modules/profile.js?v=20261024_v21";
 import { renderProjects } from "./modules/projects.js?v=20261024_v21";
 import { renderExperience } from "./modules/experience.js?v=20261024_v21";
@@ -68,6 +68,19 @@ class AdminApp {
     onAuthStateChanged(auth, (user) => {
       this._updateSyncIndicator(user);
     });
+
+    // Support direct hash navigation (e.g. #analytics, #projects)
+    window.addEventListener("hashchange", () => {
+      const hash = window.location.hash.replace(/^#/, "");
+      if (hash && hash !== this.state.currentRoute) {
+        this.navigateTo(hash);
+      }
+    });
+
+    const initHash = window.location.hash.replace(/^#/, "");
+    if (initHash) {
+      this.state.currentRoute = initHash;
+    }
 
     // Check existing session
     authService.checkExistingSession();
@@ -332,6 +345,9 @@ class AdminApp {
 
   navigateTo(route) {
     this.state.currentRoute = route;
+    if (window.location.hash !== "#" + route) {
+      window.location.hash = route;
+    }
 
     // Highlight active nav
     document.querySelectorAll(".nav-link").forEach(link => {
@@ -358,6 +374,9 @@ class AdminApp {
     switch (this.state.currentRoute) {
       case "dashboard":
         renderDashboard(mainViewContainer, this.state, this.router);
+        break;
+      case "analytics":
+        renderAnalytics(mainViewContainer, this.state, this.router);
         break;
       case "profile":
         renderProfile(mainViewContainer, this.state, this.router);

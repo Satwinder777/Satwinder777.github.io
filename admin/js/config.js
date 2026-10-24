@@ -15,6 +15,7 @@ export const ADMIN_CONFIG = {
   contactSubmissionsCollection: "contact_submissions",
   feedbackSubmissionsCollection: "feedback_submissions",
   cmsLogsCollection: "cms_logs",
+  analyticsSessionsCollection: "analytics_sessions",
 
   // Top-level fields on portfolio/satwinder doc
   fields: {
