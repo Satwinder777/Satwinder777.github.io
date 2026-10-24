@@ -42,9 +42,57 @@ export function renderInbox(container, state) {
           <p class="view-subtitle">Review messages, hiring inquiries, and client collaboration requests.</p>
         </div>
         <div class="header-actions">
+          <button class="btn btn-secondary" id="simulate-inquiry-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            + Simulate Inquiry
+          </button>
           <span class="badge ${unreadCount > 0 ? "badge-info" : "badge-neutral"}">
+            <span class="status-pulse-dot"></span>
             ${unreadCount} Unread Inquiries
           </span>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Overview -->
+      <div class="stats-overview-grid" style="margin-bottom: 22px;">
+        <div class="stat-card">
+          <div class="stat-icon-pod" style="background: rgba(0, 217, 255, 0.12); color: var(--accent-cyan);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="stat-number">${inbox.filter(i => !i.isArchived).length}</div>
+            <div class="stat-label">Active Inquiries</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-pod" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div>
+            <div class="stat-number">${unreadCount}</div>
+            <div class="stat-label">Unread Messages</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-pod" style="background: rgba(148, 163, 184, 0.12); color: #94a3b8;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+          </div>
+          <div>
+            <div class="stat-number">${archivedCount}</div>
+            <div class="stat-label">Archived Inquiries</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-pod" style="background: rgba(16, 185, 129, 0.12); color: #10b981;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div>
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Delivery SLA</div>
+          </div>
         </div>
       </div>
 
@@ -69,6 +117,9 @@ export function renderInbox(container, state) {
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             <h3>No messages found</h3>
             <p>${searchQuery ? "Try refining your search keyword." : "Messages sent from your portfolio contact form will arrive here."}</p>
+            <button class="btn btn-primary" id="empty-inquiry-btn" style="margin-top: 14px;">
+              + Create Demo Inquiry
+            </button>
           </div>
         ` : `
           <div class="inbox-feed">
@@ -76,17 +127,43 @@ export function renderInbox(container, state) {
               <div class="inbox-card ${!item.isRead ? "card-unread" : ""}" data-id="${item.id}">
                 <div class="inbox-card-top">
                   <div class="inbox-sender-meta">
-                    <strong class="sender-name">${escapeHtml(item.name || "(No Name)")}</strong>
-                    <div class="sender-sub-details">
-                      ${item.email ? `<a href="mailto:${item.email}" class="meta-link">${escapeHtml(item.email)}</a>` : ""}
-                      ${item.phone ? `<span class="meta-dot">•</span><span class="meta-phone">${escapeHtml(item.phone)}</span>` : ""}
-                      ${item.company ? `<span class="meta-dot">•</span><span class="meta-company">${escapeHtml(item.company)}</span>` : ""}
+                    <div class="sender-avatar">${(item.name || "S").charAt(0).toUpperCase()}</div>
+                    <div>
+                      <div class="sender-title-row">
+                        <strong class="sender-name">${escapeHtml(item.name || "(No Name)")}</strong>
+                        ${!item.isRead ? `<span class="badge badge-info unread-pill">NEW</span>` : ""}
+                        ${item.type ? `<span class="badge badge-neutral">${escapeHtml(item.type)}</span>` : ""}
+                      </div>
+                      <div class="sender-sub-details">
+                        ${item.email ? `
+                          <a href="mailto:${item.email}" class="meta-link sender-email">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            ${escapeHtml(item.email)}
+                          </a>
+                        ` : ""}
+                        ${item.phone ? `
+                          <span class="meta-dot">•</span>
+                          <span class="meta-phone">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            ${escapeHtml(item.phone)}
+                          </span>
+                        ` : ""}
+                        ${item.company ? `
+                          <span class="meta-dot">•</span>
+                          <span class="meta-company">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 7V3h12v4M9 11h2M13 11h2M9 15h2M13 15h2"/></svg>
+                            ${escapeHtml(item.company)}
+                          </span>
+                        ` : ""}
+                      </div>
                     </div>
                   </div>
 
                   <div class="inbox-date-actions">
-                    <span class="inbox-date">${formatDate(item.submittedAt)}</span>
-                    ${item.type ? `<span class="badge badge-neutral">${escapeHtml(item.type)}</span>` : ""}
+                    <span class="inbox-date">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      ${formatDate(item.submittedAt)}
+                    </span>
                   </div>
                 </div>
 
@@ -106,12 +183,15 @@ export function renderInbox(container, state) {
 
                   <div class="right-actions">
                     <button class="btn btn-sm btn-ghost toggle-read-btn" data-id="${item.id}">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                       ${item.isRead ? "Mark Unread" : "Mark as Read"}
                     </button>
                     <button class="btn btn-sm btn-ghost toggle-archive-btn" data-id="${item.id}">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
                       ${item.isArchived ? "Unarchive" : "Archive"}
                     </button>
                     <button class="btn btn-sm btn-danger-ghost delete-inbox-btn" data-id="${item.id}">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                       Delete
                     </button>
                   </div>
@@ -122,6 +202,9 @@ export function renderInbox(container, state) {
         `}
       </div>
     `;
+
+    container.querySelector("#simulate-inquiry-btn")?.addEventListener("click", () => simulateDemoInquiry());
+    container.querySelector("#empty-inquiry-btn")?.addEventListener("click", () => simulateDemoInquiry());
 
     // Listeners
     container.querySelector("#inbox-search")?.addEventListener("input", (e) => {
@@ -201,6 +284,41 @@ export function renderInbox(container, state) {
         }
       });
     });
+  };
+
+  const simulateDemoInquiry = () => {
+    const demos = [
+      {
+        id: "inq_demo_" + Date.now(),
+        name: "Marcus Thorne",
+        email: "marcus.thorne@fintechalpha.io",
+        phone: "+1 (415) 890-2341",
+        company: "FinTech Alpha Global",
+        type: "Hiring / Contract",
+        message: "Hi Satwinder, we came across your Flutter 120fps architecture showcase. We are looking for a Lead Mobile Engineer to architect our next-gen mobile trading terminal. Would love to schedule a technical chat this week.",
+        isRead: false,
+        isArchived: false,
+        submittedAt: new Date().toISOString()
+      },
+      {
+        id: "inq_demo_" + (Date.now() + 1),
+        name: "Elena Rostova",
+        email: "elena@quantummobility.de",
+        phone: "+49 30 9283 112",
+        company: "Quantum Mobility",
+        type: "Architecture Consulting",
+        message: "Hello Satwinder! We need an expert consultation on sub-second WebSocket telemetry and Google Maps polylines optimization for a 50,000+ driver fleet in Germany. What is your consulting availability?",
+        isRead: false,
+        isArchived: false,
+        submittedAt: new Date().toISOString()
+      }
+    ];
+
+    const pick = demos[Math.floor(Math.random() * demos.length)];
+    inbox.unshift(pick);
+    state.inbox = inbox;
+    toast.success("✨ Simulated incoming client inquiry!");
+    renderView();
   };
 
   renderView();

@@ -22,22 +22,30 @@ export function renderSiteContent(container, state) {
       <div class="view-header">
         <div>
           <h1 class="view-title">Site Content & Roadmap</h1>
-          <p class="view-subtitle">Live announcement banners and forward-looking roadmap items.</p>
+          <p class="view-subtitle">Live website announcement banner ticker and public forward-looking roadmap.</p>
         </div>
         <div class="header-actions">
-          <button class="btn btn-primary" id="save-banner-btn">Save Banner Settings</button>
+          <button class="btn btn-primary" id="save-banner-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save Banner Settings
+          </button>
         </div>
       </div>
 
       <!-- Live Top Announcement Banner -->
       <div class="card-box" style="margin-bottom: 24px;">
         <div class="card-box-header">
-          <div>
-            <h3>Live Announcement Banner</h3>
-            <p class="card-desc">Top-of-page interactive ticker displayed on the portfolio website.</p>
+          <div class="card-box-title-wrap">
+            <div class="card-header-icon-box" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            </div>
+            <div>
+              <h3>Live Announcement Banner</h3>
+              <p class="card-desc">Top-of-page interactive ticker displayed across the portfolio website.</p>
+            </div>
           </div>
           <label class="switch-row">
-            <span>Banner Enabled</span>
+            <span>Banner Broadcast</span>
             <label class="switch">
               <input type="checkbox" id="banner-enabled" ${banner.enabled ? "checked" : ""}>
               <span class="slider round"></span>
@@ -45,10 +53,18 @@ export function renderSiteContent(container, state) {
           </label>
         </div>
 
-        <div class="form-grid">
+        <div class="form-grid" style="margin-top: 16px;">
           <div class="form-group full-width">
-            <label for="banner-msg">Banner Message Text</label>
-            <textarea id="banner-msg" class="form-textarea" rows="3" placeholder="Announcement text displayed in the marquee...">${escapeHtml(banner.message || "")}</textarea>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label for="banner-msg">Banner Message Content</label>
+              <div class="quick-preset-chips">
+                <span class="preset-label">Quick Presets:</span>
+                <button type="button" class="preset-chip" data-text="🚀 SatwinderX Web Admin v2.4 Launched! Interactive experience and real-time CMS live.">Portfolio v2.4</button>
+                <button type="button" class="preset-chip" data-text="⚡ Actively exploring Principal & Senior Flutter / Mobile Architecture roles. Open for discussions!">Hiring Available</button>
+                <button type="button" class="preset-chip" data-text="🛠 Site undergoing minor performance optimizations and WebGL canvas tuning.">Maintenance</button>
+              </div>
+            </div>
+            <textarea id="banner-msg" class="form-textarea" rows="2" placeholder="Announcement text displayed in the marquee ticker...">${escapeHtml(banner.message || "")}</textarea>
           </div>
           <div class="form-group">
             <label for="banner-dev">Developer Signature / Name</label>
@@ -56,8 +72,17 @@ export function renderSiteContent(container, state) {
           </div>
         </div>
 
-        <div class="banner-preview-box">
-          <span class="preview-tag">Live Preview:</span>
+        <div class="banner-preview-box" style="margin-top: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span class="preview-tag">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              Live Marquee Ticker Simulation:
+            </span>
+            <span class="badge ${banner.enabled ? "badge-success" : "badge-neutral"}" id="banner-status-badge">
+              ${banner.enabled ? "LIVE ON PRODUCTION" : "BROADCAST DISABLED"}
+            </span>
+          </div>
+
           <div class="live-banner-demo ${banner.enabled ? "is-active" : "is-inactive"}">
             <span class="banner-live-dot"></span>
             <span class="banner-live-text">${escapeHtml(banner.message || "(No message entered)")}</span>
@@ -69,33 +94,55 @@ export function renderSiteContent(container, state) {
       <!-- Upcoming Features Roadmap -->
       <div class="card-box">
         <div class="card-box-header">
-          <div>
-            <h3>Upcoming Features Roadmap</h3>
-            <p class="card-desc">Showcase features in the pipeline to visitors and potential employers.</p>
+          <div class="card-box-title-wrap">
+            <div class="card-header-icon-box" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border-color: rgba(16, 185, 129, 0.3);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div>
+              <h3>Upcoming Features Roadmap</h3>
+              <p class="card-desc">Showcase in-progress capabilities, architectural milestones, and upcoming demos.</p>
+            </div>
           </div>
-          <button class="btn btn-secondary" id="add-feature-btn">+ Add Roadmap Item</button>
+          <button class="btn btn-secondary" id="add-feature-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Roadmap Item
+          </button>
         </div>
 
-        <div class="features-roadmap-grid">
+        <div class="features-roadmap-grid" style="margin-top: 18px;">
           ${features.length === 0 ? `
-            <div class="empty-state-sm full-width">No roadmap items configured. Click "+ Add Roadmap Item".</div>
+            <div class="empty-state-sm full-width" style="text-align: center; padding: 32px 16px;">
+              <p style="color: var(--text-muted); margin-bottom: 12px;">No roadmap milestones configured.</p>
+              <button class="btn btn-sm btn-secondary" id="btn-seed-roadmap">Add Sample Roadmap Items</button>
+            </div>
           ` : features.map((feat, idx) => `
             <div class="roadmap-admin-card" data-idx="${idx}">
               <div class="roadmap-top">
-                <span class="roadmap-icon">${escapeHtml(feat.icon || "✨")}</span>
+                <div class="roadmap-icon-pod">${escapeHtml(feat.icon || "✨")}</div>
                 <div class="roadmap-info">
                   <h4>${escapeHtml(feat.title)}</h4>
-                  <span class="roadmap-eta">${escapeHtml(feat.eta ? `Target: ${feat.eta}` : "In Development")}</span>
+                  <span class="badge badge-info" style="font-size: 0.72rem;">${escapeHtml(feat.eta ? `Target: ${feat.eta}` : "In Development")}</span>
                 </div>
                 <div class="right-actions">
-                  <button class="btn-icon edit-feat-btn" data-idx="${idx}" title="Edit">✎</button>
-                  <button class="btn-icon del-feat-btn" data-idx="${idx}" title="Delete">&times;</button>
+                  <button class="btn-icon edit-feat-btn" data-idx="${idx}" title="Edit Feature">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                  </button>
+                  <button class="btn-icon del-feat-btn" data-idx="${idx}" title="Delete Feature">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
                 </div>
               </div>
-              <p class="roadmap-desc">${escapeHtml(feat.description || "")}</p>
+              <p class="roadmap-desc">${escapeHtml(feat.description || "No description provided.")}</p>
               <div class="roadmap-bottom-reorder">
-                <button class="btn-icon move-feat-up" data-idx="${idx}" ${idx === 0 ? "disabled" : ""}>↑</button>
-                <button class="btn-icon move-feat-down" data-idx="${idx}" ${idx === features.length - 1 ? "disabled" : ""}>↓</button>
+                <div class="reorder-group">
+                  <button class="btn-icon move-feat-up" data-idx="${idx}" ${idx === 0 ? "disabled" : ""} title="Move Up">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+                  </button>
+                  <button class="btn-icon move-feat-down" data-idx="${idx}" ${idx === features.length - 1 ? "disabled" : ""} title="Move Down">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                </div>
+                <span style="font-size: 0.72rem; color: var(--text-muted);">Step #${idx + 1}</span>
               </div>
             </div>
           `).join("")}
@@ -107,9 +154,14 @@ export function renderSiteContent(container, state) {
     container.querySelector("#banner-enabled")?.addEventListener("change", (e) => {
       banner.enabled = e.target.checked;
       const demo = container.querySelector(".live-banner-demo");
+      const badge = container.querySelector("#banner-status-badge");
       if (demo) {
         demo.classList.toggle("is-active", banner.enabled);
         demo.classList.toggle("is-inactive", !banner.enabled);
+      }
+      if (badge) {
+        badge.className = `badge ${banner.enabled ? "badge-success" : "badge-neutral"}`;
+        badge.textContent = banner.enabled ? "LIVE ON PRODUCTION" : "BROADCAST DISABLED";
       }
     });
 
@@ -125,6 +177,21 @@ export function renderSiteContent(container, state) {
       if (byEl) byEl.textContent = `— ${banner.developerName}`;
     });
 
+    // Preset chips
+    container.querySelectorAll(".preset-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        const text = chip.dataset.text;
+        const msgEl = container.querySelector("#banner-msg");
+        if (msgEl) {
+          msgEl.value = text;
+          banner.message = text;
+          const textDemo = container.querySelector(".banner-live-text");
+          if (textDemo) textDemo.textContent = text;
+          toast.info("Applied preset text!");
+        }
+      });
+    });
+
     container.querySelector("#save-banner-btn")?.addEventListener("click", async () => {
       banner.enabled = container.querySelector("#banner-enabled").checked;
       banner.message = container.querySelector("#banner-msg").value.trim();
@@ -133,10 +200,31 @@ export function renderSiteContent(container, state) {
       try {
         await updatePortfolioField("siteBanner", banner);
         state.portfolio.siteBanner = banner;
-        toast.success("Site Announcement Banner saved!");
+        toast.success("Site Announcement Banner settings saved!");
       } catch (e) {
         toast.error("Failed to save banner: " + e.message);
       }
+    });
+
+    // Roadmap seed helper
+    container.querySelector("#btn-seed-roadmap")?.addEventListener("click", () => {
+      features = [
+        {
+          title: "Offline AI Vector Search",
+          description: "Embedded on-device vector embedding index for sub-5ms portfolio search without network calls.",
+          icon: "🧠",
+          eta: "Q4 2026",
+          visible: true
+        },
+        {
+          title: "Interactive 3D Device Frames",
+          description: "Interactive Three.js / WebGL mobile device renders to interact directly with demo apps inside the browser.",
+          icon: "📱",
+          eta: "Q1 2027",
+          visible: true
+        }
+      ];
+      saveFeatures(features);
     });
 
     // Roadmap Features
