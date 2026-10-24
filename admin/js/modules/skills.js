@@ -364,46 +364,167 @@ export function renderSkills(container, state) {
   };
 
   const openAddSkillModal = (defaultCategory) => {
+    let selectedCat = defaultCategory || "frontend";
+
+    const techSuggestions = [
+      { name: "Riverpod", cat: "architecture" },
+      { name: "GraphQL", cat: "backend" },
+      { name: "Ktor", cat: "backend" },
+      { name: "Fastlane", cat: "devops" },
+      { name: "Docker", cat: "devops" },
+      { name: "Supabase", cat: "backend" },
+      { name: "PostgreSQL", cat: "backend" },
+      { name: "TailwindCSS", cat: "frontend" },
+      { name: "TensorFlow Lite", cat: "other" },
+      { name: "Redis", cat: "backend" }
+    ];
+
+    const getDomainColor = (catKey) => {
+      const theme = CATEGORY_THEMES[catKey] || CATEGORY_THEMES.other;
+      return theme.accent || "#00d9ff";
+    };
+
     const modalBodyHtml = `
       <form id="skill-chip-form" class="editor-form">
+        <!-- Field 1: Skill Name Input + Suggestions -->
         <div class="form-group">
           <label for="f-slabel">
-            <span>Skill Label <strong style="color: var(--accent-cyan);">*</strong></span>
-            <span class="field-hint">e.g. Kotlin Coroutines, Docker, WebSockets</span>
+            <span>Skill / Technology Name <strong style="color: var(--accent-cyan);">*</strong></span>
+            <span class="field-hint">e.g. Riverpod, Fastlane, Docker</span>
           </label>
-          <input type="text" id="f-slabel" class="form-input" required placeholder="e.g. Kotlin Coroutines, GraphQL, Docker">
+          <input type="text" id="f-slabel" class="form-input" required placeholder="e.g. Riverpod, GraphQL, Fastlane">
+          
+          <div class="skill-suggestions-pod">
+            <span class="suggestions-label">Quick Suggestions:</span>
+            <div class="suggestions-chips-wrap">
+              ${techSuggestions.map(t => `
+                <button type="button" class="btn-tech-suggest-chip" data-name="${t.name}" data-cat="${t.cat}">
+                  + ${t.name}
+                </button>
+              `).join("")}
+            </div>
+          </div>
         </div>
+
+        <!-- Field 2: Target Category Domain Tiles -->
         <div class="form-group">
-          <label for="f-scat">
-            <span>Category Domain</span>
+          <label>
+            <span>Target Category Domain</span>
             <span class="field-hint">Placement category</span>
           </label>
-          <select id="f-scat" class="form-select">
-            ${SKILL_CATEGORIES.map(c => `
-              <option value="${c.key}" ${c.key === defaultCategory ? "selected" : ""}>${c.label}</option>
-            `).join("")}
-          </select>
+
+          <div class="domain-tiles-grid">
+            ${SKILL_CATEGORIES.map(c => {
+              const theme = CATEGORY_THEMES[c.key] || CATEGORY_THEMES.other;
+              const isSelected = c.key === selectedCat;
+              const count = skills.filter(s => s.category === c.key).length;
+              return `
+                <div class="domain-tile-card ${isSelected ? "tile-selected" : ""}" data-category="${c.key}" style="--tile-color: ${theme.accent};">
+                  <div class="domain-tile-icon" style="background: ${theme.bgIcon}; color: ${theme.accent};">
+                    ${theme.icon}
+                  </div>
+                  <div class="domain-tile-info">
+                    <strong class="domain-tile-title">${c.label}</strong>
+                    <span class="domain-tile-desc">${theme.tag} • ${count} skill${count === 1 ? "" : "s"}</span>
+                  </div>
+                  <div class="domain-tile-radio">
+                    <div class="radio-indicator"></div>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+          <input type="hidden" id="f-scat" value="${selectedCat}">
+        </div>
+
+        <!-- Field 3: Live Preview Chip -->
+        <div class="chip-preview-box">
+          <div class="preview-box-header">
+            <span>LIVE CHIP PREVIEW</span>
+            <span class="preview-box-note">Renders in your portfolio technical arsenal</span>
+          </div>
+          <div class="preview-chip-display-row">
+            <div class="skill-chip-item preview-chip-animated" id="live-preview-chip">
+              <span class="chip-color-dot" id="live-chip-dot" style="background: ${getDomainColor(selectedCat)};"></span>
+              <span class="chip-text" id="live-chip-text">Your Technology</span>
+              <span class="chip-del-btn" style="pointer-events: none;">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </span>
+            </div>
+          </div>
         </div>
       </form>
     `;
 
     const footerHtml = `
       <button class="btn btn-secondary" id="modal-skill-cancel">Cancel</button>
-      <button class="btn btn-primary" id="modal-skill-save">Add Chip</button>
+      <button class="btn btn-primary" id="modal-skill-save">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Skill Chip
+      </button>
     `;
 
     const modalEl = modal.open({
       title: "Add Technical Skill Chip",
       bodyHtml: modalBodyHtml,
       footerHtml,
-      size: "sm"
+      size: "md"
+    });
+
+    const labelInput = modalEl.querySelector("#f-slabel");
+    const catInput = modalEl.querySelector("#f-scat");
+    const previewText = modalEl.querySelector("#live-chip-text");
+    const previewDot = modalEl.querySelector("#live-chip-dot");
+
+    const updatePreview = () => {
+      const val = labelInput.value.trim();
+      if (previewText) {
+        previewText.textContent = val || "Your Technology";
+      }
+      if (previewDot) {
+        previewDot.style.background = getDomainColor(catInput.value);
+      }
+    };
+
+    labelInput?.addEventListener("input", updatePreview);
+
+    // Domain tile selection
+    modalEl.querySelectorAll(".domain-tile-card").forEach(tile => {
+      tile.addEventListener("click", () => {
+        const cat = tile.dataset.category;
+        catInput.value = cat;
+        selectedCat = cat;
+        modalEl.querySelectorAll(".domain-tile-card").forEach(t => t.classList.remove("tile-selected"));
+        tile.classList.add("tile-selected");
+        updatePreview();
+      });
+    });
+
+    // Quick suggestion clicks
+    modalEl.querySelectorAll(".btn-tech-suggest-chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const name = btn.dataset.name;
+        const cat = btn.dataset.cat;
+        labelInput.value = name;
+        catInput.value = cat;
+        selectedCat = cat;
+        modalEl.querySelectorAll(".domain-tile-card").forEach(t => {
+          if (t.dataset.category === cat) {
+            t.classList.add("tile-selected");
+          } else {
+            t.classList.remove("tile-selected");
+          }
+        });
+        updatePreview();
+        toast.info(`Selected ${name} (${cat})`);
+      });
     });
 
     modalEl.querySelector("#modal-skill-cancel").addEventListener("click", () => modal.close());
 
     modalEl.querySelector("#modal-skill-save").addEventListener("click", () => {
-      const label = modalEl.querySelector("#f-slabel").value.trim();
-      const category = modalEl.querySelector("#f-scat").value;
+      const label = labelInput.value.trim();
+      const category = catInput.value;
       if (!label) {
         toast.error("Skill label is required.");
         return;

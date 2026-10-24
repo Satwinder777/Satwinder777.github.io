@@ -168,7 +168,7 @@ export function renderFeedback(container, state) {
                   <!-- Feedback Message Bubble -->
                   <div class="feedback-msg-bubble">
                     <svg class="quote-svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/></svg>
-                    <p class="feedback-msg-text">${escapeHtml(item.suggestion || "(No message content)")}</p>
+                    <div class="feedback-msg-text">${renderFeedbackMessage(item.suggestion || "")}</div>
                   </div>
 
                   <!-- Developer Reply Area -->
@@ -382,6 +382,18 @@ export function renderFeedback(container, state) {
   };
 
   renderView();
+}
+
+function renderFeedbackMessage(text) {
+  if (!text) return "(No message content)";
+  const escaped = escapeHtml(text);
+  const urlRegex = /(https?:\/\/[^\s<]+)/g;
+  return escaped.replace(urlRegex, (url) => {
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="feedback-bubble-link" title="Open external link">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>${url}</span>
+    </a>`;
+  });
 }
 
 function formatDate(date) {
