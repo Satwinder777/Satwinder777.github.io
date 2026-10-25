@@ -460,91 +460,104 @@ export function renderAnalytics(container, state) {
             </div>
           </div>
 
-          <div class="table-responsive">
-            <table class="data-table analytics-leaderboard-table">
-              <thead>
-                <tr>
-                  <th style="width: 50px;">Rank</th>
-                  <th>Feature / Section</th>
-                  <th>Total Time Spent</th>
-                  <th>Direct Clicks / Actions</th>
-                  <th>Attention Share (%)</th>
-                  <th>CMS Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${(() => {
-                  const visibilityMap = state.portfolio?.sectionVisibility || {};
-                  const totalDwellAll = Math.max(1, Object.values(stats.sectionDwellTotals).reduce((a, b) => a + b, 0));
+          <div class="leaderboard-container">
+            <!-- Spacious Column Headers -->
+            <div class="leaderboard-header-row">
+              <div class="lb-col-rank">Rank</div>
+              <div class="lb-col-feature">Feature / Section</div>
+              <div class="lb-col-time">Time Spent</div>
+              <div class="lb-col-clicks">Interactions</div>
+              <div class="lb-col-share">Attention Share</div>
+              <div class="lb-col-status">CMS Status</div>
+            </div>
 
-                  const rows = Object.keys(SECTION_NAMES).map(key => {
-                    const dwell = stats.sectionDwellTotals[key] || 0;
-                    const interactions = stats.sectionInteractionTotals[key] || 0;
-                    const share = Math.round((dwell / totalDwellAll) * 100);
-                    const isVisible = visibilityMap[key] !== false;
+            <!-- Spacious Card Rows -->
+            <div class="leaderboard-card-list">
+              ${(() => {
+                const visibilityMap = state.portfolio?.sectionVisibility || {};
+                const totalDwellAll = Math.max(1, Object.values(stats.sectionDwellTotals).reduce((a, b) => a + b, 0));
 
-                    return {
-                      key,
-                      name: SECTION_NAMES[key],
-                      dwell,
-                      interactions,
-                      share,
-                      isVisible
-                    };
-                  });
+                const rows = Object.keys(SECTION_NAMES).map(key => {
+                  const dwell = stats.sectionDwellTotals[key] || 0;
+                  const interactions = stats.sectionInteractionTotals[key] || 0;
+                  const share = Math.round((dwell / totalDwellAll) * 100);
+                  const isVisible = visibilityMap[key] !== false;
 
-                  // Sort according to currentSort
-                  if (currentSort === "interactions") {
-                    rows.sort((a, b) => b.interactions - a.interactions || b.dwell - a.dwell);
-                  } else if (currentSort === "visitors") {
-                    rows.sort((a, b) => b.share - a.share || b.dwell - a.dwell);
-                  } else {
-                    rows.sort((a, b) => b.dwell - a.dwell || b.interactions - a.interactions);
-                  }
+                  return {
+                    key,
+                    name: SECTION_NAMES[key],
+                    dwell,
+                    interactions,
+                    share,
+                    isVisible
+                  };
+                });
 
-                  return rows.map((r, idx) => `
-                    <tr>
-                      <td>
-                        <span class="rank-badge ${idx === 0 ? "rank-gold" : (idx === 1 ? "rank-silver" : (idx === 2 ? "rank-bronze" : ""))}">${idx + 1}</span>
-                      </td>
-                      <td>
-                        <div class="feature-cell">
-                          <span class="feature-icon-box">${SECTION_ICONS[r.key] || ""}</span>
-                          <div>
-                            <strong style="color: var(--text-primary); font-size: 0.92rem;">${escapeHtml(r.name)}</strong>
-                            <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">#${r.key}</div>
-                          </div>
+                // Sort according to currentSort
+                if (currentSort === "interactions") {
+                  rows.sort((a, b) => b.interactions - a.interactions || b.dwell - a.dwell);
+                } else if (currentSort === "visitors") {
+                  rows.sort((a, b) => b.share - a.share || b.dwell - a.dwell);
+                } else {
+                  rows.sort((a, b) => b.dwell - a.dwell || b.interactions - a.interactions);
+                }
+
+                return rows.map((r, idx) => `
+                  <div class="leaderboard-card-row ${idx === 0 ? "podium-gold" : (idx === 1 ? "podium-silver" : (idx === 2 ? "podium-bronze" : ""))} ${r.isVisible ? "" : "is-hidden-feature"}">
+                    <div class="lb-col-rank">
+                      <span class="rank-badge ${idx === 0 ? "rank-gold" : (idx === 1 ? "rank-silver" : (idx === 2 ? "rank-bronze" : "rank-default"))}">
+                        ${idx === 0 ? "★ 1" : (idx + 1)}
+                      </span>
+                    </div>
+
+                    <div class="lb-col-feature">
+                      <div class="feature-cell">
+                        <span class="feature-icon-box">${SECTION_ICONS[r.key] || ""}</span>
+                        <div class="feature-meta">
+                          <strong class="feature-title">${escapeHtml(r.name)}</strong>
+                          <span class="feature-slug-tag">#${r.key}</span>
                         </div>
-                      </td>
-                      <td>
-                        <strong style="color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.95rem;">${formatDuration(r.dwell)}</strong>
-                      </td>
-                      <td>
-                        <span class="badge badge-neutral" style="font-weight: 700;">${r.interactions} clicks</span>
-                      </td>
-                      <td style="min-width: 140px;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                          <div class="progress-bar-wrap" style="flex: 1;">
-                            <div class="progress-bar-fill" style="width: ${r.share}%;"></div>
-                          </div>
-                          <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-secondary); width: 36px; text-align: right;">${r.share}%</span>
+                      </div>
+                    </div>
+
+                    <div class="lb-col-time">
+                      <div class="time-spent-chip">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span>${formatDuration(r.dwell)}</span>
+                      </div>
+                    </div>
+
+                    <div class="lb-col-clicks">
+                      <span class="clicks-pill ${r.interactions > 0 ? "clicks-positive" : "clicks-zero"}">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        <span>${r.interactions} ${r.interactions === 1 ? "click" : "clicks"}</span>
+                      </span>
+                    </div>
+
+                    <div class="lb-col-share">
+                      <div class="share-cell-wrap">
+                        <div class="progress-bar-wrap">
+                          <div class="progress-bar-fill" style="width: ${r.share}%;"></div>
                         </div>
-                      </td>
-                      <td>
-                        <span class="badge ${r.isVisible ? "badge-success" : "badge-neutral"}">
-                          ${r.isVisible ? "Active" : "Hidden"}
-                        </span>
-                      </td>
-                    </tr>
-                  `).join("");
-                })()}
-              </tbody>
-            </table>
+                        <span class="share-percent-display">${r.share}%</span>
+                      </div>
+                    </div>
+
+                    <div class="lb-col-status">
+                      <span class="status-pill ${r.isVisible ? "status-pill-active" : "status-pill-muted"}">
+                        <span class="status-pulse-dot"></span>
+                        <span>${r.isVisible ? "Active" : "Hidden"}</span>
+                      </span>
+                    </div>
+                  </div>
+                `).join("");
+              })()}
+            </div>
           </div>
         </div>
 
         <!-- Section 4: Live Visitor Telemetry Stream -->
-        <div class="card-box" style="margin-top: 24px;">
+        <div class="card-box" style="margin-top: 28px;">
           <div class="card-box-header">
             <div class="card-box-title-wrap">
               <div class="card-header-icon-box" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">
@@ -562,20 +575,20 @@ export function renderAnalytics(container, state) {
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Visitor ID</th>
-                  <th>Type</th>
-                  <th>Device &amp; OS</th>
-                  <th>Inbound Referrer</th>
-                  <th>Top Viewed Feature</th>
-                  <th>Time On Site</th>
-                  <th>Actions</th>
-                  <th>Date &amp; Time</th>
+                  <th style="min-width: 140px;">Visitor ID</th>
+                  <th style="min-width: 100px;">Visitor Type</th>
+                  <th style="min-width: 150px;">Device &amp; Platform</th>
+                  <th style="min-width: 120px;">Inbound Source</th>
+                  <th style="min-width: 190px;">Top Viewed Feature</th>
+                  <th style="min-width: 110px;">Time On Site</th>
+                  <th style="min-width: 110px;">Interactions</th>
+                  <th style="min-width: 130px;">Recorded Time</th>
                 </tr>
               </thead>
               <tbody>
                 ${filtered.length === 0 ? `
                   <tr>
-                    <td colspan="8" style="text-align: center; padding: 42px 20px; color: var(--text-muted);">
+                    <td colspan="8" style="text-align: center; padding: 48px 20px; color: var(--text-muted);">
                       <p style="font-size: 1rem; margin-bottom: 8px;">No visitor sessions recorded yet for this timeframe.</p>
                       <button class="btn btn-seed-traffic btn-sm" id="empty-state-seed-btn" style="margin-top: 6px;">⚡ Seed 35 Realistic Sessions</button>
                     </td>
@@ -583,21 +596,23 @@ export function renderAnalytics(container, state) {
                 ` : filtered.slice(0, 15).map(s => `
                   <tr>
                     <td>
-                      <div style="display: flex; align-items: center;">
+                      <div class="visitor-avatar-wrap">
                         <span class="visitor-avatar-dot" style="background: ${getVisitorAvatarBg(s.visitorId || s.sessionId)};">
                           ${(s.visitorId || "G")[0].toUpperCase()}
                         </span>
-                        <code style="font-size: 0.75rem; color: var(--text-primary);">${escapeHtml((s.visitorId || s.sessionId || "guest").substring(0, 14))}</code>
+                        <code class="visitor-id-tag">${escapeHtml((s.visitorId || s.sessionId || "guest").substring(0, 14))}</code>
                       </div>
                     </td>
                     <td>
-                      <span class="badge ${s.isNewVisitor ? "badge-info" : "badge-neutral"}" style="font-size: 0.72rem; font-weight: 700;">
+                      <span class="type-pill ${s.isNewVisitor ? "type-new" : "type-returning"}">
                         ${s.isNewVisitor ? "New" : "Returning"}
                       </span>
                     </td>
                     <td>
-                      <span style="font-size: 0.82rem; font-weight: 700;">${escapeHtml(s.device || "Desktop")}</span>
-                      <span style="font-size: 0.72rem; color: var(--text-muted);">(${escapeHtml(s.browser || "Browser")})</span>
+                      <div class="device-info-wrap">
+                        <span class="device-label">${escapeHtml(s.device || "Desktop")}</span>
+                        <span class="browser-label">${escapeHtml(s.browser || "Browser")}</span>
+                      </div>
                     </td>
                     <td>
                       <span class="ref-tag ${getRefTagClass(s.referrerDomain || s.referrer)}">
@@ -605,16 +620,16 @@ export function renderAnalytics(container, state) {
                       </span>
                     </td>
                     <td>
-                      <strong style="color: var(--accent-cyan); font-size: 0.82rem;">${escapeHtml(SECTION_NAMES[s.mostViewedSection] || s.mostViewedSection || "Projects")}</strong>
+                      <span class="feature-link-badge">${escapeHtml(SECTION_NAMES[s.mostViewedSection] || s.mostViewedSection || "Projects")}</span>
                     </td>
                     <td>
-                      <span style="font-size: 0.82rem; font-weight: 700; font-family: var(--font-mono);">${formatDuration(s.durationSeconds || 0)}</span>
+                      <span class="session-dwell-tag">${formatDuration(s.durationSeconds || 0)}</span>
                     </td>
                     <td>
-                      <span class="badge badge-neutral" style="font-size: 0.72rem; font-weight: 600;">${(s.interactions || []).length} events</span>
+                      <span class="event-count-pill">${(s.interactions || []).length} events</span>
                     </td>
                     <td>
-                      <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">${formatDate(s.startedAt)}</span>
+                      <span class="timestamp-tag">${formatDate(s.startedAt)}</span>
                     </td>
                   </tr>
                 `).join("")}

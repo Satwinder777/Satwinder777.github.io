@@ -17,7 +17,7 @@ import { modal } from "./modal.js";
 import { toast } from "./toast.js";
 
 import { renderDashboard } from "./modules/dashboard.js?v=20261025_v01";
-import { renderAnalytics } from "./modules/analytics.js?v=20261025_v01";
+import { renderAnalytics } from "./modules/analytics.js?v=20261025_v03";
 import { renderProfile } from "./modules/profile.js?v=20261025_v01";
 import { renderProjects } from "./modules/projects.js?v=20261025_v01";
 import { renderExperience } from "./modules/experience.js?v=20261025_v01";
