@@ -18,6 +18,56 @@ export function renderContributors(container, state) {
 
   let items = Array.isArray(section.items) ? [...section.items] : [];
 
+  function getDualInitials(name) {
+    if (!name) return "CO";
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  }
+
+  function getAvatarGradient(idx) {
+    const gradients = [
+      "linear-gradient(135deg, #00d9ff 0%, #3b82f6 50%, #8b5cf6 100%)",
+      "linear-gradient(135deg, #3b82f6 0%, #ec4899 100%)",
+      "linear-gradient(135deg, #10b981 0%, #06b6d4 100%)",
+      "linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)",
+      "linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%)"
+    ];
+    return gradients[idx % gradients.length];
+  }
+
+  function getHaloColor(idx) {
+    const halos = [
+      "rgba(0, 217, 255, 0.6)",
+      "rgba(236, 72, 153, 0.6)",
+      "rgba(16, 185, 129, 0.6)",
+      "rgba(139, 92, 246, 0.6)",
+      "rgba(245, 158, 11, 0.6)"
+    ];
+    return halos[idx % halos.length];
+  }
+
+  function getAccentGradient(idx) {
+    const bars = [
+      "linear-gradient(90deg, #00d9ff 0%, #8b5cf6 50%, #ec4899 100%)",
+      "linear-gradient(90deg, #00d9ff 0%, #ec4899 100%)",
+      "linear-gradient(90deg, #10b981 0%, #00d9ff 100%)",
+      "linear-gradient(90deg, #f43f5e 0%, #fb923c 100%)"
+    ];
+    return bars[idx % bars.length];
+  }
+
+  function getRoleAccent(idx, role) {
+    const r = (role || "").toLowerCase();
+    if (r.includes("manager") || r.includes("lead") || r.includes("founder")) return "#00d9ff";
+    if (r.includes("contributor") || r.includes("engineer")) return "#ec4899";
+    if (r.includes("design") || r.includes("ui")) return "#8b5cf6";
+    const colors = ["#00d9ff", "#ec4899", "#10b981", "#8b5cf6", "#f59e0b"];
+    return colors[idx % colors.length];
+  }
+
   const renderView = () => {
     container.innerHTML = `
       <div class="view-header">
@@ -85,66 +135,107 @@ export function renderContributors(container, state) {
             <div class="empty-state-sm full-width">No contributors added yet. Click "+ Add Contributor" above.</div>
           ` : items.map((c, idx) => `
             <div class="contributor-admin-card ${c.visible === false ? "is-inactive-card" : ""}" data-idx="${idx}">
-              <div class="contrib-top">
-                <div class="contrib-avatar-box">
+              <!-- Top Neon Glowing Line -->
+              <div class="contrib-top-gradient-bar" style="background: ${getAccentGradient(idx)};"></div>
+
+              <div class="contrib-card-body">
+                <!-- Avatar with Glowing Halo Ring -->
+                <div class="contrib-avatar-halo" style="--halo-color: ${getHaloColor(idx)};">
                   ${c.avatarUrl ? `
                     <img src="${escapeHtml(c.avatarUrl)}" alt="${escapeHtml(c.name)}" class="contrib-avatar-img" onerror="this.onerror=null; this.src='../favicon.ico';">
                   ` : `
-                    <div class="contrib-avatar-placeholder">${escapeHtml((c.name || "C").charAt(0).toUpperCase())}</div>
+                    <div class="contrib-avatar-circle" style="background: ${getAvatarGradient(idx)};">
+                      ${escapeHtml(getDualInitials(c.name))}
+                    </div>
                   `}
                 </div>
-                <div class="contrib-info">
-                  <h4 class="contrib-name">
-                    ${escapeHtml(c.name)}
-                    ${c.visible === false ? `<span class="badge badge-neutral" style="margin-left: 6px; font-size: 0.65rem; border: 1px dashed rgba(148, 163, 184, 0.4);">HIDDEN</span>` : ""}
-                  </h4>
-                  <span class="contrib-role-badge">${escapeHtml(c.role || "Collaborator")}</span>
-                </div>
-                <div class="contrib-actions-top" style="display: flex; gap: 4px; align-items: center;">
-                  <button class="btn-toggle-vis toggle-c-vis-btn ${c.visible !== false ? "is-active" : "is-inactive"}" data-idx="${idx}" title="Toggle active/hidden on website" style="padding: 2px 7px; font-size: 0.7rem;">
-                    <span class="status-pulse-dot" style="background: ${c.visible !== false ? "#10b981" : "#64748b"};"></span>
-                    <span>${c.visible !== false ? "Active" : "Hidden"}</span>
-                  </button>
-                  <button class="btn-icon edit-contrib-btn" data-idx="${idx}" title="Edit Contributor">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                  </button>
-                  <button class="btn-icon del-contrib-btn" data-idx="${idx}" title="Delete Contributor">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                  </button>
-                </div>
-              </div>
 
-              <div class="contrib-links-row">
-                ${c.github ? `
-                  <a href="${escapeHtml(c.github)}" target="_blank" rel="noopener" class="contrib-link-pill link-github" title="GitHub">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-                    GitHub
-                  </a>
-                ` : ""}
-                ${c.linkedin ? `
-                  <a href="${escapeHtml(c.linkedin)}" target="_blank" rel="noopener" class="contrib-link-pill link-linkedin" title="LinkedIn">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                    LinkedIn
-                  </a>
-                ` : ""}
-                ${c.website ? `
-                  <a href="${escapeHtml(c.website)}" target="_blank" rel="noopener" class="contrib-link-pill link-website" title="Website">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                    Portfolio
-                  </a>
-                ` : ""}
-              </div>
+                <!-- Info Block: Name, Role Pill, Social Links -->
+                <div class="contrib-main-content">
+                  <div class="contrib-name-row">
+                    <h3 class="contrib-name-title" title="${escapeHtml(c.name)}">${escapeHtml(c.name)}</h3>
+                  </div>
 
-              <div class="contrib-card-footer">
-                <div class="reorder-btns">
-                  <button class="btn-icon move-c-up" data-idx="${idx}" ${idx === 0 ? "disabled" : ""} title="Move Left">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-                  </button>
-                  <button class="btn-icon move-c-down" data-idx="${idx}" ${idx === items.length - 1 ? "disabled" : ""} title="Move Right">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                  </button>
+                  <div class="contrib-role-wrapper">
+                    <span class="contrib-role-pill" style="--role-accent: ${getRoleAccent(idx, c.role)};">
+                      <span class="role-pulse-dot"></span>
+                      <span>${escapeHtml(c.role || "Contributor")}</span>
+                    </span>
+                  </div>
+
+                  <!-- Social Links Row (Image 2 style) -->
+                  <div class="contrib-links-row">
+                    ${c.github ? `
+                      <a href="${escapeHtml(c.github)}" target="_blank" rel="noopener" class="contrib-link-pill link-github" title="GitHub">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        <span>GitHub</span>
+                      </a>
+                    ` : `
+                      <span class="contrib-link-pill link-github link-disabled" title="No GitHub link configured">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        <span>GitHub</span>
+                      </span>
+                    `}
+
+                    ${c.linkedin ? `
+                      <a href="${escapeHtml(c.linkedin)}" target="_blank" rel="noopener" class="contrib-link-pill link-linkedin" title="LinkedIn">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <span>LinkedIn</span>
+                      </a>
+                    ` : `
+                      <span class="contrib-link-pill link-linkedin link-disabled" title="No LinkedIn link configured">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <span>LinkedIn</span>
+                      </span>
+                    `}
+
+                    ${c.website ? `
+                      <a href="${escapeHtml(c.website)}" target="_blank" rel="noopener" class="contrib-link-pill link-website" title="Website / Portfolio">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        <span>Web</span>
+                      </a>
+                    ` : `
+                      <span class="contrib-link-pill link-website link-disabled" title="No Website link configured">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        <span>Web</span>
+                      </span>
+                    `}
+                  </div>
                 </div>
-                <span class="contrib-index-tag">Order #${idx + 1}</span>
+
+                <!-- Right Action Column: Live/Hidden Toggle Button & Order/Actions -->
+                <div class="contrib-card-actions">
+                  <!-- Live & Hidden Working Toggle Feature -->
+                  <button class="contrib-status-btn ${c.visible !== false ? "is-live" : "is-hidden"} toggle-c-vis-btn" data-idx="${idx}" title="Toggle Live / Hidden on portfolio website">
+                    ${c.visible !== false ? `
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      <span>Live</span>
+                    ` : `
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      <span>Hidden</span>
+                    `}
+                  </button>
+
+                  <div class="contrib-order-group">
+                    <!-- Order Index Badge (01, 02) -->
+                    <span class="contrib-order-badge">${String(idx + 1).padStart(2, "0")}</span>
+
+                    <!-- Reorder Toggle Button (Moves up or down) -->
+                    <button class="contrib-reorder-btn move-c-cycle" data-idx="${idx}" title="Click to reorder (moves up or down)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 15l5 5 5-5M7 9l5-5 5-5"/></svg>
+                    </button>
+
+                    <!-- Edit Contributor Profile Button -->
+                    <button class="contrib-action-btn edit-contrib-btn" data-idx="${idx}" title="Edit Contributor Profile">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    </button>
+
+                    <!-- Delete Contributor Button -->
+                    <button class="contrib-action-btn btn-danger del-contrib-btn" data-idx="${idx}" title="Delete Contributor">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           `).join("")}
@@ -166,26 +257,34 @@ export function renderContributors(container, state) {
 
     container.querySelector("#add-contributor-btn")?.addEventListener("click", () => openContributorEditor(null));
 
+    // Live & Hidden Toggle Click Listener
     container.querySelectorAll(".toggle-c-vis-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
         const idx = parseInt(btn.dataset.idx, 10);
         if (items[idx]) {
-          items[idx].visible = items[idx].visible === false ? true : false;
+          const isNowVisible = items[idx].visible === false ? true : false;
+          items[idx].visible = isNowVisible;
           section.items = items;
           saveSection(section);
+          toast.success(`"${items[idx].name}" is now ${isNowVisible ? "Live on website" : "Hidden from website"}`);
         }
       });
     });
 
+    // Edit Contributor Listener
     container.querySelectorAll(".edit-contrib-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
         const idx = parseInt(btn.dataset.idx, 10);
         openContributorEditor(items[idx], idx);
       });
     });
 
+    // Delete Contributor Listener
     container.querySelectorAll(".del-contrib-btn").forEach(btn => {
-      btn.addEventListener("click", async () => {
+      btn.addEventListener("click", async (e) => {
+        e.stopPropagation();
         const idx = parseInt(btn.dataset.idx, 10);
         const ok = await modal.confirm({
           title: "Remove Contributor?",
@@ -200,29 +299,21 @@ export function renderContributors(container, state) {
       });
     });
 
-    container.querySelectorAll(".move-c-up").forEach(btn => {
-      btn.addEventListener("click", () => {
+    // Reorder Cycle (Click to move up/down)
+    container.querySelectorAll(".move-c-cycle").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
         const idx = parseInt(btn.dataset.idx, 10);
-        if (idx > 0) {
-          const temp = items[idx];
-          items[idx] = items[idx - 1];
-          items[idx - 1] = temp;
-          section.items = items;
-          saveSection(section);
-        }
-      });
-    });
-
-    container.querySelectorAll(".move-c-down").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const idx = parseInt(btn.dataset.idx, 10);
-        if (idx < items.length - 1) {
-          const temp = items[idx];
-          items[idx] = items[idx + 1];
-          items[idx + 1] = temp;
-          section.items = items;
-          saveSection(section);
-        }
+        if (items.length <= 1) return;
+        
+        // Move item to next position, or wrap to start
+        const nextIdx = idx < items.length - 1 ? idx + 1 : 0;
+        const [moved] = items.splice(idx, 1);
+        items.splice(nextIdx, 0, moved);
+        
+        section.items = items;
+        saveSection(section);
+        toast.success(`Moved "${moved.name}" to position #${nextIdx + 1}`);
       });
     });
   };
@@ -237,7 +328,6 @@ export function renderContributors(container, state) {
       state.portfolio.contributorsSection = sec;
       section = sec;
       items = sec.items;
-      toast.success("Contributors section updated!");
       renderView();
     } catch (e) {
       toast.error("Failed to save: " + e.message);
@@ -262,15 +352,15 @@ export function renderContributors(container, state) {
         <div class="form-grid">
           <div class="form-group">
             <label for="f-cname">Full Name *</label>
-            <input type="text" id="f-cname" class="form-input" required value="${escapeHtml(c.name)}" placeholder="e.g. John Doe">
+            <input type="text" id="f-cname" class="form-input" required value="${escapeHtml(c.name)}" placeholder="e.g. Sadhak Singh Sher Gill">
           </div>
           <div class="form-group">
-            <label for="f-crole">Role / Contribution</label>
-            <input type="text" id="f-crole" class="form-input" value="${escapeHtml(c.role)}" placeholder="e.g. Backend Lead, Co-creator">
+            <label for="f-crole">Role / Contribution *</label>
+            <input type="text" id="f-crole" class="form-input" value="${escapeHtml(c.role)}" placeholder="e.g. Product Manager, Contributor">
           </div>
           <div class="form-group full-width">
-            <label for="f-cavatar">Avatar Image URL</label>
-            <input type="text" id="f-cavatar" class="form-input" value="${escapeHtml(c.avatarUrl)}" placeholder="https://github.com/username.png">
+            <label for="f-cavatar">Avatar Image URL (Optional)</label>
+            <input type="text" id="f-cavatar" class="form-input" value="${escapeHtml(c.avatarUrl)}" placeholder="https://github.com/username.png (or leaves dual letter avatar)">
           </div>
           <div class="form-group">
             <label for="f-cgithub">GitHub Profile URL</label>
@@ -286,7 +376,7 @@ export function renderContributors(container, state) {
           </div>
           <div class="form-group full-width">
             <label class="switch-row">
-              <span>Show on Website (Active / Inactive)</span>
+              <span>Active on Live Portfolio (Live / Hidden)</span>
               <label class="switch">
                 <input type="checkbox" id="f-cvis" ${c.visible !== false ? "checked" : ""}>
                 <span class="slider round"></span>
@@ -321,7 +411,7 @@ export function renderContributors(container, state) {
       const updated = {
         ...c,
         name,
-        role: modalEl.querySelector("#f-crole").value.trim() || "Collaborator",
+        role: modalEl.querySelector("#f-crole").value.trim() || "Contributor",
         avatarUrl: modalEl.querySelector("#f-cavatar").value.trim(),
         github: modalEl.querySelector("#f-cgithub").value.trim(),
         linkedin: modalEl.querySelector("#f-clinkedin").value.trim(),
@@ -338,6 +428,7 @@ export function renderContributors(container, state) {
       section.items = items;
       modal.close();
       saveSection(section);
+      toast.success(isNew ? "Contributor added!" : "Contributor updated!");
     });
   };
 
