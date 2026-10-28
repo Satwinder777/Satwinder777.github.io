@@ -4,23 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <meta name="theme-color" content="#0a0e27">
+<link rel="icon" type="image/png" href="/assets/brand-logo.png">
+<link rel="preload" as="image" href="/assets/profile-images/site-logo-256.jpg" fetchpriority="high">
 
-<title>Satwinder Singh | Senior Flutter Engineer & System Architect</title>
-<meta name="description" content="Senior Mobile Engineer specializing in Flutter, Clean Architecture, and Real-time systems. 10+ production apps delivered.">
+<title>Satwinder Singh | Senior Flutter Developer</title>
+<meta name="description" content="Hire a Flutter developer for Flutter app development with Clean Architecture and Firebase, building maintainable, reliable mobile apps for growing teams.">
+<link rel="canonical" href="https://satwinder777.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Satwinder Singh | Senior Flutter Developer">
+<meta property="og:description" content="Hire a Flutter developer for Flutter app development with Clean Architecture and Firebase, building maintainable, reliable mobile apps for growing teams.">
+<meta property="og:url" content="https://satwinder777.github.io/">
+<meta property="og:image" content="https://satwinder777.github.io/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Satwinder Singh | Senior Flutter Developer">
+<meta name="twitter:description" content="Hire a Flutter developer for Flutter app development with Clean Architecture and Firebase, building maintainable, reliable mobile apps for growing teams.">
+<meta name="twitter:image" content="https://satwinder777.github.io/preview.png">
+<!-- <meta name="google-site-verification" content="{{GOOGLE_SEARCH_CONSOLE_TOKEN}}"> -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Satwinder Singh",
+  "jobTitle": "Senior Flutter Developer",
+  "url": "https://satwinder777.github.io/",
+  "sameAs": [
+    "https://github.com/Satwinder777",
+    "https://www.linkedin.com/in/satwinder-singh-809a6b256"
+  ],
+  "knowsAbout": ["Flutter", "Dart", "Android", "Firebase", "Clean Architecture"]
+}
+</script>
 
-<!-- Premium Google Fonts: Outfit (Headings) & Plus Jakarta Sans (Body) -->
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus Jakarta Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Self-hosted fonts avoid a render-blocking third-party stylesheet. -->
+<link rel="preload" href="./assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 
 <!-- Icons -->
 <script src="https://unpkg.com/lucide@latest" defer></script>
 
 <!-- EmailJS v3 — same SDK as live satwinder777.github.io -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
 
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
 
 <!-- Live CMS: portfolio.js imports firebase.js (do not load firebase.js twice). -->
 <script>
@@ -55,55 +79,63 @@
     } catch (e) {}
   })();
 </script>
-<script src="./assets/webgl-fluid.umd.min.js" defer></script>
 <script src="./theme-switcher.js?v=20261024" defer></script>
 <script type="module" src="./ai-assistant.js?v=20261024"></script>
 <script type="module" src="./portfolio.js?v=20261024_v21"></script>
-<script>
-tailwind.config = {
-theme: {
-extend: {
-fontFamily: {
-sans:['Plus Jakarta Sans', 'sans-serif'],
-display:['Outfit', 'sans-serif'],
-},
-colors: {
-bg: {
-primary: '#0a0e27',
-secondary: '#0f1229',
-tertiary: '#151d3b',
-},
-accent: {
-cyan: '#00d9ff',
-purple: '#8b5cf6',
-pink: '#ec4899',
-},
-},
-animation: {
-'float': 'float 6s ease-in-out infinite',
-'glow-pulse': 'glow-pulse 3s ease-in-out infinite',
-},
-keyframes: {
-float: {
-'0%, 100%': { transform: 'translateY(0)' },
-'50%': { transform: 'translateY(-20px)' },
-},
-'glow-pulse': {
-'0%, 100%': { opacity: '1' },
-'50%': { opacity: '0.6' },
-}
-},
-}
-}
-}
-</script>
-
 <style>
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("./assets/fonts/outfit-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("./assets/fonts/outfit-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./assets/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./assets/fonts/plus-jakarta-sans-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 body {
 background-color: #0a0e27;
 color: #f8fafc;
 overflow-x: hidden;
 -webkit-font-smoothing: antialiased;
+}
+
+#view-work-btn {
+  background-color: #00d9ff;
+  color: #050816;
+}
+
+#hero-subtitle {
+  min-height: 1.5rem;
+}
+
+/* Keep muted copy readable on the dark default and dark themes (WCAG AA). */
+html:not([data-theme="light"]) .text-gray-500,
+html:not([data-theme="light"]) .text-gray-600 {
+  color: #a8b3cf;
 }
 
 /* ── Site navigation — floating dock ── */
@@ -3022,6 +3054,8 @@ html[data-theme="light"] .arch-node-chips span {
 }
 .cms-section--hidden { display: none !important; }
 </style>
+<!-- Load utilities last so responsive and visibility classes override base component styles. -->
+<link rel="stylesheet" href="./tailwind.generated.css?v=20261028">
 </head>
 <body class="selection:bg-accent-cyan/30 selection:text-white">
 
@@ -3060,7 +3094,7 @@ html[data-theme="light"] .arch-node-chips span {
 <!-- Navigation -->
 <nav class="site-nav" id="navbar" aria-label="Main">
 <div class="site-nav__shell">
-<a href="#" class="site-nav__brand interactive">
+<a href="/" class="site-nav__brand interactive" aria-label="Satwinder Singh home">
 <div class="site-nav__logo" id="nav-logo" aria-hidden="true">S</div>
 <div class="site-nav__name hidden sm:block"><span id="nav-name">Satwinder</span><span class="gradient-text-alt">.</span></div>
 </a>
@@ -3131,16 +3165,16 @@ html[data-theme="light"] .arch-node-chips span {
 </div>
 </div>
 
-<div class="nav-dock nav-dock--mobile md:hidden" id="nav-dock-mobile" aria-label="Mobile sections">
+<div class="nav-dock nav-dock--mobile md:hidden" id="nav-dock-mobile" role="group" aria-label="Mobile sections">
 <div class="nav-dock__glider" aria-hidden="true"></div>
-<a href="#about" class="nav-dock__link interactive nav-link" data-section="about"><i data-lucide="user-round"></i><span>About</span></a>
-<a href="#expertise" class="nav-dock__link interactive nav-link" data-section="expertise"><i data-lucide="layers"></i><span>Skills</span></a>
-<a href="#experience" class="nav-dock__link interactive nav-link" data-section="experience"><i data-lucide="briefcase"></i><span>Jobs</span></a>
-<a href="#projects" class="nav-dock__link interactive nav-link" data-section="projects"><i data-lucide="rocket"></i><span>Work</span></a>
-<a href="#contributors" class="nav-dock__link nav-dock__link--accent interactive nav-link" data-section="contributors"><i data-lucide="users"></i><span>Team</span></a>
-<a href="#upcoming" class="nav-dock__link nav-dock__link--accent interactive nav-link" data-section="upcoming"><i data-lucide="sparkles"></i><span>Roadmap</span></a>
-<a href="#feedback" class="nav-dock__link interactive nav-link" data-section="feedback"><i data-lucide="message-square-plus"></i><span>Feedback</span></a>
-<a href="#contact" class="nav-dock__link interactive nav-link" data-section="contact"><i data-lucide="send"></i><span>Hire</span></a>
+<a href="#about" class="nav-dock__link interactive nav-link" data-section="about" aria-label="About"><i data-lucide="user-round"></i><span>About</span></a>
+<a href="#expertise" class="nav-dock__link interactive nav-link" data-section="expertise" aria-label="Skills"><i data-lucide="layers"></i><span>Skills</span></a>
+<a href="#experience" class="nav-dock__link interactive nav-link" data-section="experience" aria-label="Jobs"><i data-lucide="briefcase"></i><span>Jobs</span></a>
+<a href="#projects" class="nav-dock__link interactive nav-link" data-section="projects" aria-label="Work"><i data-lucide="rocket"></i><span>Work</span></a>
+<a href="#contributors" class="nav-dock__link nav-dock__link--accent interactive nav-link" data-section="contributors" aria-label="Team"><i data-lucide="users"></i><span>Team</span></a>
+<a href="#upcoming" class="nav-dock__link nav-dock__link--accent interactive nav-link" data-section="upcoming" aria-label="Roadmap"><i data-lucide="sparkles"></i><span>Roadmap</span></a>
+<a href="#feedback" class="nav-dock__link interactive nav-link" data-section="feedback" aria-label="Feedback"><i data-lucide="message-square-plus"></i><span>Feedback</span></a>
+<a href="#contact" class="nav-dock__link interactive nav-link" data-section="contact" aria-label="Hire"><i data-lucide="send"></i><span>Hire</span></a>
 </div>
 </nav>
 
@@ -3152,16 +3186,16 @@ html[data-theme="light"] .arch-node-chips span {
 <main class="relative z-10">
 <!-- Hero Section -->
 <section class="relative min-h-screen pt-32 pb-20 px-6 lg:px-12 flex flex-col justify-center items-center">
-<div class="max-w-5xl mx-auto text-center reveal">
-<!-- Avatar (hidden until admin uploads one) -->
-<img id="hero-avatar" src="" alt="" class="hidden mx-auto mb-8 w-32 h-32 rounded-full object-cover ring-4 ring-accent-cyan/30 shadow-[0_0_30px_rgba(0,217,255,0.3)]">
+<div class="max-w-5xl w-full min-w-0 mx-auto text-center">
+<!-- Keep the hero visible immediately; below-the-fold sections retain reveal animations. -->
+<img id="hero-avatar" src="/assets/profile-images/site-logo-256.jpg" alt="Satwinder Singh portrait" width="128" height="128" loading="eager" decoding="async" fetchpriority="high" class="mx-auto mb-8 w-32 h-32 rounded-full object-cover ring-4 ring-accent-cyan/30 shadow-[0_0_30px_rgba(0,217,255,0.3)]">
 
 <div id="hero-availability-badge" class="mb-8 inline-flex items-center gap-3 px-5 py-2 rounded-full border border-accent-cyan/20 bg-accent-cyan/10 backdrop-blur-md">
 <span class="w-2 h-2 bg-accent-cyan rounded-full animate-pulse shadow-[0_0_10px_#00d9ff]"></span>
 <span id="hero-availability-text" class="text-xs font-bold uppercase tracking-widest text-accent-cyan">Available for Senior Roles</span>
 </div>
 
-<p id="hero-subtitle" class="hidden text-sm md:text-base font-semibold text-gray-400 uppercase tracking-widest mb-4"></p>
+<p id="hero-subtitle" class="invisible text-sm md:text-base font-semibold text-gray-400 uppercase tracking-widest mb-4"></p>
 
 <h1 id="hero-tagline" class="text-5xl md:text-7xl lg:text-8xl font-display font-extrabold mb-8 leading-[1.1] tracking-tight text-white">
 I architect <br class="hidden md:block">
@@ -3172,6 +3206,9 @@ mobile applications.
 <p id="hero-bio" class="text-lg md:text-xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
 I am <strong id="hero-name" class="text-white font-semibold">Satwinder Singh</strong>. I specialize in bridging cross-platform efficiency with native Android performance, building real-time systems, and deploying enterprise-grade architectures.
 </p>
+<p class="text-sm md:text-base text-gray-400 max-w-3xl mx-auto -mt-8 mb-10 leading-relaxed">
+Flutter developer focused on Flutter app development with Clean Architecture and Firebase. City/state location has not been provided.
+</p>
 
 <div class="flex flex-col sm:flex-row gap-6 justify-center">
 <a href="#projects" id="view-work-btn" class="px-8 py-4 rounded-full bg-gradient-to-r from-accent-cyan to-accent-purple text-black font-bold text-lg hover:shadow-[0_0_30px_rgba(0,217,255,0.4)] transition-all transform hover:-translate-y-1 interactive">
@@ -3180,7 +3217,7 @@ View My Work
 <a href="#contact" id="get-in-touch-btn" class="px-8 py-4 rounded-full border border-white/20 text-white font-bold text-lg hover:bg-white/5 transition-all interactive">
 Get In Touch
 </a>
-<a id="resume-download-btn" href="#" target="_blank" rel="noopener noreferrer" style="display:none" class="px-8 py-4 rounded-full border border-accent-cyan/40 bg-accent-cyan/5 text-white font-bold text-lg hover:bg-accent-cyan/10 transition-all interactive items-center gap-2 inline-flex">
+<a id="resume-download-btn" href="/assets/Satwinder-Singh-Flutter-Developer-CV.pdf" download class="px-8 py-4 rounded-full border border-accent-cyan/40 bg-accent-cyan/5 text-white font-bold text-lg hover:bg-accent-cyan/10 transition-all interactive items-center gap-2 inline-flex">
 <i data-lucide="download" class="w-5 h-5"></i>
 Download CV
 </a>
@@ -3195,9 +3232,9 @@ Download CV
 <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Production Apps</div>
 <div class="stat-card__hint" aria-hidden="true">View Featured Implementations</div>
 </div>
-<div class="glass-card stat-card stat-card--link p-6 rounded-2xl interactive" data-scroll-section="experience" tabindex="0" role="link" aria-label="Years Exp. — scroll to Career Trajectory">
-<div class="text-3xl font-display font-bold gradient-text mb-2">3+</div>
-<div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Years Exp.</div>
+<div class="glass-card stat-card stat-card--link p-6 rounded-2xl interactive" data-scroll-section="experience" tabindex="0" role="link" aria-label="Career start Jan 2022 — scroll to Career Trajectory">
+<div id="experience-years-stat" class="text-3xl font-display font-bold gradient-text mb-2">Jan 2022</div>
+<div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Career start</div>
 <div class="stat-card__hint" aria-hidden="true">View Career Trajectory</div>
 </div>
 <div class="glass-card stat-card stat-card--link p-6 rounded-2xl interactive" data-scroll-section="expertise" tabindex="0" role="link" aria-label="Crash-Free — scroll to Deep Technical Expertise">
@@ -3205,9 +3242,9 @@ Download CV
 <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Crash-Free</div>
 <div class="stat-card__hint" aria-hidden="true">View Deep Technical Expertise</div>
 </div>
-<div class="glass-card stat-card stat-card--link p-6 rounded-2xl interactive" data-scroll-section="expertise" tabindex="0" role="link" aria-label="FPS Rendering — scroll to Deep Technical Expertise">
-<div class="text-3xl font-display font-bold gradient-text mb-2">60+</div>
-<div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">FPS Rendering</div>
+<div class="glass-card stat-card stat-card--link p-6 rounded-2xl interactive" data-scroll-section="expertise" tabindex="0" role="link" aria-label="Rendering Performance — scroll to Deep Technical Expertise">
+<div class="text-3xl font-display font-bold gradient-text mb-2">UI</div>
+<div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Rendering Tuning</div>
 <div class="stat-card__hint" aria-hidden="true">View Deep Technical Expertise</div>
 </div>
 <div class="glass-card stat-card stat-card--link p-6 rounded-2xl interactive" data-scroll-section="expertise" tabindex="0" role="link" aria-label="Perf. Improved — scroll to Deep Technical Expertise">
@@ -3232,10 +3269,10 @@ Download CV
 <h2 id="mindset-title" class="text-4xl md:text-5xl font-display font-bold mb-8 gradient-text">Engineering Mindset</h2>
 <div id="mindset-paragraphs">
 <p class="text-gray-300 leading-relaxed text-lg mb-6">
-I don't just write code; I design systems. With 3+ years of intense engineering experience, I have led the development of complex platforms serving thousands of active users.
+I don't just write code; I design systems. My professional timeline begins in January 2022, with experience across mobile application development, architecture, and delivery.
 </p>
 <p class="text-gray-300 leading-relaxed text-lg mb-8">
-My core strength lies deep within the Flutter ecosystem and Android native layers. I obsess over clean architecture, managing complex state seamlessly, and utilizing Isolates (Multi-threading) to ensure the UI never drops a frame.
+My core strength lies in the Flutter ecosystem and Android native layers. I focus on clean architecture, managing complex state, and using Dart Isolates for background work where appropriate, with an emphasis on responsive UI performance.
 </p>
 </div>
 </div>
@@ -3282,9 +3319,9 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 <p class="text-sm text-gray-400 leading-relaxed">Architecting scalable cross-platform apps from scratch using clean code principles and modular design.</p>
 </div>
 
-<div class="glass-card rounded-2xl p-8 reveal service-card" style="transition-delay: 50ms;" data-service="120fps Performance Tuning">
+<div class="glass-card rounded-2xl p-8 reveal service-card" style="transition-delay: 50ms;" data-service="Rendering Performance">
 <i data-lucide="zap" class="w-10 h-10 text-accent-purple mb-6"></i>
-<h3 class="text-lg font-bold text-white mb-3">120fps Perf. Tuning</h3>
+<h3 class="text-lg font-bold text-white mb-3">Rendering Performance</h3>
 <p class="text-sm text-gray-400 leading-relaxed">Eliminating UI jank, optimizing raster threads, reducing memory leaks, and utilizing Dart Isolates.</p>
 </div>
 
@@ -3357,7 +3394,7 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 <h2 class="text-4xl md:text-5xl font-display font-bold mb-20 text-center gradient-text reveal">Career Trajectory</h2>
 
 <div id="experience-container" class="relative border-l border-white/10 ml-4 md:ml-0 md:pl-0">
-<div class="mb-16 relative pl-10 md:pl-0 reveal">
+<div class="mb-16 relative pl-10 md:pl-0 reveal" data-static-experience-fallback>
 <div class="hidden md:block absolute left-1/2 -ml-[0.5px] w-px h-full bg-white/10"></div>
 <div class="md:grid md:grid-cols-2 md:gap-16 items-center">
 <div class="md:text-right md:pr-12 relative">
@@ -3426,7 +3463,20 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 </div>
 
 <div id="projects-container" class="proj-showcase" aria-live="polite">
-<!-- Hydrated from Firestore via portfolio.js -->
+<article class="glass-card rounded-2xl p-6 md:p-8" data-project-fallback>
+  <div class="grid md:grid-cols-2 gap-6 md:gap-10 items-center">
+    <div>
+      <p class="text-xs font-bold uppercase tracking-widest text-accent-cyan mb-3">Public project</p>
+      <h3 class="text-2xl font-display font-bold text-white mb-4">DropLink — Secure File Sharing</h3>
+      <p class="text-gray-300 leading-relaxed mb-5">The deployed project describes file sharing with encrypted cloud storage, a complimentary guest transfer, and an account-based personal vault.</p>
+      <div class="flex flex-wrap gap-3">
+        <a class="site-nav__cta interactive" href="/projects/droplink/index.html">Project details</a>
+        <a class="nav-dock__link interactive" href="/Vibe/">Open DropLink</a>
+      </div>
+    </div>
+    <img src="/assets/projects/droplink/thumbnail.jpg" alt="DropLink landing page showing its file-sharing interface" width="800" height="500" loading="lazy" decoding="async" class="w-full h-auto rounded-2xl border border-white/10">
+  </div>
+</article>
 </div>
 </div>
 </section>
@@ -3443,7 +3493,7 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 </section>
 
 <!-- Upcoming Features Section (CMS) -->
-<section id="upcoming" class="py-24 px-6 lg:px-12 cms-section--hidden" aria-hidden="true">
+<section id="upcoming" class="py-24 px-6 lg:px-12">
 <div class="max-w-6xl mx-auto">
 <div class="text-center mb-14 lg:mb-16 reveal">
 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent-purple/30 bg-accent-purple/10 text-accent-purple text-xs font-bold uppercase tracking-widest mb-6">
@@ -3452,14 +3502,16 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 <h2 class="text-4xl md:text-5xl font-display font-bold mb-5 gradient-text-alt">Coming Soon</h2>
 <p class="text-base md:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">Features currently in development — arriving on this portfolio shortly.</p>
 </div>
-<div id="upcoming-container" class="upcoming-grid" aria-live="polite"></div>
+<div id="upcoming-container" class="upcoming-grid" aria-live="polite">
+<p class="text-gray-400" data-roadmap-fallback>Roadmap details are managed in the portfolio CMS and are unavailable in this static page.</p>
+</div>
 </div>
 </section>
 
 </section>
 
 <!-- Suggestions & Feedback -->
-<section id="feedback" class="py-24 px-6 lg:px-12 cms-section--hidden" aria-hidden="true" data-feedback-section>
+<section id="feedback" class="py-24 px-6 lg:px-12" data-feedback-section>
 <div class="signal-studio__mesh" aria-hidden="true"></div>
 <div class="signal-studio__orb signal-studio__orb--1" aria-hidden="true"></div>
 <div class="signal-studio__orb signal-studio__orb--2" aria-hidden="true"></div>
@@ -3482,14 +3534,18 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 <div class="signal-transmit__icon"><i data-lucide="satellite-dish"></i></div>
 <div>
 <h3 class="signal-transmit__title">Transmit your signal</h3>
-<p class="signal-transmit__sub">Goes live on the board as <em>In review</em> — I reply from the studio app.</p>
+<p class="signal-transmit__sub">Submissions stay private until they have been reviewed and approved.</p>
 </div>
 </div>
 <form id="feedback-form" class="feedback-form" novalidate>
+<div class="contact-honeypot" aria-hidden="true">
+<label for="feedback_website">Website</label>
+<input type="text" id="feedback_website" name="feedback_website" tabindex="-1" autocomplete="off">
+</div>
 <div class="feedback-field" data-fb-field="fb-name">
 <label class="feedback-label" for="fb-name">Full name <span class="text-accent-cyan">*</span></label>
 <div class="signal-input-wrap">
-<input class="feedback-input interactive" id="fb-name" name="fb-name" maxlength="80" autocomplete="name" placeholder="Who's sharing this idea?">
+<input class="feedback-input interactive" id="fb-name" name="fb-name" maxlength="80" autocomplete="name" required aria-describedby="error-fb-name" placeholder="Who's sharing this idea?">
 </div>
 <p class="contact-error" id="error-fb-name" role="alert"></p>
 </div>
@@ -3520,7 +3576,7 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 <span class="feedback-label__hint" id="fb-char-count">0 / 2000</span>
 </label>
 <div class="signal-input-wrap">
-<textarea class="feedback-textarea interactive" id="fb-suggestion" name="fb-suggestion" maxlength="2000" placeholder="What would make this portfolio unforgettable?"></textarea>
+<textarea class="feedback-textarea interactive" id="fb-suggestion" name="fb-suggestion" maxlength="2000" required aria-describedby="error-fb-suggestion fb-char-count" placeholder="What would make this portfolio unforgettable?"></textarea>
 </div>
 <p class="contact-error" id="error-fb-suggestion" role="alert"></p>
 </div>
@@ -3545,14 +3601,14 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 <div class="signal-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
 <div class="signal-filters" id="signal-filters" role="tablist" aria-label="Filter feedback">
 <button type="button" class="signal-filter is-active interactive" data-filter="all" role="tab" aria-selected="true">All</button>
-<button type="button" class="signal-filter interactive" data-filter="in_review" role="tab" aria-selected="false">In review</button>
 <button type="button" class="signal-filter interactive" data-filter="reviewed" role="tab" aria-selected="false">Reviewed</button>
 <button type="button" class="signal-filter interactive" data-filter="resolved" role="tab" aria-selected="false">Resolved</button>
 </div>
 </div>
 <div id="feedback-board" class="signal-feed__list" aria-live="polite">
-<p class="signal-empty">Loading community feedback…</p>
+<p class="signal-empty">Approved public feedback appears here when the live portfolio service is available.</p>
 </div>
+<noscript><p class="signal-empty mt-4" role="status">Feedback submission and the live feed require JavaScript. Use the Contact section for a direct inquiry.</p></noscript>
 </div>
 </div>
 </div>
@@ -3576,8 +3632,13 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 
 <div class="glass-card rounded-3xl p-8 md:p-12 reveal shadow-2xl contact-card">
 <div id="contact-disabled-banner" class="contact-disabled-banner hidden" role="status">
-  Contact form is temporarily unavailable. Reach out via WhatsApp or email below.
+  <p>Contact form is currently unavailable. You can reach out directly:</p>
+  <p class="mt-3 flex flex-wrap gap-4">
+    <a href="mailto:satwindersinghasr2@gmail.com" class="underline">Email Satwinder</a>
+    <a href="https://wa.me/919877995250" class="underline">Message on WhatsApp</a>
+  </p>
 </div>
+<noscript><p class="text-center text-gray-400 mb-6">The contact form requires JavaScript. You can reach Satwinder by <a class="underline" href="mailto:satwindersinghasr2@gmail.com">email</a> or <a class="underline" href="https://wa.me/919877995250">WhatsApp</a>.</p></noscript>
 <form id="contact-form" class="contact-form space-y-6" novalidate>
 <!-- Honeypot — leave empty -->
 <div class="contact-honeypot" aria-hidden="true">
@@ -3588,12 +3649,12 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 <div class="grid md:grid-cols-2 gap-6">
 <div class="contact-field" data-field="name">
 <label for="name" class="contact-label">Full Name <span class="text-accent-cyan">*</span></label>
-<input type="text" id="name" name="name" autocomplete="name" maxlength="80" class="contact-input interactive" placeholder="Satwinder Singh">
+<input type="text" id="name" name="name" autocomplete="name" maxlength="80" required aria-describedby="error-name" class="contact-input interactive" placeholder="Satwinder Singh">
 <p class="contact-error" id="error-name" role="alert"></p>
 </div>
 <div class="contact-field" data-field="email">
 <label for="email" class="contact-label">Work Email <span class="text-accent-cyan">*</span></label>
-<input type="email" id="email" name="email" autocomplete="email" maxlength="120" class="contact-input interactive" placeholder="you@company.com">
+<input type="email" id="email" name="email" autocomplete="email" maxlength="120" required aria-describedby="error-email" class="contact-input interactive" placeholder="you@company.com">
 <p class="contact-error" id="error-email" role="alert"></p>
 </div>
 </div>
@@ -3601,7 +3662,7 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 <div class="grid md:grid-cols-2 gap-6">
 <div class="contact-field" data-field="phone">
 <label for="phone" class="contact-label">Phone / WhatsApp <span class="text-gray-500 font-normal">(optional)</span></label>
-<input type="tel" id="phone" name="phone" autocomplete="tel" maxlength="30" class="contact-input interactive" placeholder="+91 98779 95250">
+<input type="tel" id="phone" name="phone" autocomplete="tel" maxlength="30" aria-describedby="error-phone" class="contact-input interactive" placeholder="+91 98779 95250">
 <p class="contact-error" id="error-phone" role="alert"></p>
 </div>
 <div class="contact-field" data-field="company">
@@ -3612,7 +3673,7 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 
 <div class="contact-field" data-field="subject">
 <label for="subject" class="contact-label">Inquiry Type <span class="text-accent-cyan">*</span></label>
-<select id="subject" name="subject" class="contact-input contact-select interactive">
+<select id="subject" name="subject" required aria-describedby="error-subject" class="contact-input contact-select interactive">
 <option value="">Select a subject</option>
 <option value="Hire for Full-Time Role">Hire for Full-Time Role</option>
 <option value="Freelance / Contract Project">Freelance / Contract Project</option>
@@ -3629,7 +3690,7 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 <label for="message" class="contact-label mb-0">Project Details <span class="text-accent-cyan">*</span></label>
 <span id="message-count" class="text-xs text-gray-500 font-mono">0 / 5000</span>
 </div>
-<textarea id="message" name="message" rows="5" maxlength="5000" class="contact-input contact-textarea interactive resize-none" placeholder="What are you building? Timeline, stack, budget range, and team size help me respond faster."></textarea>
+<textarea id="message" name="message" rows="5" maxlength="5000" required aria-describedby="error-message message-count" class="contact-input contact-textarea interactive resize-none" placeholder="What are you building? Timeline, stack, budget range, and team size help me respond faster."></textarea>
 <p class="contact-error" id="error-message" role="alert"></p>
 </div>
 
@@ -3641,6 +3702,7 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
 </button>
 <p class="text-center text-xs text-gray-500 mt-4">By sending, you agree I may reply to your email about this inquiry.</p>
 </form>
+<p class="text-center text-xs text-gray-400 mt-5">Aapki details sirf reply ke liye use hongi</p>
 </div>
 </div>
 </section>
@@ -3781,11 +3843,22 @@ My core strength lies deep within the Flutter ecosystem and Android native layer
       }
     }
 
-    if (document.readyState === 'loading') {
-      window.addEventListener('DOMContentLoaded', startFluid);
-    } else {
-      startFluid();
+    function loadFluidOnInteraction() {
+      document.removeEventListener('pointermove', loadFluidOnInteraction, true);
+      document.removeEventListener('pointerdown', loadFluidOnInteraction, true);
+      document.removeEventListener('touchstart', loadFluidOnInteraction, true);
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var script = document.createElement('script');
+      script.src = './assets/webgl-fluid.umd.min.js';
+      script.async = true;
+      script.onload = startFluid;
+      document.head.appendChild(script);
     }
+
+    document.addEventListener('pointermove', loadFluidOnInteraction, { once: true, passive: true, capture: true });
+    document.addEventListener('pointerdown', loadFluidOnInteraction, { once: true, passive: true, capture: true });
+    document.addEventListener('touchstart', loadFluidOnInteraction, { once: true, passive: true, capture: true });
   })();
 </script>
 </body>

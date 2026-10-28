@@ -607,9 +607,9 @@ export function renderSkills(container, state) {
         <div class="form-group">
           <label for="f-exptitle">
             <span>Competency Title <strong style="color: var(--accent-cyan);">*</strong></span>
-            <span class="field-hint">e.g. 120fps Perf. Tuning, Clean Architecture</span>
+            <span class="field-hint">e.g. Rendering Performance, Clean Architecture</span>
           </label>
-          <input type="text" id="f-exptitle" class="form-input" required value="${escapeHtml(cur.title)}" placeholder="e.g. 120fps Perf. Tuning & Budgeting">
+          <input type="text" id="f-exptitle" class="form-input" required value="${escapeHtml(cur.title)}" placeholder="e.g. Rendering Performance">
         </div>
         
         <div class="form-group">

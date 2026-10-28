@@ -16,45 +16,40 @@
   // ------------------------------------------------------------
   //  1. Grounded Knowledge Base (Default / Baseline)
   // ------------------------------------------------------------
+  const currentExperienceYears = () => {
+    const now = new Date();
+    const elapsedMonths = (now.getUTCFullYear() - 2022) * 12 + now.getUTCMonth();
+    return Math.max(0, Math.floor(elapsedMonths / 12));
+  };
+
   const portfolioKnowledge = {
     name: "Satwinder Singh",
-    role: "Senior Flutter Engineer & System Architect",
-    summary: "Senior Mobile Engineer specializing in Flutter, Clean Architecture, and real-time distributed mobile systems. Delivered 10+ production applications with 99.9% crash-free rates.",
-    availability: "Actively available for Senior Mobile Engineer, Staff Flutter Architect, and high-impact consulting roles.",
+    role: "Senior Flutter Developer",
+    summary: "The portfolio highlights Flutter, Clean Architecture, Firebase, and real-time mobile development. It lists 10+ production apps and a 99.9% crash-free figure; supporting reports are not included in this repository.",
+    availability: "The portfolio currently shows availability for senior roles.",
     contact: {
       email: "satwindersinghasr2@gmail.com",
       whatsapp: "+91 98779 95250",
       github: "https://github.com/Satwinder777",
       linkedin: "https://www.linkedin.com/in/satwinder-singh-809a6b256",
-      location: "India (Open to Remote Globally)"
+      location: ""
     },
     skills: {
-      core: ["Flutter", "Dart", "Clean Architecture", "BLoC Pattern", "Riverpod", "Android (Kotlin/Java)", "iOS (Swift)"],
-      architecture: ["Domain-Driven Design (DDD)", "Reactive Programming", "Isolates & Multi-Threading", "Modular Multi-Package Architecture", "Offline-First Synchronization"],
-      cloudAndBackend: ["Firebase (Firestore, Auth, Cloud Functions)", "RESTful APIs", "WebSockets", "GraphQL", "Supabase", "GCP"],
-      devopsAndQuality: ["Fastlane CI/CD", "GitHub Actions", "Unit/Widget/Integration Testing", "Performance Profiling (Memory, CPU, Jitter)"]
+      core: ["Flutter", "Dart", "Android", "Kotlin", "Clean Architecture", "BLoC", "Riverpod", "GetX", "MVVM"],
+      architecture: ["Method Channels", "Isolates", "Custom Painters"],
+      cloudAndBackend: ["Firebase", "WebSockets", "Google Maps API"],
+      devopsAndQuality: ["Fastlane CI/CD"]
     },
     projects: [
       {
-        name: "Vibe Real-Time Collaboration Platform",
-        description: "Full-stack reactive mobile and web platform with real-time CMS, offline caching, and instant WebSocket state sync.",
-        tech: "Flutter, Firebase, WebSockets, Clean BLoC"
-      },
-      {
-        name: "Satcraft Resume & Portfolio Suite",
-        description: "High-performance reactive web application built with TypeScript, Vite, and client-side vector PDF generation.",
-        tech: "TypeScript, React, Tailwind CSS, Vite, jsPDF"
-      },
-      {
-        name: "Enterprise Multi-Tenant Flutter Architecture",
-        description: "Modular enterprise mobile system delivered for high-concurrency client workloads with strict 99.9% crash-free reliability.",
-        tech: "Flutter, Riverpod, Custom Render Objects, REST, Fastlane"
+        name: "DropLink — Secure File Sharing",
+        description: "The deployed homepage describes file sharing with encrypted cloud storage, a complimentary guest transfer, and an account-based personal vault.",
+        tech: "Next.js"
       }
     ],
     experienceHighlights: [
-      "Architected enterprise-scale cross-platform apps servicing 100K+ monthly active users.",
-      "Optimized Flutter rendering pipeline reducing frame jank from 18% down to under 1.2% at 60/120 FPS.",
-      "Implemented resilient offline-first databases with automatic conflict resolution for unreliable mobile networks."
+      "Portfolio information includes work across Flutter, Dart, Android, Clean Architecture, Firebase, and WebSockets.",
+      "The repository does not include benchmark reports for specific frame rates or performance improvements."
     ]
   };
 
@@ -70,7 +65,7 @@
       portfolioKnowledge.projects = liveData.projects.map(p => ({
         name: p.title || p.name,
         description: p.description || p.summary,
-        tech: p.techStack || p.tags?.join(', ') || 'Flutter'
+        tech: p.techStack || p.tags?.join(', ') || 'Not listed'
       }));
     }
   };
@@ -136,7 +131,7 @@
     // 1. Greetings & Casual Introductions
     if (/^(hi|hello|hey|namaste|sat sri akaal|hola|greetings|good morning|good afternoon|good evening|yo)\b/i.test(q)) {
       return {
-        text: `Hello! 👋 Welcome to **Satwinder Singh's Portfolio Assistant**.\n\nSatwinder is a **Senior Flutter Engineer & System Architect** with 3+ years of experience delivering 10+ production apps with 99.9% crash-free uptime.\n\nHow can I help you today? You can ask about his **skills**, **flagship projects**, **clean architecture**, or **how to hire him**.`,
+        text: `Hello! 👋 Welcome to **Satwinder Singh's Portfolio Assistant**.\n\nSatwinder is a **Senior Flutter Developer**. The portfolio lists 10+ production apps and a 99.9% crash-free claim; supporting reports are not included in this repository.\n\nHow can I help you today? You can ask about his **skills**, **projects**, **Clean Architecture**, or **how to contact him**.`,
         followUps: [
           "What are his core technical skills?",
           "Tell me about his top projects",
@@ -146,36 +141,34 @@
       };
     }
 
-    // 2. Specific Project: Vibe Real-Time Collaboration
+    // 2. Specific Project: DropLink (deployed under /Vibe/)
     if (/vibe/i.test(q)) {
       return {
-        text: `**Vibe Real-Time Collaboration Platform** 🚀\n\n- **Overview:** Full-stack reactive mobile and web platform engineered for ultra-low latency team collaboration.\n- **Architecture:** Rigid **Clean Architecture** driven by **BLoC & Cubit** state management.\n- **Real-Time Engine:** Bi-directional **WebSockets** state synchronization delivering sub-50ms event updates across connected clients.\n- **Offline-First:** Local caching using SQLite & Hive with **optimistic UI updates** and automated conflict resolution upon network reconnection.\n- **Key Outcome:** Shipped with seamless real-time CMS sync, zero-latency reactive canvas, and 99.9% session stability.`,
+        text: `The repository's **/Vibe/** deployment is branded **DropLink — Secure File Sharing**. Its public page describes file sharing with encrypted cloud storage, one complimentary guest transfer, and an account-based personal vault. The repository contains interface screenshots. It does not document implementation responsibilities or measured outcomes.`,
         followUps: [
-          "Tell me about Satcraft",
-          "What state management does he prefer?",
-          "How does he handle offline sync in Flutter?",
+          "Tell me about DropLink",
+          "What projects are documented in the repository?",
           "How can I hire him for a project?"
         ]
       };
     }
 
-    // 3. Specific Project: Satcraft Resume Suite
+    // The local checkout does not contain a verified Satcraft case study.
     if (/satcraft/i.test(q)) {
       return {
-        text: `**Satcraft Resume & Portfolio Suite** 📄⚡\n\n- **Overview:** High-performance reactive web application designed for instant, dynamic ATS-compliant document generation.\n- **Tech Stack:** **TypeScript, Vite, React, Tailwind CSS**, and client-side vector PDF generation engines.\n- **Engineering Feat:** Replaced slow server-side PDF render pipelines with instant client-side vector generation (via jsPDF & Canvas), eliminating server latency and cloud compute costs.\n- **User Experience:** Live interactive split-pane preview, customizable typography, and sub-second export times.`,
+        text: `I can't verify a Satcraft project from the checked-in portfolio repository. The project information available here is limited to the public DropLink deployment and the portfolio's live CMS data.`,
         followUps: [
-          "Tell me more about Vibe's architecture",
+          "Tell me about DropLink",
           "What are his core technical skills?",
-          "Can I download his CV?",
           "How can I contact Satwinder?"
         ]
       };
     }
 
-    // 4. Specific Project: Enterprise Multi-Tenant Mobile Suite
+    // 4. Other project claims are not present in checked-in case-study sources.
     if (/enterprise|multi-tenant|tenant|100k|workload/i.test(q)) {
       return {
-        text: `**Enterprise Multi-Tenant Mobile Suite** 🏢📱\n\n- **Scale:** Engineered for high-concurrency enterprise workloads serving **100,000+ monthly active users**.\n- **State & Architecture:** Modular multi-package architecture built with **Riverpod**, custom Render Objects, and strict separation of concerns.\n- **Dynamic White-Labeling:** Multi-flavor runtime configuration allowing clients to run branded themes, feature flags, and custom tenant workflows from a single codebase.\n- **Reliability:** Maintained a strict **99.9% crash-free rate** backed by automated Fastlane CI/CD and regression testing suites.`,
+        text: `The checked-in repository does not contain a verified case study for a multi-tenant product or its scale. The portfolio lists Flutter, Dart, Riverpod, and Clean Architecture among Satwinder's technical skills.`,
         followUps: [
           "What makes his Flutter apps crash-free?",
           "What is his testing strategy?",
@@ -187,10 +180,10 @@
     // 5. State Management Preferences (BLoC vs Riverpod vs GetX)
     if (/state\s*management|prefer|bloc|riverpod|getx|cubit|provider|which state/i.test(q)) {
       return {
-        text: `**Satwinder's State Management Philosophy:** 🧠\n\n- **Enterprise Scale — BLoC / Cubit:** His primary choice for mission-critical enterprise applications. BLoC enforces strict **unidirectional data flow (Events → States)**, ensures complete UI decoupling, and enables 100% deterministic unit testing.\n- **Reactive Modern Apps — Riverpod:** Extensively used for apps requiring compile-time safety, auto-dispose lifecycle management, and clean dependency injection without ` + "`BuildContext`" + ` limitations.\n- **Pragmatic Exposure — GetX & Provider:** Proficient in both for rapid prototyping or maintaining legacy systems, but advocates BLoC/Riverpod for scalable, testable architectures.`,
+        text: `The portfolio lists **BLoC, Riverpod, and GetX** among Satwinder's technical skills. The checked-in repository does not document which state-management choice he used on a specific project.`,
         followUps: [
           "How does he structure Clean Architecture?",
-          "Tell me more about Vibe's architecture",
+          "Tell me about DropLink",
           "What makes his Flutter apps crash-free?"
         ]
       };
@@ -199,31 +192,31 @@
     // 6. Offline-First Architecture & Synchronization
     if (/offline|sync|caching|cache|connectivity|sqlite|hive|isar|network loss/i.test(q)) {
       return {
-        text: `**Offline-First Architecture & Synchronization:** 📡💾\n\nSatwinder designs mobile systems that work effortlessly regardless of network conditions:\n\n1. **Local Single Source of Truth:** The UI always binds to local reactive stores (**Hive, Isar, or SQLite**), never directly blocking on HTTP requests.\n2. **Optimistic UI Updates:** User interactions reflect immediately on screen while mutation operations are dispatched to a persistent queue.\n3. **Resilient Background Sync Queue:** Network mutations are retried automatically with exponential backoff via background workers.\n4. **Conflict Resolution:** Employs timestamp-based reconciliation and idempotent API endpoints to prevent data duplication.\n5. **Reactive Connectivity Listeners:** Instant transition between online and offline states without disrupting user sessions.`,
+        text: `The portfolio describes local caching and data synchronization as areas of experience. The checked-in repository does not include a project case study specifying a storage engine, retry strategy, or conflict-resolution method.`,
         followUps: [
           "What makes his Flutter apps crash-free?",
-          "Tell me more about Vibe's architecture",
+          "Tell me about DropLink",
           "What state management does he prefer?"
         ]
       };
     }
 
-    // 7. 99.9% Crash-Free Stability & Error Boundaries
+    // 7. Portfolio reliability claim (supporting benchmark needs owner confirmation)
     if (/crash|99\.9|stability|reliable|error handling|sentry|crashlytics|bugs/i.test(q)) {
       return {
-        text: `**How Satwinder Achieves 99.9% Crash-Free Rates:** 🛡️\n\nAcross 10+ shipped production apps and 100K+ active users, he guarantees stability through:\n\n- **Strict Defensive Null-Safety:** Never uses risky force-unwraps (` + "`!`" + `) in production code; every asynchronous response and model field is safely guarded.\n- **Layered Error Boundaries:** Application wrapped in ` + "`runZonedGuarded`" + ` and ` + "`FlutterError.onError`" + ` catching unhandled asynchronous microtask errors and rendering graceful user fallbacks.\n- **Real-Time Telemetry:** Integrated **Firebase Crashlytics** and **Sentry** with custom breadcrumbs and user journey tags for sub-15-minute bug triage.\n- **Defensive API Circuit Breakers:** Graceful fallbacks for network drops, malformed JSON payloads, and server timeouts.`,
+        text: `The portfolio lists **10+ production apps** and a **99.9% crash-free** figure. This repository does not include Crashlytics exports or other evidence to verify those numbers, so confirm them against the relevant project reports before relying on them.`,
         followUps: [
-          "How does he optimize 60 FPS rendering?",
+          "How does he approach rendering performance?",
           "What is his testing strategy?",
           "How can I contact or hire Satwinder?"
         ]
       };
     }
 
-    // 8. Performance Optimization & 60/120 FPS Rendering
+    // 8. Performance Optimization (no verified benchmark figures in the repository)
     if (/performance|fps|jank|speed|frame|profiling|isolate|optimize|rendering|lag/i.test(q)) {
       return {
-        text: `**Performance Tuning & 60/120 FPS Rendering:** ⚡🎬\n\nSatwinder has optimized Flutter rendering pipelines reducing frame jank from 18% down to **under 1.2%**:\n\n- **DevTools Timeline Profiling:** Continuous profiling of UI and Raster threads to eliminate frame drops and expensive layout passes.\n- **Dart Isolates (Multi-Threading):** Offloads heavy JSON parsing, cryptography, and image compression completely off the UI thread.\n- **Rebuild Minimization:** Aggressive use of ` + "`const`" + ` constructors, granular ` + "`BlocBuilder`" + ` scoping, and ` + "`RepaintBoundary`" + ` to prevent unnecessary subtree repaints.\n- **Image & Memory Management:** Pre-caching asset bundles, downsampling textures, and leak detection via DevTools Memory Snapshots.`,
+        text: `The portfolio lists Flutter rendering and performance tuning as areas of expertise. No benchmark report is included in this repository, so it does not verify a specific frame rate or percentage improvement.`,
         followUps: [
           "What makes his Flutter apps crash-free?",
           "What state management does he prefer?",
@@ -244,10 +237,10 @@
       };
     }
 
-    // 10. Native Android & iOS Bridges (Method Channels / Kotlin / Swift)
+    // 10. Native Android and Method Channels (specific iOS work is not documented)
     if (/native|kotlin|swift|method channel|event channel|platform channel|java|bridge|android native|ios native/i.test(q)) {
       return {
-        text: `**Native Android & iOS Engineering Depth:** 📱⚙️\n\nUnlike pure cross-platform wrappers, Satwinder bridges deep into native platform layers:\n\n- **Native Android (Kotlin/Java):** 3+ years writing background services, BroadcastReceivers, Jetpack components, and custom native Views.\n- **Native iOS (Swift):** Custom MethodChannels, AppDelegate lifecycle hooks, and CoreLocation / StoreKit integration.\n- **Bidirectional Channels:** EventChannels for continuous sensor and audio streams; MethodChannels for synchronous native hardware execution.\n- **Third-Party SDKs:** Seamless native bridging for biometric auth, payment SDKs, and BLE (Bluetooth Low Energy) hardware devices.`,
+        text: `The portfolio lists **Android (Kotlin)** and **Method Channels** among Satwinder's skills. The checked-in repository does not document a specific native iOS implementation or app-level platform-channel example.`,
         followUps: [
           "What are his core technical skills?",
           "What is his experience with Flutter & BLoC?",
@@ -259,7 +252,7 @@
     // 11. Testing & Automated CI/CD (Fastlane & GitHub Actions)
     if (/test|testing|unit test|widget test|integration|fastlane|ci\/cd|pipeline|github actions|automation/i.test(q)) {
       return {
-        text: `**Testing & Automated CI/CD Pipelines:** 🧪🚀\n\n- **Unit Testing:** Comprehensive test coverage for Domain use cases and BLoC state streams using ` + "`package:test`" + ` and ` + "`mocktail`" + `.\n- **Widget & Component Testing:** Golden tests and interaction simulations ensuring responsive rendering across varied screen densities.\n- **Automated CI/CD with Fastlane:** Scripted pipelines in **GitHub Actions** executing static analysis (` + "`dart analyze`" + `), test suites, keystore code signing, and 1-click deployments to **Google Play Console** and **Apple TestFlight**.`,
+        text: `Fastlane CI/CD is listed among Satwinder's skills. No application test suite or CI workflow is included in this repository, so I can't verify project-specific test coverage or deployment pipelines from this checkout.`,
         followUps: [
           "What makes his Flutter apps crash-free?",
           "How does he structure Clean Architecture?",
@@ -271,7 +264,7 @@
     // 12. Why Hire Satwinder / Key Value Proposition (Check before generic hiring)
     if (/\b(why\s+(should\s+i\s+)?hire|why\s+satwinder|strengths?|key\s+value|stand\s*out|advantage)\b/i.test(q)) {
       return {
-        text: `**Why Hire Satwinder Singh?** ⭐\n\n1. **Architectural Discipline:** He builds with Clean Architecture and strict separation of concerns, ensuring codebases remain maintainable as teams scale.\n2. **Rock-Solid Stability:** Proven **99.9% crash-free rate** across 100K+ monthly active users.\n3. **Native Depth:** Native Android Kotlin skills enable him to write custom hardware drivers and MethodChannels without third-party limitations.\n4. **End-to-End Ownership:** From initial architectural design to Fastlane CI/CD automated deployment on App Store & Google Play.`,
+        text: `**Satwinder Singh — Senior Flutter Developer** ⭐\n\nThe portfolio highlights Flutter, Clean Architecture, Firebase, native Android development, and Fastlane. It also lists 10+ production apps and a 99.9% crash-free figure; this repository does not contain supporting reports for those metrics.`,
         followUps: [
           "Tell me about his top projects",
           "How can I hire him for a project?",
@@ -283,7 +276,7 @@
     // 13. Location & Timezone (Check before generic work)
     if (/\b(location|where\s+(is\s+he|are\s+you|is\s+satwinder)|where\s+based|timezone|time\s*zone|city|punjab|amritsar|india|remote\s+work|work\s+remote)\b/i.test(q)) {
       return {
-        text: `**Location & Timezone Availability:** 🌍\n\n- **Base:** Punjab / Amritsar, India (IST — UTC+5:30).\n- **Remote Flexibility:** Experienced working with distributed international teams across **US (EST/PST), UK/Europe (GMT/CET), and APAC** timezones with reliable daily overlap.\n- **Setup:** High-speed gigabit fiber connection, professional testing lab with physical Android & iOS devices.`,
+        text: `The portfolio repository does not specify Satwinder's city, state, or timezone. Please use the contact links for location or scheduling details.`,
         followUps: [
           "How can I hire him for a project?",
           "How can I contact Satwinder?",
@@ -295,7 +288,7 @@
     // 14. Career Trajectory & Work Experience / Companies (Check before projects)
     if (/\b(where\s+(has\s+he|did\s+he)\s+worked?|work(ed)?\s+(history|at|for)|experience|career|companies|company|toxsl|seraphic|blocvibe|possibility|history|trajectory|timeline|background|who is satwinder)\b/i.test(q)) {
       return {
-        text: `**Satwinder's Career Trajectory (3+ Years Experience):** 💼📈\n\n- **Senior Software Developer @ ToXSL Technologies** *(Jan 2025 – Present)*\n  Leading mobile architectures, performance optimization, CI/CD pipeline automation, and mentoring engineering teams in Clean Architecture.\n- **Flutter Developer @ Seraphic Infosolutions** *(Jun 2024 – Jun 2025)*\n  Engineered cross-platform mobile apps with Flutter & Dart, complex UI animations, MethodChannels, and REST APIs.\n- **Android Developer @ Blocvibe Technologies** *(Oct 2023 – Jun 2024)*\n  Developed responsive native Android apps using Kotlin and Jetpack components.\n- **Android Developer @ Possibility Solutions** *(Jan 2022 – Jan 2024)*\n  Handled native Java/Kotlin modules, UI debugging, and system integration.`,
+        text: `**Satwinder's Career Trajectory (${currentExperienceYears()}+ years since Jan 2022):** 💼📈\n\n- **Senior Software Developer @ ToXSL Technologies** *(Jan 2025 – Present)*\n  Leading mobile architectures, performance optimization, CI/CD pipeline automation, and mentoring engineering teams in Clean Architecture.\n- **Flutter Developer @ Seraphic Infosolutions** *(Jun 2024 – Jun 2025)*\n  Engineered cross-platform mobile apps with Flutter & Dart, complex UI animations, MethodChannels, and REST APIs.\n- **Android Developer @ Blocvibe Technologies** *(Oct 2023 – Jun 2024)*\n  Developed responsive native Android apps using Kotlin and Jetpack components.\n- **Android Developer @ Possibility Solutions** *(Jan 2022 – Jan 2024)*\n  Handled native Java/Kotlin modules, UI debugging, and system integration.`,
         followUps: [
           "What are his core technical skills?",
           "Tell me about his top projects",
@@ -307,7 +300,7 @@
     // 15. Resume / CV Download
     if (/\b(resume|cv|curriculum|download\s+cv|download\s+resume)\b/i.test(q)) {
       return {
-        text: `**Satwinder Singh — Senior Flutter Engineer Resume:** 📄\n\n- **Experience:** 3+ Years in Mobile Engineering & System Architecture\n- **Delivered:** 10+ Production Apps | 99.9% Crash-Free | 60+ FPS Rendering\n- **Core Stack:** Flutter, Dart, Android (Kotlin), Clean Architecture, BLoC, Riverpod, Fastlane CI/CD.\n\nTo view or download his official resume, click the **"Download CV"** button in the hero section or email him directly at [${portfolioKnowledge.contact.email}](mailto:${portfolioKnowledge.contact.email}).`,
+        text: `**Satwinder Singh — CV:** 📄\n\n- **Experience:** ${currentExperienceYears()}+ years since the Jan 2022 timeline start.\n- **Portfolio claims:** 10+ production apps and 99.9% crash-free; supporting reports are not in this repository.\n- **Core skills:** Flutter, Dart, Android (Kotlin), Clean Architecture, BLoC, Riverpod, Firebase, and Fastlane.\n\nThe CV button points to the requested local PDF path, but that PDF is not present in this repository yet. Please request the CV directly at [${portfolioKnowledge.contact.email}](mailto:${portfolioKnowledge.contact.email}).`,
         followUps: [
           "How can I contact or hire Satwinder?",
           "What are his core technical skills?",
@@ -319,7 +312,7 @@
     // 16. Hiring, Rates, Availability & Working Modes
     if (/\b(hire|rates?|salary|pricing|cost|available|availability|contract|freelance|interview|notice\s*period)\b/i.test(q)) {
       return {
-        text: `**Satwinder is Actively Available for High-Impact Roles!** 🚀\n\n- **Target Roles:** Senior Flutter Engineer, Staff Mobile Architect, or Technical Mobile Lead.\n- **Engagement Types:** Full-time roles, contract architecture consulting, or high-value freelance projects.\n- **Working Mode:** Remote globally with full timezone alignment for US, UK, Europe, and APAC teams.\n- **Direct Contact:**\n  - **Email:** [${portfolioKnowledge.contact.email}](mailto:${portfolioKnowledge.contact.email})\n  - **WhatsApp:** [${portfolioKnowledge.contact.whatsapp}](https://wa.me/919877995250)\n  - **GitHub:** [${portfolioKnowledge.contact.github}](${portfolioKnowledge.contact.github})\n\nYou can also click the **"Get In Touch"** button on this page to initiate an interview!`,
+        text: `The portfolio currently shows **Available for Senior Roles**. For role fit and engagement details, contact Satwinder directly:\n\n- **Email:** [${portfolioKnowledge.contact.email}](mailto:${portfolioKnowledge.contact.email})\n- **WhatsApp:** [${portfolioKnowledge.contact.whatsapp}](https://wa.me/919877995250)\n- **GitHub:** [${portfolioKnowledge.contact.github}](${portfolioKnowledge.contact.github})`,
         followUps: [
           "Can I download his CV?",
           "What are his core technical skills?",
@@ -331,7 +324,7 @@
     // 17. Contact Details & Socials
     if (/\b(contact|email|whatsapp|phone|call|reach|linkedin|github|instagram|social)\b/i.test(q)) {
       return {
-        text: `**Get in Touch with Satwinder Singh:** 📬\n\n- **Email:** [${portfolioKnowledge.contact.email}](mailto:${portfolioKnowledge.contact.email})\n- **WhatsApp:** [${portfolioKnowledge.contact.whatsapp}](https://wa.me/919877995250)\n- **GitHub:** [${portfolioKnowledge.contact.github}](${portfolioKnowledge.contact.github})\n- **LinkedIn:** [linkedin.com/in/satwinder-singh-809a6b256](https://www.linkedin.com/in/satwinder-singh-809a6b256)\n- **Location:** Punjab, India (Open to Remote Globally)\n\nHe typically responds to serious inquiries within a few hours!`,
+        text: `**Get in Touch with Satwinder Singh:** 📬\n\n- **Email:** [${portfolioKnowledge.contact.email}](mailto:${portfolioKnowledge.contact.email})\n- **WhatsApp:** [${portfolioKnowledge.contact.whatsapp}](https://wa.me/919877995250)\n- **GitHub:** [${portfolioKnowledge.contact.github}](${portfolioKnowledge.contact.github})\n- **LinkedIn:** [linkedin.com/in/satwinder-singh-809a6b256](https://www.linkedin.com/in/satwinder-singh-809a6b256)\n\nThe repository does not specify a city/state or response time.`,
         followUps: [
           "What is his Flutter experience?",
           "Can I download his CV?",
@@ -343,10 +336,9 @@
     // 18. Projects Showcase (Overview of all projects)
     if (/\b(projects?|portfolio|showcase|flagship|apps?\s+(shipped|built)|what\s+apps?)\b/i.test(q)) {
       return {
-        text: `Here are **Satwinder's flagship engineering projects**:\n\n1. **Vibe Real-Time Platform:** Full-stack reactive collaboration app with real-time CMS, offline caching, and instant WebSocket state synchronization.\n2. **Satcraft Resume Suite:** High-performance web app built with TypeScript, Vite, and client-side vector PDF generation.\n3. **Enterprise Multi-Tenant Mobile Suite:** Production Flutter architecture serving 100K+ monthly active users with strict 99.9% crash-free uptime.`,
+        text: `The checked-in repository documents one public project in detail: **DropLink — Secure File Sharing**, deployed under [/Vibe/](/Vibe/). Its homepage describes guest file transfers, encrypted cloud storage, and an account-based personal vault. Other portfolio projects are served from the live CMS and are not included in this checkout.`,
         followUps: [
-          "Tell me more about Vibe's architecture",
-          "Tell me about Satcraft",
+          "Tell me about DropLink",
           "How can I hire him for a project?"
         ]
       };
@@ -355,10 +347,10 @@
     // 19. Technical Arsenal / Skills Breakdown
     if (/\b(skills?|tech\s*stack|stack|arsenal|languages?|frameworks?|tools?|what does he know)\b/i.test(q)) {
       return {
-        text: `**Satwinder's Core Technical Arsenal:** 🛠️\n\n- **Mobile Engineering:** Expert in **Flutter & Dart**, with native bridges into **Android (Kotlin/Java)** and **iOS (Swift)**.\n- **State Management:** Production mastery of **BLoC, Cubit, and Riverpod**.\n- **Architecture:** Domain-Driven Design (DDD), Clean Architecture, Modular Packages, Isolates.\n- **Backend & Real-Time:** Firebase (Firestore, Auth, Rules), WebSockets, REST APIs, and Offline-First synchronization.\n- **Testing & DevOps:** Fastlane CI/CD, GitHub Actions, and high-frequency UI/Unit testing suites.`,
+        text: `**Satwinder's Core Technical Arsenal:** 🛠️\n\n- **Mobile Engineering:** Flutter, Dart, Android, Kotlin, and Method Channels.\n- **State Management:** BLoC, Riverpod, and GetX.\n- **Architecture:** Clean Architecture, MVVM, and Isolates.\n- **Backend & Real-Time:** Firebase, WebSockets, and REST APIs.\n- **Delivery:** Fastlane CI/CD.`,
         followUps: [
           "What state management does he prefer?",
-          "How does he optimize 60 FPS rendering?",
+          "How does he approach rendering performance?",
           "Tell me about his top projects"
         ]
       };
@@ -366,7 +358,7 @@
 
     // 20. Default Conversational Fallback
     return {
-      text: `Thanks for asking! As **Satwinder's AI Assistant**, I can help you evaluate his fit for your engineering team.\n\nSatwinder is a **Senior Flutter Engineer & Architect** with 3+ years experience, 10+ shipped production apps, and proven expertise in Clean Architecture and 60 FPS performance.\n\nWhat would you like to know more about?`,
+        text: `Thanks for asking! As **Satwinder's AI Assistant**, I can help you explore his portfolio.\n\nSatwinder is a **Senior Flutter Developer** whose listed skills include Flutter, Dart, Android, Firebase, and Clean Architecture.\n\nWhat would you like to know more about?`,
       followUps: [
         "What are his core technical skills?",
         "Tell me about his top projects",
@@ -382,17 +374,19 @@
   async function callGeminiApi(userPrompt, history, apiKey) {
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
 
-    const systemInstruction = `You are the personal AI Portfolio Assistant for Satwinder Singh, a Senior Flutter Engineer & System Architect.
+    const systemInstruction = `You are the personal AI Portfolio Assistant for Satwinder Singh, a Senior Flutter Developer.
 Your role is to answer questions from recruiters, clients, and developers about Satwinder's skills, projects, architecture philosophy, and availability.
 Be friendly, articulate, professional, and concise.
 
+Ground answers in facts visible on the portfolio and the checked-in project sources. Do not invent project details, location, performance metrics, test coverage, client results, or qualifications. If a fact is not documented, say it is not available in the portfolio.
+
 Key Facts about Satwinder:
-- Role: Senior Flutter Engineer & System Architect
-- Highlights: 10+ production apps shipped, 99.9% crash-free rate, 60/120 FPS performance profiling.
-- Core Stack: Flutter, Dart, BLoC, Riverpod, Clean Architecture, Kotlin, Swift, Firebase, WebSockets, Fastlane.
-- Flagship Projects: Vibe (real-time platform), Satcraft (TypeScript/Vite resume suite), Enterprise Multi-Tenant Mobile.
+- Role: Senior Flutter Developer.
+- Portfolio claims: 10+ production apps and 99.9% crash-free; supporting reports are not in this repository.
+- Core skills listed on the portfolio: Flutter, Dart, Android, Kotlin, BLoC, Riverpod, Clean Architecture, Firebase, WebSockets, Fastlane.
+- Checked-in public project: DropLink — Secure File Sharing, deployed under /Vibe/.
 - Contact: Email (satwindersinghasr2@gmail.com), WhatsApp (+91 98779 95250), GitHub (github.com/Satwinder777).
-- Availability: Open for Senior Flutter Engineer & Lead Architect roles.
+- Availability: The homepage currently shows availability for senior roles.
 
 Format responses with markdown bullet points where helpful. If asked to contact him, provide his email and WhatsApp.`;
 
@@ -481,7 +475,7 @@ Format responses with markdown bullet points where helpful. If asked to contact 
     const fab = document.createElement('button');
     fab.id = 'ai-chat-fab';
     fab.className = 'ai-fab interactive';
-    fab.setAttribute('aria-label', 'Open Satwinder AI Assistant');
+    fab.setAttribute('aria-label', 'Ask Satwinder AI');
     fab.innerHTML = `
       <div class="ai-fab__icon-wrap">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -576,7 +570,7 @@ Format responses with markdown bullet points where helpful. If asked to contact 
       <!-- Optional API Key Settings Overlay -->
       <div id="ai-config-modal" class="ai-config-modal">
         <div class="flex items-center justify-between mb-4">
-          <h4 class="text-sm font-bold text-white">AI Engine Settings</h4>
+          <h2 class="text-sm font-bold text-white">AI Engine Settings</h2>
           <button id="ai-config-close" class="text-neutral-400 hover:text-white text-xs font-bold p-1">✕</button>
         </div>
         <p class="text-xs text-neutral-400 mb-3 leading-relaxed">

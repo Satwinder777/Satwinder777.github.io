@@ -7,6 +7,14 @@ import { updatePortfolioFields } from "../firebase-admin.js";
 import { uploadToSupabase } from "../supabase.js";
 import { toast } from "../toast.js";
 
+// The site timeline begins in Jan 2022; calculate elapsed whole calendar years
+// without adding overlapping roles together.
+const experienceYearsSinceTimelineStart = () => {
+  const now = new Date();
+  const months = (now.getUTCFullYear() - 2022) * 12 + now.getUTCMonth();
+  return Math.max(0, Math.floor(months / 12));
+};
+
 const TEMPLATE_METAS = {
   template_minimal_dark: {
     name: "Minimal Dark",
@@ -28,9 +36,9 @@ const TEMPLATE_METAS = {
   },
   template_standard_ats: {
     name: "Standard ATS",
-    badge: "99% ATS Score",
+    badge: "ATS Friendly",
     badgeClass: "tpl-badge-emerald",
-    desc: "Strict single-column syntax parser-safe for Workday, Greenhouse & Lever.",
+    desc: "A simple single-column layout designed for readable resume content.",
     color: "#10b981",
     swatches: ["#10b981", "#ffffff", "#0f172a"],
     icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`
@@ -205,11 +213,11 @@ export function renderResume(container, state) {
                 <div>
                   <div class="doc-name-row">
                     <h4 class="doc-candidate-name">Satwinder Singh</h4>
-                    <span class="verified-badge" title="Verified Portfolio Candidate">
+                    <span class="verified-badge" title="Portfolio Preview">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="#00d9ff"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     </span>
                   </div>
-                  <p class="doc-candidate-role">Senior Flutter &amp; Mobile Architect</p>
+                  <p class="doc-candidate-role">Senior Flutter Developer</p>
                 </div>
                 <div class="doc-badge-year">v2026.1 Live</div>
               </div>
@@ -217,11 +225,11 @@ export function renderResume(container, state) {
               <div class="doc-chips-wrap">
                 <span class="doc-skill-chip chip-cyan">
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                  3+ Years Experience
+                  ${experienceYearsSinceTimelineStart()}+ Years Experience
                 </span>
                 <span class="doc-skill-chip chip-emerald">
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-                  120fps Perf Tuning
+                  Rendering Performance
                 </span>
                 <span class="doc-skill-chip chip-purple">
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg>
@@ -229,7 +237,7 @@ export function renderResume(container, state) {
                 </span>
                 <span class="doc-skill-chip chip-amber">
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-                  Supabase &amp; Firebase
+                  Firebase &amp; WebSockets
                 </span>
               </div>
 
