@@ -33,14 +33,14 @@ export function renderSiteContent(container, state) {
 
   const SECTIONS_CONFIG = [
     { key: "about", icon: "👤", title: "Hero & Mindset", desc: "Hero bio, avatar, and Engineering Mindset narrative block" },
-    { key: "stats", icon: "📊", title: "Metrics & Stats Row", desc: "Production apps, crash-free rate, and FPS highlights grid" },
+    { key: "stats", icon: "📊", title: "Metrics & Stats Row", desc: "Production apps, crash-free rate, and rendering performance" },
     { key: "skills", icon: "⚡", title: "Technical Skills Arsenal", desc: "Interactive categorized skill chips and domain stacks" },
-    { key: "expertise", icon: "🎯", title: "Core Capabilities Cards", desc: "Architecture, 120fps tuning, and performance cards" },
+    { key: "expertise", icon: "🎯", title: "Core Capabilities Cards", desc: "Architecture, rendering performance, and engineering cards" },
     { key: "experience", icon: "💼", title: "Career Timeline", desc: "Chronological roles, milestone accomplishments and dates" },
     { key: "projects", icon: "🚀", title: "Featured Work & Projects", desc: "Interactive mobile and web project showcase cards" },
     { key: "contributors", icon: "👥", title: "Contributors & Team", desc: "Open-source collaborators and co-creator profile cards" },
     { key: "upcoming", icon: "🗺️", title: "Roadmap & Upcoming", desc: "Forward-looking feature milestones and ETA cards" },
-    { key: "feedback", icon: "💬", title: "Signal Feedback Wall", desc: "Community endorsements, verified signals and feedback board" },
+    { key: "feedback", icon: "💬", title: "Signal Feedback Wall", desc: "Approved public feedback and visitor suggestions" },
     { key: "contact", icon: "📬", title: "Contact & Hire Gateway", desc: "Direct lead generation form and client inquiry pipeline" },
     { key: "resume", icon: "📄", title: "Download CV / Resume", desc: "Hero CTA button and public PDF download link" },
     { key: "banner", icon: "📢", title: "Announcement Marquee", desc: "Live ticker banner broadcast across website header" },

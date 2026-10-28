@@ -183,6 +183,17 @@ const esc = (s) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
   );
 
+const safeHttpUrl = (raw) => {
+  const value = String(raw || "").trim();
+  if (!value) return "";
+  try {
+    const url = new URL(value, window.location.href);
+    return url.protocol === "http:" || url.protocol === "https:" ? url.href : "";
+  } catch (_) {
+    return "";
+  }
+};
+
 const MONTHS = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
@@ -193,6 +204,29 @@ const fmtMonthYear = (raw) => {
   if (!d) return "";
   return `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 };
+
+// Experience is calculated from the verified Jan 2022 timeline start. Overlapping
+// roles are counted once by using elapsed calendar years, not summed job months.
+const currentExperienceYears = () => {
+  const now = new Date();
+  const elapsedMonths =
+    (now.getUTCFullYear() - 2022) * 12 + now.getUTCMonth();
+  return Math.max(0, Math.floor(elapsedMonths / 12));
+};
+
+const updateStaticExperienceStat = () => {
+  const value = $("experience-years-stat");
+  if (!value) return;
+  const years = currentExperienceYears();
+  value.textContent = `${years}+`;
+  const label = value.nextElementSibling;
+  if (label) label.textContent = "Years Exp.";
+  value.closest("[aria-label]")?.setAttribute(
+    "aria-label",
+    `${years}+ Years Exp. — scroll to Career Trajectory`
+  );
+};
+updateStaticExperienceStat();
 
 const parseFirestoreDate = (raw) => {
   if (!raw) return null;
@@ -400,12 +434,6 @@ function renderProfile(profile = {}) {
   }
 
   // Browser tab: "Name | Job Title"
-  if (jobTitle) {
-    document.title = `${name} | ${jobTitle}`;
-  } else if (name) {
-    document.title = name;
-  }
-
   // Hero paragraph — keep "I am [name]." prefix, append bio/spec text.
   const heroBio = $("hero-bio");
   if (heroBio && (profile.bio || profile.tagline)) {
@@ -455,8 +483,10 @@ function renderProfile(profile = {}) {
   // Avatar (only shown if admin uploaded one).
   const avatar = $("hero-avatar");
   if (avatar) {
-    if (profile.avatarUrl) {
-      avatar.src = profile.avatarUrl;
+    const avatarUrl = safeHttpUrl(profile.avatarUrl);
+    if (avatarUrl) {
+      avatar.src = avatarUrl;
+      avatar.alt = `${name} portrait`;
       avatar.classList.remove("hidden");
     } else {
       avatar.classList.add("hidden");
@@ -464,11 +494,25 @@ function renderProfile(profile = {}) {
   }
 }
 
-function renderStats(stats = []) {
+function renderStats(stats) {
   const el = $("stats-container");
   if (!el) return;
+  if (!Array.isArray(stats)) {
+    updateStaticExperienceStat();
+    el.closest(".reveal")?.classList.remove("cms-section--hidden");
+    return;
+  }
   const list = (stats || [])
     .filter((s) => s && s.visible !== false && (s.value || s.label))
+    .map((s) => {
+      if (/\byears?\b|\bexp\.?\b|\bexperience\b/i.test(String(s.label || ""))) {
+        return { ...s, value: `${currentExperienceYears()}+` };
+      }
+      if (/\bfps\b|frame\s*rate/i.test(String(s.label || "")) || /\b\d+\+?\s*fps\b/i.test(String(s.value || ""))) {
+        return { ...s, value: "UI", label: "Rendering Tuning" };
+      }
+      return s;
+    })
     .slice()
     .sort((a, b) => (a.order || 0) - (b.order || 0));
 
@@ -714,6 +758,11 @@ function renderExperience(items = []) {
       return db_ - da; // most recent start date first
     });
   if (!list.length) {
+    if (el.querySelector("[data-static-experience-fallback]")) {
+      wrap?.classList.remove("cms-section--hidden");
+      wrap?.setAttribute("aria-hidden", "false");
+      return;
+    }
     if (wrap) {
       wrap.classList.add("cms-section--hidden");
       wrap.setAttribute("aria-hidden", "true");
@@ -855,8 +904,9 @@ const projectStatusBadge = (statusKey) => {
 const projectLinkButtons = (p) => {
   const items = [];
   const add = (href, label, icon, store = false) => {
-    if (!href || !String(href).trim()) return;
-    items.push({ href: String(href).trim(), label, icon, store });
+    const safeHref = safeHttpUrl(href);
+    if (!safeHref) return;
+    items.push({ href: safeHref, label, icon, store });
   };
   add(p.playStoreUrl, "Play Store", "smartphone", true);
   add(p.appStoreUrl, "App Store", "apple", true);
@@ -985,10 +1035,11 @@ const projectTechStackFullHtml = (p) => {
 };
 
 const projectVisualBlock = (p, palette) => {
-  const thumb =
+  const thumb = safeHttpUrl(
     p.thumbnailUrl ||
     (Array.isArray(p.imageUrls) && p.imageUrls[0]) ||
-    "";
+    ""
+  );
   const screenInner = thumb
     ? `<img src="${esc(thumb)}" alt="${esc(p.name)}" loading="lazy" decoding="async">`
     : `<i data-lucide="${palette.icon}" class="proj-device__icon ${palette.visualTint}"></i>`;
@@ -1083,139 +1134,12 @@ const buildProjectCardHtml = (p, i) => {
     </article>`;
 };
 
-const projectArchitectureHtml = (p) => {
-  const isFlutter = (p.primaryLanguage || "").toLowerCase().includes("flutter") || 
-                    (p.primaryLanguage || "").toLowerCase().includes("dart") ||
-                    (p.category || "").toLowerCase().includes("mobile") ||
-                    (p.technologies || p.techStack || []).some((t) => String(t).toLowerCase().includes("flutter"));
-
-  const uiEngine = isFlutter ? "Flutter 3.x · Impeller GPU" : "Declarative Native UI Engine";
-  const stateTech = isFlutter ? "BLoC & Riverpod State Engine" : "Unidirectional State Streams";
-  const domainTech = "Clean Architecture & Isolates";
-  const dataTech = "Offline Drift/SQLite & Realtime Sync";
-
-  return `
-    <section class="proj-modal__section proj-modal__section--arch">
-      <div class="arch-header-row">
-        <h3 class="proj-modal__section-title"><i data-lucide="network"></i> Mobile System Architecture & Flow</h3>
-        <span class="arch-badge-pill"><i data-lucide="shield-check"></i> Enterprise Scaled</span>
-      </div>
-      <p class="arch-intro-lead">Engineered with Clean Architecture principles for 120 FPS render performance, deterministic unidirectional data flow, and offline-first persistence.</p>
-
-      <!-- 4-Tier Interactive Mobile Architecture Pipeline -->
-      <div class="arch-pipeline-container">
-        <div class="arch-pipeline-steps">
-          <div class="arch-step-node">
-            <div class="arch-node-header">
-              <span class="arch-node-num">01</span>
-              <span class="arch-node-tag">Presentation</span>
-            </div>
-            <div class="arch-node-body">
-              <h4 class="arch-node-title">Declarative UI Layer</h4>
-              <p class="arch-node-desc">Custom RenderBoxes, Impeller/Skia GPU shaders, adaptive responsive layouts.</p>
-              <div class="arch-node-chips">
-                <span>${esc(uiEngine)}</span><span>Custom Painters</span><span>120 FPS</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="arch-step-connector">
-            <i data-lucide="arrow-right"></i>
-          </div>
-
-          <div class="arch-step-node">
-            <div class="arch-node-header">
-              <span class="arch-node-num">02</span>
-              <span class="arch-node-tag">State Logic</span>
-            </div>
-            <div class="arch-node-body">
-              <h4 class="arch-node-title">Reactive State Engine</h4>
-              <p class="arch-node-desc">Immutable state trees, unidirectional event streams, zero redundant widget rebuilds.</p>
-              <div class="arch-node-chips">
-                <span>${esc(stateTech)}</span><span>RxDart</span><span>State Streams</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="arch-step-connector">
-            <i data-lucide="arrow-right"></i>
-          </div>
-
-          <div class="arch-step-node">
-            <div class="arch-node-header">
-              <span class="arch-node-num">03</span>
-              <span class="arch-node-tag">Domain Core</span>
-            </div>
-            <div class="arch-node-body">
-              <h4 class="arch-node-title">Clean UseCases & Isolates</h4>
-              <p class="arch-node-desc">Pure Dart business rules, heavy background compute offloaded to Dart Isolates.</p>
-              <div class="arch-node-chips">
-                <span>${esc(domainTech)}</span><span>Dart Isolates</span><span>Entities</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="arch-step-connector">
-            <i data-lucide="arrow-right"></i>
-          </div>
-
-          <div class="arch-step-node">
-            <div class="arch-node-header">
-              <span class="arch-node-num">04</span>
-              <span class="arch-node-tag">Data & Sync</span>
-            </div>
-            <div class="arch-node-body">
-              <h4 class="arch-node-title">Repository & Sync Layer</h4>
-              <p class="arch-node-desc">Offline-first Drift/SQLite local cache synchronized seamlessly with cloud backends.</p>
-              <div class="arch-node-chips">
-                <span>${esc(dataTech)}</span><span>Offline SQLite</span><span>REST / Cloud</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Performance & Engineering Benchmarks Grid -->
-      <div class="arch-benchmarks-grid">
-        <div class="arch-metric-card">
-          <div class="arch-metric-icon icon-cyan"><i data-lucide="gauge"></i></div>
-          <div class="arch-metric-data">
-            <span class="arch-metric-val">120 FPS</span>
-            <span class="arch-metric-label">Frame Budgeting (8.3ms)</span>
-          </div>
-        </div>
-        <div class="arch-metric-card">
-          <div class="arch-metric-icon icon-amber"><i data-lucide="zap"></i></div>
-          <div class="arch-metric-data">
-            <span class="arch-metric-val">&lt;480ms</span>
-            <span class="arch-metric-label">Cold Boot Startup</span>
-          </div>
-        </div>
-        <div class="arch-metric-card">
-          <div class="arch-metric-icon icon-emerald"><i data-lucide="shield-check"></i></div>
-          <div class="arch-metric-data">
-            <span class="arch-metric-val">99.9%</span>
-            <span class="arch-metric-label">Crash-Free Stability</span>
-          </div>
-        </div>
-        <div class="arch-metric-card">
-          <div class="arch-metric-icon icon-purple"><i data-lucide="cpu"></i></div>
-          <div class="arch-metric-data">
-            <span class="arch-metric-val">Multi-Isolate</span>
-            <span class="arch-metric-label">Zero UI Thread Blocking</span>
-          </div>
-        </div>
-      </div>
-    </section>
-  `;
-};
-
 const buildProjectModalHtml = (p) => {
   const long = p.longDesc || p.shortDesc || "";
   const features = (p.keyFeatures || []).filter(Boolean);
-  const images = (p.imageUrls || []).filter(Boolean);
-  const videos = (p.videoUrls || []).filter(Boolean);
-  const heroImg = p.thumbnailUrl || images[0] || "";
+  const images = (p.imageUrls || []).map(safeHttpUrl).filter(Boolean);
+  const videos = (p.videoUrls || []).map(safeHttpUrl).filter(Boolean);
+  const heroImg = safeHttpUrl(p.thumbnailUrl || images[0] || "");
   const linksHtml = projectLinkButtons(p);
 
   const techHtml = projectTechStackFullHtml(p);
@@ -1228,8 +1152,6 @@ const buildProjectModalHtml = (p) => {
         </ul>
       </section>`
     : "";
-
-  const archHtml = projectArchitectureHtml(p);
 
   const challengesHtml = p.challenges
     ? `<section class="proj-modal__section">
@@ -1285,7 +1207,6 @@ const buildProjectModalHtml = (p) => {
     ${techHtml ? `<section class="proj-modal__section proj-modal__section--stack"><h3 class="proj-modal__section-title"><i data-lucide="layers"></i> Technology stack</h3>${techHtml}</section>` : ""}
     ${linksHtml ? `<div class="proj-modal__actions">${linksHtml}</div>` : ""}
     ${featuresHtml}
-    ${archHtml}
     ${challengesHtml}
     ${impactHtml}
     ${galleryHtml}
@@ -1293,6 +1214,8 @@ const buildProjectModalHtml = (p) => {
 };
 
 let _contactNudgeTimer = null;
+let _projectModalTrigger = null;
+let _contactNudgeTrigger = null;
 let _skipNudgeThisCaseStudy = false;
 
 /** Popup timing & persistence (sessionStorage — per browser tab). */
@@ -1321,8 +1244,10 @@ const clearContactNudgeTimer = () => {
 const openContactNudge = () => {
   const el = $("contact-nudge");
   if (!el || !canShowContactNudge() || _skipNudgeThisCaseStudy) return;
+  _contactNudgeTrigger = document.activeElement;
   el.classList.add("is-open");
   el.setAttribute("aria-hidden", "false");
+  el.querySelector("button[data-nudge-close]")?.focus();
   refreshUi();
 };
 
@@ -1333,6 +1258,8 @@ const closeContactNudge = (persist = "none") => {
   if (!el) return;
   el.classList.remove("is-open");
   el.setAttribute("aria-hidden", "true");
+  if (_contactNudgeTrigger?.isConnected) _contactNudgeTrigger.focus();
+  _contactNudgeTrigger = null;
   if (persist === "session") {
     sessionStorage.setItem(NUDGE.keys.dismissed, "1");
   } else if (persist === "snooze") {
@@ -1395,11 +1322,14 @@ const openProjectModal = (id) => {
   const modal = $("project-modal");
   const body = $("project-modal-body");
   if (!p || !modal || !body) return;
+  const active = document.activeElement;
+  _projectModalTrigger = active?.closest?.(".proj-open-detail") ? active : null;
   closeContactNudge("none");
   _skipNudgeThisCaseStudy = false;
   body.innerHTML = buildProjectModalHtml(p);
   modal.classList.add("is-open");
   modal.setAttribute("aria-hidden", "false");
+  modal.querySelector("button[data-proj-close]")?.focus();
   document.body.style.overflow = "hidden";
   refreshUi();
   scheduleContactNudge();
@@ -1418,6 +1348,8 @@ const closeProjectModal = () => {
   modal.classList.remove("is-open");
   modal.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
+  if (_projectModalTrigger?.isConnected) _projectModalTrigger.focus();
+  _projectModalTrigger = null;
 };
 
 const setupProjectTilt = () => {
@@ -1457,6 +1389,28 @@ const initProjectShowcase = () => {
   });
 
   document.addEventListener("keydown", (e) => {
+    if (e.key === "Tab") {
+      const activeDialog = $("contact-nudge")?.classList.contains("is-open")
+        ? $("contact-nudge")
+        : $("project-modal")?.classList.contains("is-open")
+          ? $("project-modal")
+          : null;
+      if (!activeDialog) return;
+      const focusable = Array.from(activeDialog.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )).filter((el) => el.getClientRects().length > 0);
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && (document.activeElement === first || !activeDialog.contains(document.activeElement))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (document.activeElement === last || !activeDialog.contains(document.activeElement))) {
+        e.preventDefault();
+        first.focus();
+      }
+      return;
+    }
     if (e.key !== "Escape") return;
     if ($("contact-nudge")?.classList.contains("is-open")) {
       closeContactNudge("next-study");
@@ -1472,6 +1426,11 @@ function renderProjects(items = []) {
   if (!el) return;
   const all = (items || []).filter((p) => p && p.name && p.visible !== false);
   if (!all.length) {
+    if (el.querySelector("[data-project-fallback]")) {
+      wrap?.classList.remove("cms-section--hidden");
+      wrap?.setAttribute("aria-hidden", "false");
+      return;
+    }
     if (wrap) {
       wrap.classList.add("cms-section--hidden");
       wrap.setAttribute("aria-hidden", "true");
@@ -1531,29 +1490,25 @@ function renderSocialLinks(links = {}) {
 function renderResume(url, show) {
   const btn = $("resume-download-btn");
   if (!btn) return;
-  const ok = !!url && show !== false;
-  if (ok) {
-    btn.href = url;
-    btn.style.display = "";
-    if (!btn.dataset.sigTracked) {
-      btn.dataset.sigTracked = "1";
-      btn.addEventListener("click", () => {
-        trackRecruiterSignal("resume_download", {
-          target: "Senior Flutter Engineer Resume PDF",
-          url,
-          intentScore: 96
-        });
+  const localCv = "/assets/Satwinder-Singh-Flutter-Developer-CV.pdf";
+  btn.href = localCv;
+  btn.setAttribute("download", "");
+  btn.style.display = show === false ? "none" : "";
+  if (!btn.dataset.sigTracked) {
+    btn.dataset.sigTracked = "1";
+    btn.addEventListener("click", () => {
+      trackRecruiterSignal("resume_download", {
+        target: "Senior Flutter Developer CV",
+        url: localCv,
+        intentScore: 96
       });
-    }
-  } else {
-    btn.style.display = "none";
+    });
   }
 }
 
 function renderSeo(seo = {}) {
-  if (seo.title) document.title = seo.title;
-  const desc = document.querySelector('meta[name="description"]');
-  if (desc && seo.description) desc.setAttribute("content", seo.description);
+  // The requested public identity metadata is defined once in index.html.
+  // Leave it stable when profile or CMS content is hydrated.
   const theme = document.querySelector('meta[name="theme-color"]');
   if (theme && seo.themeColor) theme.setAttribute("content", seo.themeColor);
 }
@@ -1564,11 +1519,15 @@ function renderContactGate(enabled) {
   _contactFormEnabled = enabled !== false;
   const el = document.querySelector("[data-contact-section]");
   if (!el) return;
-  el.style.display = enabled === false ? "none" : "";
+  el.style.display = "";
   const banner = document.getElementById("contact-disabled-banner");
   const form = document.getElementById("contact-form");
   if (banner) banner.classList.toggle("hidden", _contactFormEnabled);
-  if (form) form.classList.toggle("contact-form--disabled", !_contactFormEnabled);
+  if (form) {
+    form.classList.toggle("contact-form--disabled", !_contactFormEnabled);
+    form.classList.toggle("hidden", !_contactFormEnabled);
+    form.hidden = !_contactFormEnabled;
+  }
   refreshContactFormUi();
 }
 
@@ -1590,7 +1549,7 @@ const buildContributorCardHtml = (person, index) => {
   const gh = buildSocialUrl("github", person.github);
   const li = buildSocialUrl("linkedin", person.linkedin);
   const web = String(person.website || "").trim();
-  const webHref = web && !/^https?:\/\//i.test(web) ? `https://${web}` : web;
+  const webHref = safeHttpUrl(/^https?:\/\//i.test(web) ? web : web ? `https://${web}` : "");
   if (gh) {
     links.push(
       `<a href="${esc(gh)}" class="contrib-link contrib-link--github interactive" target="_blank" rel="noopener noreferrer">${SVG_GITHUB}<span>GitHub</span></a>`
@@ -1715,6 +1674,11 @@ function renderUpcomingFeatures(items = []) {
     .sort((a, b) => (a.order || 0) - (b.order || 0));
 
   if (!list.length) {
+    if (el.querySelector("[data-roadmap-fallback]")) {
+      wrap.classList.remove("cms-section--hidden");
+      wrap.setAttribute("aria-hidden", "false");
+      return;
+    }
     wrap.classList.add("cms-section--hidden");
     wrap.setAttribute("aria-hidden", "true");
     el.innerHTML = "";
@@ -2109,6 +2073,7 @@ function watchFeedbackBoard() {
   const q = query(
     feedbackCol,
     where("visibleOnWeb", "==", true),
+    where("status", "in", ["reviewed", "resolved"]),
     orderBy("createdAt", "desc"),
     limit(40)
   );
@@ -2133,6 +2098,8 @@ const setFeedbackFieldError = (field, msg) => {
   const wrap = document.querySelector(`.feedback-field[data-fb-field="${field}"]`);
   const err = document.getElementById(`error-${field}`);
   if (err) err.textContent = msg || "";
+  const input = wrap?.querySelector("input, select, textarea");
+  if (input) input.setAttribute("aria-invalid", msg ? "true" : "false");
   wrap?.classList.toggle("contact-field--invalid", !!msg);
 };
 
@@ -2256,6 +2223,11 @@ function initFeedbackForm() {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (submitBtn?.dataset.submitting === "1") return;
+
+    const honeypot = document.getElementById("feedback_website")?.value?.trim();
+    if (honeypot) return;
+
     const data = readFeedbackFormData();
 
     if (!isFeedbackFormValid(data)) {
@@ -2264,7 +2236,15 @@ function initFeedbackForm() {
     }
 
     const now = Date.now();
-    if (now - _lastFeedbackSubmit < FEEDBACK_RATE_MS) {
+    let persistedFeedbackTime = 0;
+    try {
+      persistedFeedbackTime = Number(localStorage.getItem("feedback_last_sent") || 0);
+    } catch (_) {}
+    const lastSent = Math.max(
+      _lastFeedbackSubmit,
+      persistedFeedbackTime
+    );
+    if (now - lastSent < FEEDBACK_RATE_MS) {
       showFbStatus("Please wait a moment before transmitting again.", "error");
       return;
     }
@@ -2284,11 +2264,14 @@ function initFeedbackForm() {
         suggestion: data.suggestion,
         status: "in_review",
         developerReply: "",
-        visibleOnWeb: true,
+        visibleOnWeb: false,
         source: "portfolio_web",
         createdAt: serverTimestamp(),
       });
       _lastFeedbackSubmit = now;
+      try {
+        localStorage.setItem("feedback_last_sent", String(now));
+      } catch (_) {}
       form.reset();
       document.getElementById("signal-type-grid")?.querySelectorAll(".signal-type-tile").forEach((c) => {
         c.classList.remove("is-active");
@@ -2297,7 +2280,7 @@ function initFeedbackForm() {
       updateCharCount();
       triggerSignalBurst();
       showFbStatus(
-        "Signal received! Your idea is live on the feed as In review.",
+        "Signal received. It will appear on the public feed after review and approval.",
         "success"
       );
     } catch (err) {
@@ -2343,6 +2326,10 @@ function renderSectionVisibility(visibility = {}) {
         document.querySelectorAll(conf.nav).forEach((n) => { n.style.display = "none"; });
       }
     } else {
+      if (key === "about" && sec) {
+        sec.classList.remove("cms-section--hidden");
+        sec.setAttribute("aria-hidden", "false");
+      }
       if (conf.nav) {
         document.querySelectorAll(conf.nav).forEach((n) => { n.style.display = ""; });
       }
@@ -2370,7 +2357,6 @@ function renderSectionVisibility(visibility = {}) {
 }
 
 function renderAll(data) {
-  try { renderSectionVisibility(data.sectionVisibility || {});               } catch (e) { console.error("renderSectionVisibility", e); }
   try { renderSiteBanner(data.siteBanner);                                   } catch (e) { console.error("renderSiteBanner",     e); }
   try { renderProfile(data.profile);                              } catch (e) { console.error("renderProfile",   e); }
   try { renderStats(data.stats);                                  } catch (e) { console.error("renderStats",     e); }
@@ -2386,6 +2372,7 @@ function renderAll(data) {
   try { renderSeo(data.seo || {});                                } catch (e) { console.error("renderSeo",       e); }
   try { renderContactGate(data.contactEnabled);                   } catch (e) { console.error("renderContactGate",e); }
   try { if (typeof window.updateAiPortfolioKnowledge === "function") window.updateAiPortfolioKnowledge(data); } catch (e) { console.warn("updateAiPortfolioKnowledge", e); }
+  try { renderSectionVisibility(data.sectionVisibility || {});               } catch (e) { console.error("renderSectionVisibility", e); }
   refreshUi();
 }
 
@@ -2430,6 +2417,7 @@ onSnapshot(
 // ------------------------------------------------------------
 const CONTACT_RATE_MS = 60_000;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+let _lastContactSubmit = 0;
 
 /** EmailJS — admin notify + visitor auto-reply (satwinder777.github.io) */
 const EMAILJS_CONFIG = {
@@ -2523,6 +2511,8 @@ const setFieldError = (field, msg) => {
   const wrap = document.querySelector(`.contact-field[data-field="${field}"]`);
   const err = document.getElementById(`error-${field}`);
   if (err) err.textContent = msg || "";
+  const input = wrap?.querySelector("input, select, textarea");
+  if (input) input.setAttribute("aria-invalid", msg ? "true" : "false");
   wrap?.classList.toggle("contact-field--invalid", !!msg);
 };
 
@@ -2641,6 +2631,7 @@ const initContactForm = () => {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (submitBtn?.dataset.submitting === "1") return;
 
     if (!_contactFormEnabled) {
       showStatus("Contact form is currently disabled. Use WhatsApp or email in the footer.", "error");
@@ -2650,7 +2641,11 @@ const initContactForm = () => {
     const honeypot = document.getElementById("company_website")?.value?.trim();
     if (honeypot) return;
 
-    const lastSent = Number(localStorage.getItem("contact_last_sent") || 0);
+    let persistedContactTime = 0;
+    try {
+      persistedContactTime = Number(localStorage.getItem("contact_last_sent") || 0) || 0;
+    } catch (_) {}
+    const lastSent = Math.max(_lastContactSubmit, persistedContactTime);
     if (Date.now() - lastSent < CONTACT_RATE_MS) {
       showStatus("Please wait a minute before sending another message.", "error");
       return;
@@ -2710,11 +2705,13 @@ const initContactForm = () => {
     }
 
     if (dbOk || emailOk) {
-      localStorage.setItem("contact_last_sent", String(Date.now()));
+      _lastContactSubmit = Date.now();
+      try {
+        localStorage.setItem("contact_last_sent", String(_lastContactSubmit));
+      } catch (_) {}
       trackRecruiterSignal("inquiry_submitted", {
-        target: `${data.name || "Recruiter"} (${data.email || "Email"}) — ${data.subject || "Direct Inquiry"}`,
-        intentScore: 99,
-        meta: { name: data.name, email: data.email, subject: data.subject }
+        target: "Direct contact form inquiry",
+        intentScore: 99
       });
       form.reset();
       updateCount();

@@ -525,7 +525,7 @@ export function renderInbox(container, state) {
         phone: "+1 (415) 890-2341",
         company: "FinTech Alpha Global",
         type: "Hiring / Contract",
-        message: "Hi Satwinder, we came across your Flutter 120fps architecture showcase. We are looking for a Lead Mobile Engineer to architect our next-gen mobile trading terminal. Would love to schedule a technical chat this week.",
+        message: "Hi Satwinder, we reviewed your Flutter portfolio and would like to discuss a mobile app project. Please let us know how we can share more details.",
         isRead: false,
         isStarred: true,
         isArchived: false,
@@ -601,20 +601,20 @@ function getTypeIcon(type) {
 
 function getDefaultDraft(item) {
   const name = item.name || "there";
-  return `Hi ${name},\n\nThank you for reaching out via my portfolio! I reviewed your message regarding "${item.type || "the opportunity"}" and would love to connect further.\n\nBest regards,\nSatwinder Singh\nLead Mobile Architect & Senior Flutter Engineer\nhttps://satwinder777.github.io`;
+  return `Hi ${name},\n\nThank you for reaching out via my portfolio! I reviewed your message regarding "${item.type || "the opportunity"}" and would be glad to discuss it further.\n\nBest regards,\nSatwinder Singh\nSenior Flutter Developer\nhttps://satwinder777.github.io`;
 }
 
 function getTemplateText(template, item) {
   const name = item.name || "there";
   switch (template) {
     case "chat":
-      return `Hi ${name},\n\nThank you for reaching out! I'd love to discuss this initiative in detail. Are you available for a brief 20-minute Google Meet or technical sync sometime this week?\n\nPlease let me know your preferred time slot or send across a calendar invite.\n\nBest regards,\nSatwinder Singh\nSenior Flutter & Mobile Architect`;
+      return `Hi ${name},\n\nThank you for reaching out! I'd be glad to discuss this initiative. Please share a few times that work for you, and I will confirm my availability.\n\nBest regards,\nSatwinder Singh\nSenior Flutter Developer`;
     case "deck":
-      return `Hi ${name},\n\nThank you for considering my expertise. You can review my architecture case studies, 120fps benchmarks, and verified credentials at:\n- Portfolio: https://satwinder777.github.io\n- GitHub: https://github.com/Satwinder777\n\nLooking forward to hearing your thoughts!\n\nBest regards,\nSatwinder Singh`;
+      return `Hi ${name},\n\nThank you for considering my portfolio. You can review the available portfolio information and public repositories here:\n- Portfolio: https://satwinder777.github.io\n- GitHub: https://github.com/Satwinder777\n\nBest regards,\nSatwinder Singh`;
     case "rates":
-      return `Hi ${name},\n\nThank you for your inquiry. I am currently accepting selective architecture consulting and high-impact engineering contracts. My standard engagement model includes scoped sprints and fractional technical leadership.\n\nLet's schedule a call to align on requirements and timelines: https://satwinder777.github.io/#contact\n\nBest regards,\nSatwinder Singh`;
+      return `Hi ${name},\n\nThank you for your inquiry. Please share the project scope and timing, and I can confirm availability and discuss a suitable estimate.\n\nYou can reach me through the portfolio contact section: https://satwinder777.github.io/#contact\n\nBest regards,\nSatwinder Singh`;
     case "decline":
-      return `Hi ${name},\n\nThank you so much for considering me for this opportunity! Unfortunately, due to my current commitments, I am unable to take on new projects at this moment.\n\nI really appreciate your interest and would love to stay connected for future collaborations.\n\nBest regards,\nSatwinder Singh`;
+      return `Hi ${name},\n\nThank you for considering me for this opportunity. After reviewing the details, I will not be moving forward with it. I appreciate your interest and wish you the best with the project.\n\nBest regards,\nSatwinder Singh`;
     default:
       return getDefaultDraft(item);
   }

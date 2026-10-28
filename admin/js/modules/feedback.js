@@ -203,9 +203,9 @@ export function renderFeedback(container, state) {
 
                       <div class="quick-reply-chips" style="margin-bottom: 10px;">
                         <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">1-Click Presets:</span>
-                        <button type="button" class="quick-chip" data-id="${item.id}" data-reply="⚡ Fixed in latest deployment! Thank you for the sharp critique.">Fixed in Build</button>
-                        <button type="button" class="quick-chip" data-id="${item.id}" data-reply="🚀 Added to Q4 technical roadmap. Look out for the next release!">Added to Roadmap</button>
-                        <button type="button" class="quick-chip" data-id="${item.id}" data-reply="🙏 Thank you for the critique! Will optimize frame budgets.">Thanks for Critique</button>
+                        <button type="button" class="quick-chip" data-id="${item.id}" data-reply="🙏 Thank you for reporting this. I will review the issue.">Review Issue</button>
+                        <button type="button" class="quick-chip" data-id="${item.id}" data-reply="🙏 Thank you for the idea. I will review it for the roadmap.">Review Idea</button>
+                        <button type="button" class="quick-chip" data-id="${item.id}" data-reply="🙏 Thank you for the feedback. I will review this suggestion.">Thanks for Critique</button>
                       </div>
 
                       <div class="reply-input-row">
@@ -294,14 +294,18 @@ export function renderFeedback(container, state) {
         const textarea = container.querySelector(`.reply-textarea[data-id="${id}"]`);
         const isPublicCheckbox = container.querySelector(`.public-reply-toggle[data-id="${id}"]`);
         const replyText = textarea ? textarea.value.trim() : "";
-        const isPublic = isPublicCheckbox ? isPublicCheckbox.checked : true;
+        const isPublic = isPublicCheckbox ? isPublicCheckbox.checked : false;
+        const currentItem = feedback.find(f => f.id === id);
+        const currentStatus = currentItem?.status || "in_review";
+        const nextStatus = isPublic && currentStatus === "in_review" ? "reviewed" : currentStatus;
+        const shouldPublish = isPublic && ["reviewed", "resolved"].includes(nextStatus);
 
         try {
           if (!id.startsWith("sim-")) {
             await updateFeedbackItem(id, {
               developerReply: replyText,
-              visibleOnWeb: isPublic,
-              status: replyText ? "reviewed" : "in_review",
+              visibleOnWeb: shouldPublish,
+              status: nextStatus,
               repliedAt: new Date().toISOString()
             });
           }
@@ -310,12 +314,12 @@ export function renderFeedback(container, state) {
           const item = feedback.find(f => f.id === id);
           if (item) {
             item.developerReply = replyText;
-            item.visibleOnWeb = isPublic;
-            if (replyText) item.status = "reviewed";
+            item.visibleOnWeb = shouldPublish;
+            item.status = nextStatus;
           }
 
           openComposerIds.delete(id);
-          toast.success("Developer response transmitted successfully!");
+          toast.success(shouldPublish ? "Feedback approved and visibility saved." : "Feedback kept private and changes saved.");
           renderView();
         } catch (e) {
           toast.error("Failed to save response: " + e.message);
@@ -375,7 +379,7 @@ export function renderFeedback(container, state) {
         id: "sim-" + Date.now(),
         name: "Alex Vance",
         type: "idea",
-        suggestion: "Would love to see an interactive 3D model viewer for Flutter widgets inside the portfolio projects. Amazing work on 120fps animations!",
+        suggestion: "Would love to see an interactive 3D model viewer for Flutter widgets inside the portfolio projects. The animations look polished!",
         status: "in_review",
         createdAt: new Date().toISOString(),
         developerReply: "",

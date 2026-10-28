@@ -139,7 +139,7 @@ export function renderSettings(container, state) {
                   <span class="diag-sub">Rendering Engine: WebGL2 Fluid Simulation</span>
                 </div>
               </div>
-              <span class="badge badge-success">60 FPS</span>
+              <span class="badge badge-success">WebGL2</span>
             </div>
 
             <div class="diag-item">

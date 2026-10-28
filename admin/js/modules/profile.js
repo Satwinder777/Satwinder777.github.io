@@ -8,6 +8,12 @@ import { uploadToSupabase } from "../supabase.js";
 import { toast } from "../toast.js";
 import { modal } from "../modal.js";
 
+const currentExperienceYears = () => {
+  const now = new Date();
+  const months = (now.getUTCFullYear() - 2022) * 12 + now.getUTCMonth();
+  return Math.max(0, Math.floor(months / 12));
+};
+
 function escapeHtml(str) {
   if (!str) return "";
   return String(str)
@@ -33,9 +39,9 @@ export function renderProfile(container, state, appRouter) {
       }))
     : [
         { icon: "📱", value: "10+", label: "Production Apps", visible: true, order: 0 },
-        { icon: "⏳", value: "3+", label: "Years Experience", visible: true, order: 1 },
+        { icon: "⏳", value: `${currentExperienceYears()}+`, label: "Years Experience", visible: true, order: 1 },
         { icon: "✅", value: "99.9%", label: "Crash-Free Rate", visible: true, order: 2 },
-        { icon: "⚡", value: "60+", label: "FPS Rendering", visible: true, order: 3 },
+        { icon: "⚡", value: "UI", label: "Rendering Tuning", visible: true, order: 3 },
         { icon: "🚀", value: "40%", label: "Perf Improved", visible: true, order: 4 },
         { icon: "🌐", value: "5+", label: "Industry Domains", visible: true, order: 5 },
       ];
@@ -51,10 +57,10 @@ export function renderProfile(container, state, appRouter) {
 
   const defaultSocials = {
     github: socialLinks.github !== undefined ? socialLinks.github : "https://github.com/satwinder777",
-    linkedin: socialLinks.linkedin !== undefined ? socialLinks.linkedin : "https://linkedin.com/in/satwinder777",
+    linkedin: socialLinks.linkedin !== undefined ? socialLinks.linkedin : "https://www.linkedin.com/in/satwinder-singh-809a6b256",
     whatsapp: socialLinks.whatsapp !== undefined ? socialLinks.whatsapp : "",
     instagram: socialLinks.instagram !== undefined ? socialLinks.instagram : "",
-    email: socialLinks.email !== undefined ? socialLinks.email : "satwinder88721@gmail.com",
+    email: socialLinks.email !== undefined ? socialLinks.email : "satwindersinghasr2@gmail.com",
     showGithub: socialLinks.showGithub !== false,
     showLinkedin: socialLinks.showLinkedin !== false,
     showWhatsapp: socialLinks.showWhatsapp !== false,
@@ -307,13 +313,11 @@ export function renderProfile(container, state, appRouter) {
 
     const PRESETS = [
       { icon: "📱", value: "10+", label: "Production Apps" },
-      { icon: "⏳", value: "3+", label: "Years Experience" },
+      { icon: "⏳", value: `${currentExperienceYears()}+`, label: "Years Experience" },
       { icon: "🔥", value: "99.9%", label: "Crash-Free Rate" },
-      { icon: "⚡", value: "60+", label: "FPS Rendering" },
+      { icon: "⚡", value: "UI", label: "Rendering Tuning" },
       { icon: "🚀", value: "40%", label: "Perf Improved" },
-      { icon: "👥", value: "100k+", label: "Active Users" },
       { icon: "🌐", value: "5+", label: "Industry Domains" },
-      { icon: "🏆", value: "15+", label: "Awards & Certs" }
     ];
 
     const EMOJIS = ["📱", "⏳", "🔥", "⚡", "🚀", "👥", "🌐", "🏆", "💡", "🎯", "💎", "💻", "⭐", "🛠️"];
