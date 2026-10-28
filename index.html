@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <meta name="theme-color" content="#0a0e27">
+<link rel="icon" type="image/png" href="/assets/brand-logo.png">
+<link rel="preload" as="image" href="/assets/profile-images/site-logo-256.jpg" fetchpriority="high">
 
 <title>Satwinder Singh | Senior Flutter Developer</title>
 <meta name="description" content="Hire a Flutter developer for Flutter app development with Clean Architecture and Firebase, building maintainable, reliable mobile apps for growing teams.">
@@ -33,10 +35,9 @@
 }
 </script>
 
-<!-- Premium Google Fonts: Outfit (Headings) & Plus Jakarta Sans (Body) -->
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus Jakarta Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Self-hosted fonts avoid a render-blocking third-party stylesheet. -->
+<link rel="preload" href="./assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 
 <!-- Icons -->
 <script src="https://unpkg.com/lucide@latest" defer></script>
@@ -44,8 +45,6 @@
 <!-- EmailJS v3 — same SDK as live satwinder777.github.io -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
 
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com" defer></script>
 
 <!-- Live CMS: portfolio.js imports firebase.js (do not load firebase.js twice). -->
 <script>
@@ -80,55 +79,63 @@
     } catch (e) {}
   })();
 </script>
-<script src="./assets/webgl-fluid.umd.min.js" defer></script>
 <script src="./theme-switcher.js?v=20261024" defer></script>
 <script type="module" src="./ai-assistant.js?v=20261024"></script>
 <script type="module" src="./portfolio.js?v=20261024_v21"></script>
-<script>
-tailwind.config = {
-theme: {
-extend: {
-fontFamily: {
-sans:['Plus Jakarta Sans', 'sans-serif'],
-display:['Outfit', 'sans-serif'],
-},
-colors: {
-bg: {
-primary: '#0a0e27',
-secondary: '#0f1229',
-tertiary: '#151d3b',
-},
-accent: {
-cyan: '#00d9ff',
-purple: '#8b5cf6',
-pink: '#ec4899',
-},
-},
-animation: {
-'float': 'float 6s ease-in-out infinite',
-'glow-pulse': 'glow-pulse 3s ease-in-out infinite',
-},
-keyframes: {
-float: {
-'0%, 100%': { transform: 'translateY(0)' },
-'50%': { transform: 'translateY(-20px)' },
-},
-'glow-pulse': {
-'0%, 100%': { opacity: '1' },
-'50%': { opacity: '0.6' },
-}
-},
-}
-}
-}
-</script>
-
 <style>
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("./assets/fonts/outfit-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("./assets/fonts/outfit-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./assets/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./assets/fonts/plus-jakarta-sans-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 body {
 background-color: #0a0e27;
 color: #f8fafc;
 overflow-x: hidden;
 -webkit-font-smoothing: antialiased;
+}
+
+#view-work-btn {
+  background-color: #00d9ff;
+  color: #050816;
+}
+
+#hero-subtitle {
+  min-height: 1.5rem;
+}
+
+/* Keep muted copy readable on the dark default and dark themes (WCAG AA). */
+html:not([data-theme="light"]) .text-gray-500,
+html:not([data-theme="light"]) .text-gray-600 {
+  color: #a8b3cf;
 }
 
 /* ── Site navigation — floating dock ── */
@@ -3047,6 +3054,8 @@ html[data-theme="light"] .arch-node-chips span {
 }
 .cms-section--hidden { display: none !important; }
 </style>
+<!-- Load utilities last so responsive and visibility classes override base component styles. -->
+<link rel="stylesheet" href="./tailwind.generated.css?v=20261028">
 </head>
 <body class="selection:bg-accent-cyan/30 selection:text-white">
 
@@ -3085,7 +3094,7 @@ html[data-theme="light"] .arch-node-chips span {
 <!-- Navigation -->
 <nav class="site-nav" id="navbar" aria-label="Main">
 <div class="site-nav__shell">
-<a href="#" class="site-nav__brand interactive">
+<a href="/" class="site-nav__brand interactive" aria-label="Satwinder Singh home">
 <div class="site-nav__logo" id="nav-logo" aria-hidden="true">S</div>
 <div class="site-nav__name hidden sm:block"><span id="nav-name">Satwinder</span><span class="gradient-text-alt">.</span></div>
 </a>
@@ -3156,16 +3165,16 @@ html[data-theme="light"] .arch-node-chips span {
 </div>
 </div>
 
-<div class="nav-dock nav-dock--mobile md:hidden" id="nav-dock-mobile" aria-label="Mobile sections">
+<div class="nav-dock nav-dock--mobile md:hidden" id="nav-dock-mobile" role="group" aria-label="Mobile sections">
 <div class="nav-dock__glider" aria-hidden="true"></div>
-<a href="#about" class="nav-dock__link interactive nav-link" data-section="about"><i data-lucide="user-round"></i><span>About</span></a>
-<a href="#expertise" class="nav-dock__link interactive nav-link" data-section="expertise"><i data-lucide="layers"></i><span>Skills</span></a>
-<a href="#experience" class="nav-dock__link interactive nav-link" data-section="experience"><i data-lucide="briefcase"></i><span>Jobs</span></a>
-<a href="#projects" class="nav-dock__link interactive nav-link" data-section="projects"><i data-lucide="rocket"></i><span>Work</span></a>
-<a href="#contributors" class="nav-dock__link nav-dock__link--accent interactive nav-link" data-section="contributors"><i data-lucide="users"></i><span>Team</span></a>
-<a href="#upcoming" class="nav-dock__link nav-dock__link--accent interactive nav-link" data-section="upcoming"><i data-lucide="sparkles"></i><span>Roadmap</span></a>
-<a href="#feedback" class="nav-dock__link interactive nav-link" data-section="feedback"><i data-lucide="message-square-plus"></i><span>Feedback</span></a>
-<a href="#contact" class="nav-dock__link interactive nav-link" data-section="contact"><i data-lucide="send"></i><span>Hire</span></a>
+<a href="#about" class="nav-dock__link interactive nav-link" data-section="about" aria-label="About"><i data-lucide="user-round"></i><span>About</span></a>
+<a href="#expertise" class="nav-dock__link interactive nav-link" data-section="expertise" aria-label="Skills"><i data-lucide="layers"></i><span>Skills</span></a>
+<a href="#experience" class="nav-dock__link interactive nav-link" data-section="experience" aria-label="Jobs"><i data-lucide="briefcase"></i><span>Jobs</span></a>
+<a href="#projects" class="nav-dock__link interactive nav-link" data-section="projects" aria-label="Work"><i data-lucide="rocket"></i><span>Work</span></a>
+<a href="#contributors" class="nav-dock__link nav-dock__link--accent interactive nav-link" data-section="contributors" aria-label="Team"><i data-lucide="users"></i><span>Team</span></a>
+<a href="#upcoming" class="nav-dock__link nav-dock__link--accent interactive nav-link" data-section="upcoming" aria-label="Roadmap"><i data-lucide="sparkles"></i><span>Roadmap</span></a>
+<a href="#feedback" class="nav-dock__link interactive nav-link" data-section="feedback" aria-label="Feedback"><i data-lucide="message-square-plus"></i><span>Feedback</span></a>
+<a href="#contact" class="nav-dock__link interactive nav-link" data-section="contact" aria-label="Hire"><i data-lucide="send"></i><span>Hire</span></a>
 </div>
 </nav>
 
@@ -3177,16 +3186,16 @@ html[data-theme="light"] .arch-node-chips span {
 <main class="relative z-10">
 <!-- Hero Section -->
 <section class="relative min-h-screen pt-32 pb-20 px-6 lg:px-12 flex flex-col justify-center items-center">
-<div class="max-w-5xl mx-auto text-center reveal">
-<!-- Avatar (hidden until admin uploads one) -->
-<img id="hero-avatar" src="" alt="" width="128" height="128" class="hidden mx-auto mb-8 w-32 h-32 rounded-full object-cover ring-4 ring-accent-cyan/30 shadow-[0_0_30px_rgba(0,217,255,0.3)]">
+<div class="max-w-5xl w-full min-w-0 mx-auto text-center">
+<!-- Keep the hero visible immediately; below-the-fold sections retain reveal animations. -->
+<img id="hero-avatar" src="/assets/profile-images/site-logo-256.jpg" alt="Satwinder Singh portrait" width="128" height="128" loading="eager" decoding="async" fetchpriority="high" class="mx-auto mb-8 w-32 h-32 rounded-full object-cover ring-4 ring-accent-cyan/30 shadow-[0_0_30px_rgba(0,217,255,0.3)]">
 
 <div id="hero-availability-badge" class="mb-8 inline-flex items-center gap-3 px-5 py-2 rounded-full border border-accent-cyan/20 bg-accent-cyan/10 backdrop-blur-md">
 <span class="w-2 h-2 bg-accent-cyan rounded-full animate-pulse shadow-[0_0_10px_#00d9ff]"></span>
 <span id="hero-availability-text" class="text-xs font-bold uppercase tracking-widest text-accent-cyan">Available for Senior Roles</span>
 </div>
 
-<p id="hero-subtitle" class="hidden text-sm md:text-base font-semibold text-gray-400 uppercase tracking-widest mb-4"></p>
+<p id="hero-subtitle" class="invisible text-sm md:text-base font-semibold text-gray-400 uppercase tracking-widest mb-4"></p>
 
 <h1 id="hero-tagline" class="text-5xl md:text-7xl lg:text-8xl font-display font-extrabold mb-8 leading-[1.1] tracking-tight text-white">
 I architect <br class="hidden md:block">
@@ -3834,11 +3843,22 @@ My core strength lies in the Flutter ecosystem and Android native layers. I focu
       }
     }
 
-    if (document.readyState === 'loading') {
-      window.addEventListener('DOMContentLoaded', startFluid);
-    } else {
-      startFluid();
+    function loadFluidOnInteraction() {
+      document.removeEventListener('pointermove', loadFluidOnInteraction, true);
+      document.removeEventListener('pointerdown', loadFluidOnInteraction, true);
+      document.removeEventListener('touchstart', loadFluidOnInteraction, true);
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var script = document.createElement('script');
+      script.src = './assets/webgl-fluid.umd.min.js';
+      script.async = true;
+      script.onload = startFluid;
+      document.head.appendChild(script);
     }
+
+    document.addEventListener('pointermove', loadFluidOnInteraction, { once: true, passive: true, capture: true });
+    document.addEventListener('pointerdown', loadFluidOnInteraction, { once: true, passive: true, capture: true });
+    document.addEventListener('touchstart', loadFluidOnInteraction, { once: true, passive: true, capture: true });
   })();
 </script>
 </body>

@@ -77,7 +77,19 @@ function installWebErrorHandlers() {
 }
 
 installWebErrorHandlers();
-initPortfolioAnalytics();
+let analyticsInitScheduled = false;
+const schedulePortfolioAnalytics = () => {
+  if (analyticsInitScheduled) return;
+  analyticsInitScheduled = true;
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(initPortfolioAnalytics, { timeout: 4000 });
+  } else {
+    window.setTimeout(initPortfolioAnalytics, 750);
+  }
+};
+window.addEventListener("load", schedulePortfolioAnalytics, { once: true });
+window.addEventListener("pointerdown", schedulePortfolioAnalytics, { once: true, passive: true });
+window.addEventListener("scroll", schedulePortfolioAnalytics, { once: true, passive: true });
 document.documentElement.classList.add("portfolio-ready");
 
 // ------------------------------------------------------------
@@ -192,6 +204,115 @@ const safeHttpUrl = (raw) => {
   } catch (_) {
     return "";
   }
+};
+
+const safeExternalWebsiteUrl = (raw) => {
+  let value = String(raw || "").trim();
+  if (!value) return "";
+  if (!/^(?:https?:)?\/\//i.test(value)) value = `https://${value}`;
+
+  const safeUrl = safeHttpUrl(value);
+  if (!safeUrl) return "";
+  try {
+    const url = new URL(safeUrl);
+    const labels = url.hostname.split(".");
+    const validLabel = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i;
+    if (
+      !["http:", "https:"].includes(url.protocol) ||
+      url.username ||
+      url.password ||
+      labels.length < 2 ||
+      labels.some((label) => !validLabel.test(label)) ||
+      labels.at(-1).length < 2
+    ) {
+      return "";
+    }
+    return url.href;
+  } catch (_) {
+    return "";
+  }
+};
+
+const OPTIMIZED_SHOWCASE_NAMES = new Set([
+  "freedelivery", "sgbuildtrack", "uploadio", "fleetpulse", "ballstreet",
+  "cartnova", "mediconnect", "payroute", "dairykhata", "codio",
+  "entermyth", "pulsesocial",
+]);
+
+const portfolioImageSource = (raw) => {
+  const safeUrl = safeHttpUrl(raw);
+  if (!safeUrl) return null;
+
+  try {
+    const url = new URL(safeUrl);
+    const showcase = url.pathname.match(
+      /^\/Satwinder777\/Codio\/main\/public\/([a-z0-9-]+)_showcase\.jpg$/i
+    );
+    if (
+      url.hostname === "raw.githubusercontent.com" &&
+      showcase &&
+      OPTIMIZED_SHOWCASE_NAMES.has(showcase[1].toLowerCase())
+    ) {
+      const name = showcase[1].toLowerCase();
+      const base = `/assets/project-showcases/${name}-showcase`;
+      return {
+        src: `${base}-640.jpg`,
+        srcset: `${base}-640.jpg 640w, ${base}-1024.jpg 1024w`,
+        sizes: "(max-width: 767px) 75vw, 50vw",
+        width: 1376,
+        height: 768,
+      };
+    }
+
+    if (
+      url.hostname === "ieusksnnaxhdyfqbzmdf.supabase.co" &&
+      url.pathname.endsWith("/profile-images/site_logo_1783095151526.jpg")
+    ) {
+      return {
+        src: "/assets/profile-images/site-logo-256.jpg",
+        width: 256,
+        height: 448,
+      };
+    }
+
+    if (
+      url.hostname === "ieusksnnaxhdyfqbzmdf.supabase.co" &&
+      url.pathname.endsWith("/profile-images/avatar_1780140138445.jpg")
+    ) {
+      return {
+        src: "/assets/profile-images/profile-avatar-256.jpg",
+        width: 256,
+        height: 256,
+      };
+    }
+
+    if (url.hostname === "images.unsplash.com") {
+      url.searchParams.set("w", "640");
+      url.searchParams.set("q", "72");
+      url.searchParams.set("auto", "format");
+      return { src: url.href };
+    }
+
+    return { src: safeUrl };
+  } catch (_) {
+    return null;
+  }
+};
+
+const portfolioImageMarkup = (raw, alt, loading = "lazy") => {
+  const source = portfolioImageSource(raw);
+  if (!source) return "";
+  const attrs = [
+    `src="${esc(source.src)}"`,
+    `alt="${esc(alt)}"`,
+    `loading="${loading}"`,
+    'decoding="async"',
+  ];
+  if (source.srcset) attrs.push(`srcset="${esc(source.srcset)}"`);
+  if (source.sizes) attrs.push(`sizes="${esc(source.sizes)}"`);
+  if (source.width) attrs.push(`width="${source.width}"`);
+  if (source.height) attrs.push(`height="${source.height}"`);
+  return `<img ${attrs.join(" ")}>`;
 };
 
 const MONTHS = [
@@ -381,7 +502,14 @@ function applyBrandLogo(el, logoUrl, name, { eager = false } = {}) {
   img.alt = `${name} logo`;
   img.loading = eager ? "eager" : "lazy";
   img.decoding = "async";
-  img.src = src;
+  const imageSource = portfolioImageSource(src);
+  img.src = imageSource?.src || src;
+  if (imageSource?.srcset) {
+    img.srcset = imageSource.srcset;
+    img.sizes = imageSource.sizes;
+  }
+  if (imageSource?.width) img.width = imageSource.width;
+  if (imageSource?.height) img.height = imageSource.height;
   img.onerror = () => {
     if (remote && img.src !== BRAND_LOGO_FALLBACK) {
       img.onerror = () => {
@@ -421,9 +549,10 @@ function renderProfile(profile = {}) {
   if (heroSubtitle) {
     if (jobTitle) {
       heroSubtitle.textContent = jobTitle;
-      heroSubtitle.classList.remove("hidden");
+      heroSubtitle.classList.remove("hidden", "invisible");
     } else {
-      heroSubtitle.classList.add("hidden");
+      heroSubtitle.classList.remove("hidden");
+      heroSubtitle.classList.add("invisible");
     }
   }
 
@@ -485,7 +614,15 @@ function renderProfile(profile = {}) {
   if (avatar) {
     const avatarUrl = safeHttpUrl(profile.avatarUrl);
     if (avatarUrl) {
-      avatar.src = avatarUrl;
+      const imageSource = portfolioImageSource(avatarUrl);
+      avatar.src = imageSource?.src || avatarUrl;
+      if (imageSource?.srcset) {
+        avatar.srcset = imageSource.srcset;
+        avatar.sizes = imageSource.sizes;
+      } else {
+        avatar.removeAttribute("srcset");
+        avatar.removeAttribute("sizes");
+      }
       avatar.alt = `${name} portrait`;
       avatar.classList.remove("hidden");
     } else {
@@ -1041,7 +1178,7 @@ const projectVisualBlock = (p, palette) => {
     ""
   );
   const screenInner = thumb
-    ? `<img src="${esc(thumb)}" alt="${esc(p.name)}" loading="lazy" decoding="async">`
+    ? portfolioImageMarkup(thumb, p.name)
     : `<i data-lucide="${palette.icon}" class="proj-device__icon ${palette.visualTint}"></i>`;
   return `
     <div class="proj-media-orb proj-media-orb--cyan" aria-hidden="true"></div>
@@ -1173,7 +1310,7 @@ const buildProjectModalHtml = (p) => {
         <div class="proj-gallery">${images
           .map(
             (u) =>
-              `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer" class="interactive proj-gallery__item">${mediaFrame(`<img src="${esc(u)}" alt="${esc(p.name)}" loading="lazy" decoding="async">`, "media-frame--fluid media-frame--thumb")}</a>`
+              `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer" class="interactive proj-gallery__item">${mediaFrame(portfolioImageMarkup(u, p.name), "media-frame--fluid media-frame--thumb")}</a>`
           )
           .join("")}</div>
       </section>`
@@ -1195,7 +1332,7 @@ const buildProjectModalHtml = (p) => {
     : "";
 
   return `
-    ${heroImg ? mediaFrame(`<img src="${esc(heroImg)}" alt="${esc(p.name)}" decoding="async">`, "media-frame--fluid media-frame--hero proj-modal__hero") : ""}
+    ${heroImg ? mediaFrame(portfolioImageMarkup(heroImg, p.name), "media-frame--fluid media-frame--hero proj-modal__hero") : ""}
     <div class="proj-modal__badges">
       ${projectStatusBadge(p.status)}
       ${p.category ? `<span class="proj-tag"><i data-lucide="${CATEGORY_ICON[p.category] || "folder-kanban"}"></i>${esc(p.category)}</span>` : ""}
@@ -1549,7 +1686,7 @@ const buildContributorCardHtml = (person, index) => {
   const gh = buildSocialUrl("github", person.github);
   const li = buildSocialUrl("linkedin", person.linkedin);
   const web = String(person.website || "").trim();
-  const webHref = safeHttpUrl(/^https?:\/\//i.test(web) ? web : web ? `https://${web}` : "");
+  const webHref = safeExternalWebsiteUrl(web);
   if (gh) {
     links.push(
       `<a href="${esc(gh)}" class="contrib-link contrib-link--github interactive" target="_blank" rel="noopener noreferrer">${SVG_GITHUB}<span>GitHub</span></a>`

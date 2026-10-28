@@ -475,7 +475,7 @@ Format responses with markdown bullet points where helpful. If asked to contact 
     const fab = document.createElement('button');
     fab.id = 'ai-chat-fab';
     fab.className = 'ai-fab interactive';
-    fab.setAttribute('aria-label', 'Open Satwinder AI Assistant');
+    fab.setAttribute('aria-label', 'Ask Satwinder AI');
     fab.innerHTML = `
       <div class="ai-fab__icon-wrap">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -570,7 +570,7 @@ Format responses with markdown bullet points where helpful. If asked to contact 
       <!-- Optional API Key Settings Overlay -->
       <div id="ai-config-modal" class="ai-config-modal">
         <div class="flex items-center justify-between mb-4">
-          <h4 class="text-sm font-bold text-white">AI Engine Settings</h4>
+          <h2 class="text-sm font-bold text-white">AI Engine Settings</h2>
           <button id="ai-config-close" class="text-neutral-400 hover:text-white text-xs font-bold p-1">✕</button>
         </div>
         <p class="text-xs text-neutral-400 mb-3 leading-relaxed">

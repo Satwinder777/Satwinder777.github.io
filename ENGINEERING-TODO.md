@@ -24,13 +24,13 @@ This file tracks information and backend work that cannot be completed accuratel
 
 ## Backend security work required
 
-- No Firestore security-rules file or index configuration is included in this repository. The public feedback form now creates submissions with `status: in_review` and `visibleOnWeb: false`; the public board requests only visible `reviewed`/`resolved` records. Verify the live rules permit only that pending create shape and reserve status/visibility approval for trusted Firebase Auth identities with an owner/admin claim.
-- The public query combines `visibleOnWeb`, approved `status` values, and `createdAt` ordering. Deploy the corresponding Firestore composite index if the live service requests it.
+- No Firestore security-rules file is included in this repository. The public feedback form now creates submissions with `status: in_review` and `visibleOnWeb: false`; the public board requests only visible `reviewed`/`resolved` records. Verify the live rules permit only that pending create shape and reserve status/visibility approval for trusted Firebase Auth identities with an owner/admin claim.
+- `firestore.indexes.json` defines the composite index required by the public feedback query. It was deployed to `satwinder-portfolio` and both the new and existing feedback indexes were confirmed `READY` on 2026-10-28.
 - Browser-side throttling and the feedback honeypot are best-effort friction only. Enforce abuse limits server-side (for example, through Firebase App Check and a trusted function/rule design) before describing submissions as rate-limited.
 - `admin/js/config.js` contains a hardcoded SHA-256 hash for the default four-digit admin PIN, and `admin/js/auth.js` restores a UI session from browser storage. A client-side hash/session cannot authorize access to private data. Use Firebase Auth plus server-enforced admin claims and audit Firestore rules before treating the admin interface as protected. No credential was changed as part of this task.
 - `firebase.config.js`, `admin/js/supabase.js`, and the EmailJS settings in `portfolio.js` contain browser-facing Firebase, Supabase anonymous, and EmailJS public configuration. These are not privileged credentials by themselves; confirm provider-side API restrictions, storage policies, and database rules. No private-key PEM or service-account JSON was found in the repository scan.
 
 ## Repository constraints
 
-- This is a static GitHub Pages repository with no package manifest, checked-in build/test command, CI workflow, Firestore rules, or Firestore index file. Project, experience, roadmap, and feedback CMS data is not checked in, so static fallbacks use only facts found in the repository.
+- This is a static GitHub Pages repository with a small Tailwind CSS build step for the homepage; there is no app framework, test command, CI workflow, or Firestore security-rules file. Composite Firestore indexes are checked in and deployed. Project, experience, roadmap, and feedback CMS data is not checked in, so static fallbacks use only facts found in the repository.
 - The `Vibe/` directory is an existing deployed app build branded DropLink. Other live CMS projects are not included here; one accurate project overview is available from checked-in files and assets.
